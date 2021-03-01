@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: (C) 2021 Claudio Cambra <claudio.cambra@gmail.com>
+ * 
+ * SPDX-LicenseRef: GPL-3.0-or-later
+ */
+
 var blockSize = Kirigami.Units.gridUnit * 2
 var maxColumn = 7;
 var maxRow = 9;

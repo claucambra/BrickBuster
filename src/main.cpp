@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: (C) 2021 Claudio Cambra <claudio.cambra@gmail.com>
+ * 
+ * SPDX-LicenseRef: GPL-3.0-or-later
+ */
+
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QtQml>
