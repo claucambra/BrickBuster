@@ -1,3 +1,3 @@
-# BallBuster
+# BrickBuster
 
 Work in progress!

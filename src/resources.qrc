@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file alias="main.qml">contents/ui/main.qml</file>
-		<file alias="ballbuster.js">contents/ui/ballbuster.js</file>
-		<file alias="Block.qml">contents/ui/Block.qml</file>
-    </qresource>
-</RCC>

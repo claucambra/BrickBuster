@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=BallBuster
-Comment=BallBuster Kirigami Application
-Version=1.0
-Exec=ballbuster
-Icon=applications-development
-Type=Application
-Terminal=false
-Categories=Qt;KDE;
