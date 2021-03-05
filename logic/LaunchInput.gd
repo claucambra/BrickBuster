@@ -1,21 +1,24 @@
-extends RigidBody2D
+extends Control
 
-signal clicked
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 
-var held = false
-export var speed = 250.0
+var drag_enabled = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	apply_impulse(Vector2(), Vector2(1, -1).normalized() * speed)
+	pass # Replace with function body.
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
+#	pass
 
-
-
+func _on_Control_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT:
+			drag_enabled = event.pressed
+			print(drag_enabled)
 
