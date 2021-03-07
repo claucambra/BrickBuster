@@ -53,7 +53,6 @@ gravity_scale = 0.0
 contact_monitor = true
 linear_damp = 0.0
 script = ExtResource( 2 )
-speed = 300.0
 
 [node name="Sprite" type="Sprite" parent="Ball"]
 scale = Vector2( 2, 2 )
@@ -73,6 +72,3 @@ __meta__ = {
 
 [node name="LaunchLine" type="Line2D" parent="."]
 width = 5.0
-
-[node name="Polygon2D" type="Polygon2D" parent="."]
-[connection signal="gui_input" from="LaunchControl" to="LaunchControl" method="_on_Control_gui_input"]
