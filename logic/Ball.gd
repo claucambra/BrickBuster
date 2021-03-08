@@ -7,13 +7,13 @@ signal clicked
 # var b = "text"
 
 var held = false
-export var speed = 1
+export var speed = 250
 
 func launch (vector):
 	apply_impulse(Vector2(0,0), vector.normalized() * speed)
 
 # Called when the node enters the scene tree for the first time.
-# func _ready():
+#func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
