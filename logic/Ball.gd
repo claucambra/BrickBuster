@@ -1,7 +1,5 @@
 extends RigidBody2D
 
-signal clicked
-
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -15,10 +13,10 @@ func launch (vector):
 # Called when the node enters the scene tree for the first time.
 #func _ready():
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
+	#pass
 
-
-
-
+func _on_Ball_body_entered(body):
+	if body.get_name() == "BottomWall":
+		self.queue_free()

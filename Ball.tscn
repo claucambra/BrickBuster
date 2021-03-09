@@ -3,7 +3,7 @@
 [ext_resource path="res://logic/Ball.gd" type="Script" id=1]
 [ext_resource path="res://sprites/ball.png" type="Texture" id=2]
 
-[sub_resource type="PhysicsMaterial" id=3]
+[sub_resource type="PhysicsMaterial" id=1]
 friction = 0.0
 bounce = 100.0
 
@@ -11,8 +11,12 @@ bounce = 100.0
 
 [node name="Ball" type="RigidBody2D"]
 position = Vector2( 360, 1256 )
-physics_material_override = SubResource( 3 )
+collision_mask = 2
+physics_material_override = SubResource( 1 )
 gravity_scale = 0.0
+contacts_reported = 100
+contact_monitor = true
+sleeping = true
 linear_damp = 0.0
 angular_damp = 0.0
 script = ExtResource( 1 )
@@ -24,3 +28,4 @@ texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
+[connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]
