@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://logic/LaunchInput.gd" type="Script" id=2]
+[ext_resource path="res://logic/LaunchInput.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 359.589, 8.62341 )
@@ -33,14 +33,14 @@ shape = SubResource( 1 )
 [node name="LeftWall" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
-position = Vector2( -8, 640 )
+position = Vector2( -8, 639.719 )
 shape = SubResource( 2 )
 
 [node name="LaunchControl" type="Control" parent="."]
 margin_right = 720.0
 margin_bottom = 1280.0
 mouse_default_cursor_shape = 2
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -77,3 +77,24 @@ margin_right = 340.0
 margin_bottom = 150.0
 size_flags_vertical = 5
 align = 1
+
+[node name="Column1" type="Line2D" parent="."]
+points = PoolVector2Array( 72, 264, 72, 360, 72, 456, 72, 552, 72, 648, 72, 744, 72, 840, 72, 936, 72, 1032 )
+
+[node name="Column2" type="Line2D" parent="."]
+points = PoolVector2Array( 168, 264, 168, 360, 168, 456, 168, 552, 168, 648, 168, 744, 168, 840, 168, 936, 168, 1032 )
+
+[node name="Column3" type="Line2D" parent="."]
+points = PoolVector2Array( 264, 264, 264, 360, 264, 456, 264, 552, 264, 648, 264, 744, 264, 840, 264, 936, 264, 1032 )
+
+[node name="Column4" type="Line2D" parent="."]
+points = PoolVector2Array( 360, 264, 360, 360, 360, 456, 360, 552, 360, 648, 360, 744, 360, 840, 360, 936, 360, 1032 )
+
+[node name="Column5" type="Line2D" parent="."]
+points = PoolVector2Array( 456, 264, 456, 360, 456, 456, 456, 552, 456, 648, 456, 744, 456, 840, 456, 936, 456, 1032 )
+
+[node name="Column6" type="Line2D" parent="."]
+points = PoolVector2Array( 552, 264, 552, 360, 552, 456, 552, 552, 552, 648, 552, 744, 552, 840, 552, 936, 552, 1032 )
+
+[node name="Column7" type="Line2D" parent="."]
+points = PoolVector2Array( 648, 264, 648, 360, 648, 456, 648, 552, 648, 648, 648, 744, 648, 840, 648, 936, 648, 1032 )
