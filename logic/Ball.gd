@@ -4,7 +4,6 @@ extends RigidBody2D
 # var a = 2
 # var b = "text"
 
-var held = false
 export var speed = 250
 
 func launch (vector):
@@ -20,3 +19,5 @@ func launch (vector):
 func _on_Ball_body_entered(body):
 	if body.get_name() == "BottomWall":
 		self.queue_free()
+	if body.get_name() == "Brick":
+		body.health -= 1
