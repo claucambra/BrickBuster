@@ -5,7 +5,10 @@ extends KinematicBody2D
 # var a = 2
 # var b = "text"
 
-var health = 5
+var health = null
+var hor_position = null
+var current_vert_position = null
+onready var label = $HealthLabel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -14,5 +17,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	label.clear()
+	label.add_text(String(health))
 	if health == 0:
 		self.queue_free()

@@ -8,13 +8,13 @@ var drag_enabled = false
 var launched = false
 var round_in_progress = false
 var live_balls = []
-var score = 0
+var live_bricks = []
+var score = 1
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var ball = ball_scene.instance()
-onready var test_brick = brick_scene.instance()
 onready var line = get_node("../LaunchLine")
 onready var wait = get_node("../LaunchTimer")
 onready var columns = [
@@ -27,15 +27,6 @@ onready var columns = [
 	get_node("../Column6")
 ]
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	line.add_point(Vector2(0,0), 0)
-	line.add_point(Vector2(0,0), 1)
-	add_child(ball)
-	add_child(test_brick)
-	rng.randomize()
-	test_brick.set_position(columns[rng.randi_range(0, 6)].get_point_position(0))
-
 func launch_balls(direction, amount):
 	for i in amount:
 		var next_ball = ball_scene.instance()
@@ -44,18 +35,36 @@ func launch_balls(direction, amount):
 		live_balls.append(next_ball)
 		wait.start()
 		yield(wait, "timeout")
+		
+func new_block_line(health, vert_position = 0):
+	for column in columns:
+		if rng.randi_range(0,2) > 0: 
+			var next_brick = brick_scene.instance()
+			next_brick.health = health
+			next_brick.hor_position = columns.find(column)
+			next_brick.current_vert_position = vert_position
+			add_child(next_brick)
+			next_brick.set_position(column.get_point_position(vert_position))
+			live_bricks.append(next_brick)
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	line.add_point(Vector2(0,0), 0)
+	line.add_point(Vector2(0,0), 1)
+	add_child(ball)
+	rng.randomize()
+	self.new_block_line(score)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	print(score)
 	var ball_center = ball.position
 	var mouse_position = get_global_mouse_position()
 	var line_direction = first_click_position - mouse_position
 	line_direction = line_direction.normalized()
 	
-	for ball in live_balls:
-		if !is_instance_valid(ball):
-			live_balls.remove(live_balls.find(ball))
+	for live_ball in live_balls:
+		if !is_instance_valid(live_ball):
+			live_balls.remove(live_balls.find(live_ball))
 	
 	if Input.is_action_just_pressed("click"):
 		first_click_position = get_global_mouse_position()
@@ -71,15 +80,26 @@ func _process(_delta):
 		
 	if Input.is_action_just_released("click"): # Defined in input map
 		drag_enabled = false
-		self.launch_balls(line_direction, 10)
+		self.launch_balls(line_direction, score)
 		launched = true
 		
 	if !live_balls.empty():
 		round_in_progress = true
 	elif launched == true:
+		score += 1
 		launched = false
 		round_in_progress = false
-		score += 1
+		for live_brick in live_bricks:
+			if !is_instance_valid(live_brick):
+				live_bricks.remove(live_bricks.find(live_brick))
+			else:
+				live_brick.current_vert_position += 1
+				live_brick.set_position(
+					columns[live_brick.hor_position].get_point_position(
+						live_brick.current_vert_position
+					)
+				)
+		self.new_block_line(score)
 	else:
 		round_in_progress = false
 
