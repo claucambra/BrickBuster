@@ -17,7 +17,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	label.clear()
-	label.add_text(String(health))
-	if health == 0:
+	label.text = String(health)
+	if health <= 0:
 		self.queue_free()

@@ -12,19 +12,20 @@ var live_bricks = []
 var score = 1
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
+onready var score_label = $MetaArea/HBoxContainer/ScoreLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var ball = ball_scene.instance()
-onready var line = get_node("../LaunchLine")
-onready var wait = get_node("../LaunchTimer")
+onready var line = $LaunchLine
+onready var wait = $LaunchTimer
 onready var columns = [
-	get_node("../Column0"),
-	get_node("../Column1"),
-	get_node("../Column2"),
-	get_node("../Column3"),
-	get_node("../Column4"),
-	get_node("../Column5"),
-	get_node("../Column6")
+	$Column0,
+	$Column1,
+	$Column2,
+	$Column3,
+	$Column4,
+	$Column5,
+	$Column6
 ]
 
 func launch_balls(direction, amount):
@@ -57,6 +58,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	score_label.text = String(score)
+	
 	var ball_center = ball.position
 	var mouse_position = get_global_mouse_position()
 	var line_direction = first_click_position - mouse_position
@@ -73,12 +76,12 @@ func _process(_delta):
 	# Line drawing and touch place responsibilities
 	update() # Updates _draw func
 	line.visible = false
-	if drag_enabled:
+	if drag_enabled && round_in_progress == false:
 		line.visible = true
 		line.set_point_position(0, ball_center)
 		line.set_point_position(1, line_direction*10000)
 		
-	if Input.is_action_just_released("click"): # Defined in input map
+	if Input.is_action_just_released("click") && round_in_progress == false: # Defined in input map
 		drag_enabled = false
 		self.launch_balls(line_direction, score)
 		launched = true
@@ -99,12 +102,14 @@ func _process(_delta):
 						live_brick.current_vert_position
 					)
 				)
+				if live_brick.current_vert_position == 8:
+					get_tree().reload_current_scene()
 		self.new_block_line(score)
 	else:
 		round_in_progress = false
 
 func _draw():
-	if drag_enabled:
+	if drag_enabled && round_in_progress == false:
 		draw_circle(first_click_position, 25, ColorN("black", 0.5))
 
 

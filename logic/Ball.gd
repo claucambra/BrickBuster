@@ -17,7 +17,6 @@ func launch (vector):
 	#pass
 
 func _on_Ball_body_entered(body):
-	print(body.get_name())
 	if body.get_name() == "BottomWall":
 		self.queue_free()
 	if "Brick" in body.get_name():
