@@ -24,3 +24,5 @@ __meta__ = {
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( -46.828, -46.859, 46.2656, 46.3125, -46.828, 46.312 )
+
+[node name="Timer" type="Timer" parent="."]

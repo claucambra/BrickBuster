@@ -66,6 +66,7 @@ func _ready():
 	line.add_point(Vector2(0,0), 0)
 	line.add_point(Vector2(0,0), 1)
 	add_child(ball)
+	wait.wait_time = 0.1
 	rng.randomize()
 	self.new_block_line(score + 1)
 
@@ -130,10 +131,10 @@ func _process(delta):
 				var reposition = live_brick.position - destination
 				# Snap blocks into position when they are imperceptibly close
 				# Otherwise they will never reach the intended position
-				if reposition.y > -1.5:
+				if reposition.y > -2:
 					live_brick.position = destination
 				else:
-					var reposition_velocity = reposition * 5 * delta
+					var reposition_velocity = reposition * 6 * delta
 					live_brick.position -= reposition_velocity
 		if num_incorrect_brick_position == 0:
 			round_in_progress = false
