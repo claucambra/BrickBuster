@@ -1,11 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://logic/Brick.gd" type="Script" id=2]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 46.5659, 46.6023 )
-
-[node name="Brick" type="KinematicBody2D"]
+[node name="SlantedBrick" type="KinematicBody2D"]
 position = Vector2( 120, 376 )
 script = ExtResource( 2 )
 
@@ -14,11 +11,7 @@ scale = Vector2( 0.085, 0.085 )
 color = Color( 0.576471, 0.180392, 0.180392, 1 )
 antialiased = true
 invert_border = 85.9
-polygon = PoolVector2Array( -551.09, 544.843, 544.429, 544.853, 544.393, -551.378, -551.195, -551.378 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -0.280609, -0.280624 )
-shape = SubResource( 1 )
+polygon = PoolVector2Array( -551.09, 544.843, 544.429, 544.853, -551.195, -551.378 )
 
 [node name="HealthLabel" type="Label" parent="."]
 margin_left = -45.0
@@ -28,3 +21,6 @@ margin_bottom = 42.8776
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -46.828, -46.859, 46.2656, 46.3125, -46.828, 46.312 )

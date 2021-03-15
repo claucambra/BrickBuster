@@ -15,6 +15,7 @@ var rng = RandomNumberGenerator.new()
 onready var score_label = $MetaArea/HBoxContainer/ScoreLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
+onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
 onready var ball = ball_scene.instance()
 onready var line = $LaunchLine
 onready var wait = $LaunchTimer
@@ -40,7 +41,12 @@ func launch_balls(direction, amount):
 func new_block_line(health, vert_position = 0):
 	for column in columns:
 		if rng.randi_range(0,2) > 0: 
-			var next_brick = brick_scene.instance()
+			var next_brick
+			if rng.randi_range(0,3) == 3:
+				next_brick = slanted_brick_scene.instance()
+				next_brick.rotation_degrees = rng.randi_range(0,3) * 90
+			else:
+				next_brick = brick_scene.instance()
 			next_brick.health = health
 			next_brick.hor_position = columns.find(column)
 			next_brick.current_vert_position = vert_position
@@ -58,6 +64,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	rng.randomize()
 	score_label.text = String(score)
 	
 	var ball_center = ball.position
@@ -67,7 +74,7 @@ func _process(_delta):
 	
 	for live_ball in live_balls:
 		if !is_instance_valid(live_ball):
-			live_balls.remove(live_balls.find(live_ball))
+			live_balls.erase(live_ball)
 	
 	if Input.is_action_just_pressed("click"):
 		first_click_position = get_global_mouse_position()
@@ -92,9 +99,11 @@ func _process(_delta):
 		score += 1
 		launched = false
 		round_in_progress = false
-		for live_brick in live_bricks:
+		var inv_live_bricks = live_bricks.duplicate()
+		inv_live_bricks.invert() # We have an inverted array so blocks don't get superimposed when newer blocks moved down
+		for live_brick in inv_live_bricks:
 			if !is_instance_valid(live_brick):
-				live_bricks.remove(live_bricks.find(live_brick))
+				live_bricks.erase(live_brick)
 			else:
 				live_brick.current_vert_position += 1
 				live_brick.set_position(
