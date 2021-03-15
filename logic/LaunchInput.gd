@@ -9,7 +9,7 @@ var launched = false
 var round_in_progress = false
 var live_balls = []
 var live_bricks = []
-var score = 1
+var score = 0
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
 onready var score_label = $MetaArea/HBoxContainer/ScoreLabel
@@ -60,7 +60,7 @@ func _ready():
 	line.add_point(Vector2(0,0), 1)
 	add_child(ball)
 	rng.randomize()
-	self.new_block_line(score)
+	self.new_block_line(score + 1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -90,7 +90,7 @@ func _process(_delta):
 		
 	if Input.is_action_just_released("click") && round_in_progress == false: # Defined in input map
 		drag_enabled = false
-		self.launch_balls(line_direction, score)
+		self.launch_balls(line_direction, score + 1)
 		launched = true
 		
 	if !live_balls.empty():
@@ -113,7 +113,7 @@ func _process(_delta):
 				)
 				if live_brick.current_vert_position == 8:
 					get_tree().reload_current_scene()
-		self.new_block_line(score)
+		self.new_block_line(score + 1)
 	else:
 		round_in_progress = false
 
