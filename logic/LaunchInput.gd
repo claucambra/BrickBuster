@@ -4,7 +4,11 @@ extends Control
 # var a = 2
 # var b = "text"
 
+# These variables are used to keep track of what stage of the round we are in
+# This is used to decide input state and acceptance
 var drag_enabled = false
+# launched is used to differentiate between states when there are no live balls
+# i.e. idling vs just after all balls have returned to bottom of screen
 var launched = false
 var round_in_progress = false
 var live_balls = []
@@ -12,6 +16,7 @@ var live_bricks = []
 var score = 0
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
+
 onready var score_label = $MetaArea/HBoxContainer/ScoreLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
@@ -37,7 +42,7 @@ func launch_balls(direction, amount):
 		live_balls.append(next_ball)
 		wait.start()
 		yield(wait, "timeout")
-		
+
 func new_block_line(health, vert_position = 0):
 	for column in columns:
 		if rng.randi_range(0,2) > 0: 
@@ -76,25 +81,28 @@ func _process(delta):
 		if !is_instance_valid(live_ball):
 			live_balls.erase(live_ball)
 	
-	if Input.is_action_just_pressed("click") && round_in_progress == false:
+	# "click" is defined in input map
+	if Input.is_action_just_pressed("click") && !round_in_progress:
 		first_click_position = get_global_mouse_position()
 		drag_enabled = true
 	
 	# Line drawing and touch place responsibilities
 	update() # Updates _draw func
 	line.visible = false
-	if drag_enabled && round_in_progress == false:
+	if drag_enabled && !round_in_progress:
 		line.visible = true
 		line.set_point_position(0, ball_center)
 		line.set_point_position(1, line_direction*10000)
 		
-	if Input.is_action_just_released("click") && round_in_progress == false: # Defined in input map
+	if Input.is_action_just_released("click") && !round_in_progress && drag_enabled: 
 		drag_enabled = false
 		self.launch_balls(line_direction, score + 1)
 		launched = true
-		
+	
+	# Round progress checking section
 	var inv_live_bricks = live_bricks.duplicate()
-	inv_live_bricks.invert() # We have an inverted array so blocks don't get superimposed when newer blocks moved down
+	# We have an inverted array so blocks don't get superimposed when newer blocks moved down
+	inv_live_bricks.invert() 
 	if !live_balls.empty():
 		round_in_progress = true
 	elif launched == true:
@@ -106,7 +114,6 @@ func _process(delta):
 				live_bricks.erase(live_brick)
 			else:
 				live_brick.current_vert_position += 1
-				#live_brick.set_position(columns[live_brick.hor_position].get_point_position(live_brick.current_vert_position))
 				if live_brick.current_vert_position == 8:
 					get_tree().reload_current_scene()
 		self.new_block_line(score + 1)
