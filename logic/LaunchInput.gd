@@ -56,7 +56,9 @@ func new_block_line(health, vert_position = 0):
 			next_brick.hor_position = columns.find(column)
 			next_brick.current_vert_position = vert_position
 			add_child(next_brick)
+			# We set it at 0 and then add 1 to vert position to get swanky movement down
 			next_brick.set_position(column.get_point_position(vert_position))
+			next_brick.current_vert_position += 1
 			live_bricks.append(next_brick)
 
 # Called when the node enters the scene tree for the first time.
@@ -93,7 +95,8 @@ func _process(delta):
 		line.visible = true
 		line.set_point_position(0, ball_center)
 		line.set_point_position(1, line_direction*10000)
-		
+	
+	# Launch handling
 	if Input.is_action_just_released("click") && !round_in_progress && drag_enabled: 
 		drag_enabled = false
 		self.launch_balls(line_direction, score + 1)
@@ -105,7 +108,7 @@ func _process(delta):
 	inv_live_bricks.invert() 
 	if !live_balls.empty():
 		round_in_progress = true
-	elif launched == true:
+	elif launched:
 		score += 1
 		launched = false
 		round_in_progress = false
@@ -125,6 +128,8 @@ func _process(delta):
 			if live_brick.position != destination:
 				num_incorrect_brick_position += 1
 				var reposition = live_brick.position - destination
+				# Snap blocks into position when they are imperceptibly close
+				# Otherwise they will never reach the intended position
 				if reposition.y > -1.5:
 					live_brick.position = destination
 				else:
@@ -136,7 +141,7 @@ func _process(delta):
 			round_in_progress= true
 
 func _draw():
-	if drag_enabled && round_in_progress == false:
+	if drag_enabled && !round_in_progress:
 		draw_circle(first_click_position, 25, ColorN("black", 0.5))
 
 
