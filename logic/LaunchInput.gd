@@ -63,7 +63,7 @@ func _ready():
 	self.new_block_line(score + 1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
+func _process(delta):
 	rng.randomize()
 	score_label.text = String(score)
 	
@@ -76,7 +76,7 @@ func _process(_delta):
 		if !is_instance_valid(live_ball):
 			live_balls.erase(live_ball)
 	
-	if Input.is_action_just_pressed("click"):
+	if Input.is_action_just_pressed("click") && round_in_progress == false:
 		first_click_position = get_global_mouse_position()
 		drag_enabled = true
 	
@@ -93,29 +93,40 @@ func _process(_delta):
 		self.launch_balls(line_direction, score + 1)
 		launched = true
 		
+	var inv_live_bricks = live_bricks.duplicate()
+	inv_live_bricks.invert() # We have an inverted array so blocks don't get superimposed when newer blocks moved down
 	if !live_balls.empty():
 		round_in_progress = true
 	elif launched == true:
 		score += 1
 		launched = false
 		round_in_progress = false
-		var inv_live_bricks = live_bricks.duplicate()
-		inv_live_bricks.invert() # We have an inverted array so blocks don't get superimposed when newer blocks moved down
 		for live_brick in inv_live_bricks:
 			if !is_instance_valid(live_brick):
 				live_bricks.erase(live_brick)
 			else:
 				live_brick.current_vert_position += 1
-				live_brick.set_position(
-					columns[live_brick.hor_position].get_point_position(
-						live_brick.current_vert_position
-					)
-				)
+				#live_brick.set_position(columns[live_brick.hor_position].get_point_position(live_brick.current_vert_position))
 				if live_brick.current_vert_position == 8:
 					get_tree().reload_current_scene()
 		self.new_block_line(score + 1)
 	else:
-		round_in_progress = false
+		var num_incorrect_brick_position = 0
+		for live_brick in inv_live_bricks:
+			var destination = columns[live_brick.hor_position].get_point_position(live_brick.current_vert_position)
+			print (live_brick.position == destination)
+			if live_brick.position != destination:
+				num_incorrect_brick_position += 1
+				var reposition = live_brick.position - destination
+				if reposition.y > -1.5:
+					live_brick.position = destination
+				else:
+					var reposition_velocity = reposition * 5 * delta
+					live_brick.position -= reposition_velocity
+		if num_incorrect_brick_position == 0:
+			round_in_progress = false
+		else:
+			round_in_progress= true
 
 func _draw():
 	if drag_enabled && round_in_progress == false:
