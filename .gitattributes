@@ -1,0 +1,2 @@
+# Reclassify .gd files as Godot Script instead of GAP
+*.gd linguist-language=GDScript
