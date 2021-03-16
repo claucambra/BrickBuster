@@ -79,7 +79,6 @@ func _process(delta):
 	var ball_center = ball.position
 	var mouse_position = get_global_mouse_position()
 	var line_direction = first_click_position - mouse_position
-	line_direction = line_direction.normalized()
 	
 	for live_ball in live_balls:
 		if !is_instance_valid(live_ball):
@@ -96,12 +95,12 @@ func _process(delta):
 	if drag_enabled && !round_in_progress:
 		line.visible = true
 		line.set_point_position(0, ball_center)
-		line.set_point_position(1, line_direction*10000)
+		line.set_point_position(1, line_direction.normalized()*100000)
 	
 	# Launch handling
 	if Input.is_action_just_released("click") && !round_in_progress && drag_enabled: 
 		drag_enabled = false
-		self.launch_balls(line_direction, score + 1)
+		self.launch_balls(line_direction.normalized(), score + 1)
 		launched = true
 	
 	# Round progress checking section
