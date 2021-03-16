@@ -53,6 +53,7 @@ func new_block_line(health, vert_position = 0):
 			else:
 				next_brick = brick_scene.instance()
 			next_brick.health = health
+			next_brick.max_possible_health = health
 			next_brick.hor_position = columns.find(column)
 			next_brick.current_vert_position = vert_position
 			add_child(next_brick)
@@ -117,6 +118,7 @@ func _process(delta):
 			if !is_instance_valid(live_brick):
 				live_bricks.erase(live_brick)
 			else:
+				live_brick.max_possible_health += 1
 				live_brick.current_vert_position += 1
 				if live_brick.current_vert_position == 8:
 					get_tree().reload_current_scene()
@@ -125,7 +127,6 @@ func _process(delta):
 		var num_incorrect_brick_position = 0
 		for live_brick in inv_live_bricks:
 			var destination = columns[live_brick.hor_position].get_point_position(live_brick.current_vert_position)
-			print (live_brick.position == destination)
 			if live_brick.position != destination:
 				num_incorrect_brick_position += 1
 				var reposition = live_brick.position - destination

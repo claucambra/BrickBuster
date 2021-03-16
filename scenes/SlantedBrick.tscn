@@ -6,7 +6,7 @@
 position = Vector2( 120, 376 )
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Polygon2D" parent="."]
+[node name="BrickShape" type="Polygon2D" parent="."]
 scale = Vector2( 0.085, 0.085 )
 color = Color( 0.576471, 0.180392, 0.180392, 1 )
 antialiased = true
