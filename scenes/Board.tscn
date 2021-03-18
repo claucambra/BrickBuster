@@ -9,19 +9,8 @@ extents = Vector2( 359.589, 8.62341 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 640 )
 
-[node name="Board" type="Control"]
-anchor_left = 0.011
-anchor_top = 0.15
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -7.92
-margin_top = -192.0
-margin_right = -720.0
-margin_bottom = -1280.0
+[node name="Board" type="Node2D"]
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TopWall" type="StaticBody2D" parent="."]
 
@@ -49,12 +38,18 @@ shape = SubResource( 1 )
 position = Vector2( -8, 639.719 )
 shape = SubResource( 2 )
 
+[node name="ControlArea" type="Control" parent="."]
+margin_top = 200.0
+margin_right = 712.0
+margin_bottom = 1088.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="LaunchTimer" type="Timer" parent="."]
 wait_time = 0.1
 
 [node name="MetaArea" parent="." instance=ExtResource( 2 )]
-anchor_right = 0.0
-margin_right = 720.0
 
 [node name="Column0" type="Line2D" parent="."]
 visible = false
@@ -88,3 +83,5 @@ points = PoolVector2Array( 648, 264, 648, 360, 648, 456, 648, 552, 648, 648, 648
 visible = false
 z_index = 1
 width = 5.0
+[connection signal="mouse_entered" from="ControlArea" to="." method="_on_ControlArea_mouse_entered"]
+[connection signal="mouse_exited" from="ControlArea" to="." method="_on_ControlArea_mouse_exited"]

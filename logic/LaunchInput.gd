@@ -1,12 +1,13 @@
-extends Control
+extends Node2D
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
+var paused = false
 # These variables are used to keep track of what stage of the round we are in
 # This is used to decide input state and acceptance
 var drag_enabled = false
+var mouse_in_controlarea = false
 # launched is used to differentiate between states when there are no live balls
 # i.e. idling vs just after all balls have returned to bottom of screen
 var launched = false
@@ -17,7 +18,7 @@ var score = 0
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
 
-onready var score_label = $MetaArea/HBoxContainer/ScoreLabel
+onready var score_label = $MetaArea/MarginContainer/HBoxContainer/ScoreLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
@@ -62,8 +63,14 @@ func new_block_line(health, vert_position = 0):
 			next_brick.current_vert_position += 1
 			live_bricks.append(next_brick)
 
+func pause_signal_received():
+	paused = !paused
+	get_tree().paused = paused
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$MetaArea.connect("pause_button_clicked", self, "pause_signal_received")
+	$MetaArea.pause_mode = Node.PAUSE_MODE_PROCESS
 	line.add_point(Vector2(0,0), 0)
 	line.add_point(Vector2(0,0), 1)
 	add_child(ball)
@@ -85,7 +92,7 @@ func _process(delta):
 			live_balls.erase(live_ball)
 	
 	# "click" is defined in input map
-	if Input.is_action_just_pressed("click") && !round_in_progress:
+	if Input.is_action_just_pressed("click") && mouse_in_controlarea && !round_in_progress:
 		first_click_position = get_global_mouse_position()
 		drag_enabled = true
 	
@@ -145,4 +152,8 @@ func _draw():
 	if drag_enabled && !round_in_progress:
 		draw_circle(first_click_position, 25, ColorN("black", 0.5))
 
+func _on_ControlArea_mouse_entered():
+	mouse_in_controlarea = true
 
+func _on_ControlArea_mouse_exited():
+	mouse_in_controlarea = false
