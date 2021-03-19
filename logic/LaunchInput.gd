@@ -67,10 +67,14 @@ func pause_signal_received():
 	paused = !paused
 	get_tree().paused = paused
 
+func restart_signal_received():
+	get_tree().reload_current_scene()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$MetaArea.connect("pause_button_clicked", self, "pause_signal_received")
+	$MetaArea.connect("pause_menu_toggled", self, "pause_signal_received")
 	$MetaArea.pause_mode = Node.PAUSE_MODE_PROCESS
+	$MetaArea.connect("restart_button_clicked", self, "restart_signal_received")
 	line.add_point(Vector2(0,0), 0)
 	line.add_point(Vector2(0,0), 1)
 	add_child(ball)

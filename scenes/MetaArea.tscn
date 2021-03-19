@@ -28,7 +28,7 @@ margin_right = 700.0
 margin_bottom = 170.0
 rect_min_size = Vector2( 150, 150 )
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer"]
+[node name="Button" type="MenuButton" parent="MarginContainer/HBoxContainer"]
 margin_right = 338.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
@@ -42,4 +42,4 @@ size_flags_horizontal = 3
 size_flags_vertical = 5
 align = 1
 valign = 1
-[connection signal="pressed" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_toggled"]
