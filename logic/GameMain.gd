@@ -13,8 +13,9 @@ var mouse_in_controlarea = false
 var launched = false
 var round_in_progress = false
 var live_balls = []
-var live_bricks = []
+var live_destroyables = []
 var score = 0
+var ammo = 1
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
 
@@ -22,6 +23,7 @@ onready var score_label = $MetaArea/MarginContainer/HBoxContainer/ScoreLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
+onready var specials_scene = load("res://scenes/Specials.tscn")
 onready var ball = ball_scene.instance()
 onready var line = $LaunchLine
 onready var wait = $LaunchTimer
@@ -45,8 +47,10 @@ func launch_balls(direction, amount):
 		yield(wait, "timeout")
 
 func new_block_line(health, vert_position = 0):
+	var free_columns = columns.duplicate()
 	for column in columns:
-		if rng.randi_range(0,2) > 0: 
+		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
+			free_columns.erase(column)
 			var next_brick
 			if rng.randi_range(0,3) == 3:
 				next_brick = slanted_brick_scene.instance()
@@ -61,7 +65,19 @@ func new_block_line(health, vert_position = 0):
 			# We set it at 0 and then add 1 to vert position to get swanky movement down
 			next_brick.set_position(column.get_point_position(vert_position))
 			next_brick.current_vert_position += 1
-			live_bricks.append(next_brick)
+			live_destroyables.append(next_brick)
+	
+	var add_ball_special = specials_scene.instance()
+	var column_for_add_special = rng.randi_range(0, (free_columns.size() - 1))
+	add_ball_special.current_vert_position = vert_position
+	add_ball_special.hor_position = columns.find(free_columns[column_for_add_special])
+	add_ball_special.set_position(free_columns[column_for_add_special].get_point_position(vert_position))
+	add_ball_special.current_vert_position += 1
+	add_child(add_ball_special)
+	add_ball_special.connect("special_area_entered", self, "specialarea_signal_received")
+	live_destroyables.append(add_ball_special)
+	free_columns.remove(column_for_add_special)
+	print(free_columns)
 
 func pause_signal_received():
 	paused = !paused
@@ -69,6 +85,9 @@ func pause_signal_received():
 
 func restart_signal_received():
 	get_tree().reload_current_scene()
+
+func specialarea_signal_received():
+	ammo += 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -111,42 +130,43 @@ func _process(delta):
 	# Launch handling
 	if Input.is_action_just_released("click") && !round_in_progress && drag_enabled: 
 		drag_enabled = false
-		self.launch_balls(line_direction.normalized(), score + 1)
+		self.launch_balls(line_direction.normalized(), ammo)
 		launched = true
 	
 	# Round progress checking section
-	var inv_live_bricks = live_bricks.duplicate()
+	var inv_live_destroyables = live_destroyables.duplicate()
 	# We have an inverted array so blocks don't get superimposed when newer blocks moved down
-	inv_live_bricks.invert() 
+	inv_live_destroyables.invert() 
 	if !live_balls.empty():
 		round_in_progress = true
 	elif launched:
 		score += 1
 		launched = false
 		round_in_progress = false
-		for live_brick in inv_live_bricks:
-			if !is_instance_valid(live_brick):
-				live_bricks.erase(live_brick)
+		for live_destroyable in inv_live_destroyables:
+			if !is_instance_valid(live_destroyable):
+				live_destroyables.erase(live_destroyable)
 			else:
-				live_brick.max_possible_health += 1
-				live_brick.current_vert_position += 1
-				if live_brick.current_vert_position == 8:
+				live_destroyable.current_vert_position += 1
+				if "Brick" in live_destroyable.name:
+					live_destroyable.max_possible_health += 1
+				if live_destroyable.current_vert_position == 8:
 					get_tree().reload_current_scene()
 		self.new_block_line(score + 1)
 	else:
 		var num_incorrect_brick_position = 0
-		for live_brick in inv_live_bricks:
-			var destination = columns[live_brick.hor_position].get_point_position(live_brick.current_vert_position)
-			if live_brick.position != destination:
+		for live_destroyable in inv_live_destroyables:
+			var destination = columns[live_destroyable.hor_position].get_point_position(live_destroyable.current_vert_position)
+			if live_destroyable.position != destination:
 				num_incorrect_brick_position += 1
-				var reposition = live_brick.position - destination
+				var reposition = live_destroyable.position - destination
 				# Snap blocks into position when they are imperceptibly close
 				# Otherwise they will never reach the intended position
 				if reposition.y > -2:
-					live_brick.position = destination
+					live_destroyable.position = destination
 				else:
 					var reposition_velocity = reposition * 6 * delta
-					live_brick.position -= reposition_velocity
+					live_destroyable.position -= reposition_velocity
 		if num_incorrect_brick_position == 0:
 			round_in_progress = false
 		else:

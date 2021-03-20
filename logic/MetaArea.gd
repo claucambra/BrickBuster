@@ -15,7 +15,6 @@ func _ready():
 	menu_button.get_popup().add_item("Restart", 1)
 	menu_button.get_popup().connect("id_pressed", self, "_on_MenuItem_pressed")
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta):
 #	pass

@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://logic/LaunchInput.gd" type="Script" id=1]
+[ext_resource path="res://logic/GameMain.gd" type="Script" id=1]
+
 
 [node name="Control" type="Control"]
 margin_right = 720.0
