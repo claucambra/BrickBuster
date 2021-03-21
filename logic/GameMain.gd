@@ -14,7 +14,7 @@ var launched = false
 var round_in_progress = false
 var live_balls = []
 var live_destroyables = []
-var round_dead_balls = []
+var round_first_dead_ball_x = null
 var score = 0
 var ammo = 1
 var first_click_position = Vector2(0,0)
@@ -43,6 +43,7 @@ func launch_balls(direction, amount):
 		var next_ball = ball_scene.instance()
 		add_child(next_ball)
 		next_ball.connect("ball_no_contact_timeout", self, "on_ball_no_contact_timeout")
+		next_ball.connect("ball_died", self, "on_ball_died")
 		next_ball.position = ball.position
 		next_ball.launch(direction)
 		live_balls.append(next_ball)
@@ -126,6 +127,10 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	if line_point < 8:
 		new_destroyable(line_point, columns[3], "Bounce_Special")
 
+func on_ball_died(ball_position_x):
+	if round_first_dead_ball_x == null:
+		round_first_dead_ball_x = ball_position_x
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$MetaArea.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
@@ -145,10 +150,6 @@ func _process(delta):
 	var ball_center = ball.position
 	var mouse_position = get_global_mouse_position()
 	var line_direction = first_click_position - mouse_position
-	
-	for live_ball in live_balls:
-		if !is_instance_valid(live_ball):
-			live_balls.erase(live_ball)
 	
 	# "click" is defined in input map
 	if Input.is_action_just_pressed("click") && mouse_in_controlarea && !round_in_progress:
@@ -171,7 +172,9 @@ func _process(delta):
 		launched = true
 	
 	# Round progress checking section
-	var inv_live_destroyables = live_destroyables.duplicate()
+	for live_ball in live_balls:
+		if !is_instance_valid(live_ball):
+			live_balls.erase(live_ball)
 	# We have an inverted array so blocks don't get superimposed when newer blocks moved down
 	#inv_live_destroyables.invert()
 	if !live_balls.empty():
@@ -180,7 +183,8 @@ func _process(delta):
 		score += 1
 		launched = false
 		round_in_progress = false
-		for live_destroyable in inv_live_destroyables:
+		round_first_dead_ball_x = null
+		for live_destroyable in live_destroyables:
 			if !is_instance_valid(live_destroyable):
 				live_destroyables.erase(live_destroyable)
 			else:
@@ -195,7 +199,7 @@ func _process(delta):
 		self.new_destroyable_line(score + 1)
 	else:
 		var num_incorrect_brick_position = 0
-		for live_destroyable in inv_live_destroyables:
+		for live_destroyable in live_destroyables:
 			var destination = columns[live_destroyable.hor_position].get_point_position(live_destroyable.current_vert_position)
 			if live_destroyable.position != destination:
 				num_incorrect_brick_position += 1
