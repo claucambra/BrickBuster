@@ -46,37 +46,45 @@ func launch_balls(direction, amount):
 		wait.start()
 		yield(wait, "timeout")
 
-func new_block_line(health, vert_position = 0):
+func new_destroyable(health, vert_position, column, type):
+	var next_destroyable
+	if "Brick" in type:
+		if type == "Brick":
+			next_destroyable = brick_scene.instance()
+		elif type == "Slanted Brick":
+			next_destroyable = slanted_brick_scene.instance()
+			next_destroyable.rotation_degrees = rng.randi_range(0,3) * 90
+		next_destroyable.health = health
+		next_destroyable.max_possible_health = health
+	elif "Special" in type:
+		next_destroyable = specials_scene.instance()
+		if type == "Add-Ball Special":
+			next_destroyable.mode = "add"
+		next_destroyable.connect("special_area_entered", self, "specialarea_signal_received")
+	
+	next_destroyable.hor_position = columns.find(column)
+	next_destroyable.current_vert_position = vert_position
+	add_child(next_destroyable)
+	# We set it at 0 and then add 1 to vert position to get swanky movement down
+	next_destroyable.set_position(column.get_point_position(vert_position))
+	next_destroyable.current_vert_position += 1
+	live_destroyables.append(next_destroyable)
+	
+
+func new_destroyable_line(health, vert_position = 0):
 	var free_columns = columns.duplicate()
 	for column in columns:
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
 			free_columns.erase(column)
-			var next_brick
 			if rng.randi_range(0,3) == 3:
-				next_brick = slanted_brick_scene.instance()
-				next_brick.rotation_degrees = rng.randi_range(0,3) * 90
+				new_destroyable(health, vert_position, column, "Slanted Brick")
 			else:
-				next_brick = brick_scene.instance()
-			next_brick.health = health
-			next_brick.max_possible_health = health
-			next_brick.hor_position = columns.find(column)
-			next_brick.current_vert_position = vert_position
-			add_child(next_brick)
-			# We set it at 0 and then add 1 to vert position to get swanky movement down
-			next_brick.set_position(column.get_point_position(vert_position))
-			next_brick.current_vert_position += 1
-			live_destroyables.append(next_brick)
+				new_destroyable(health, vert_position, column, "Brick")
 	
-	var add_ball_special = specials_scene.instance()
-	var column_for_add_special = rng.randi_range(0, (free_columns.size() - 1))
-	add_ball_special.current_vert_position = vert_position
-	add_ball_special.hor_position = columns.find(free_columns[column_for_add_special])
-	add_ball_special.set_position(free_columns[column_for_add_special].get_point_position(vert_position))
-	add_ball_special.current_vert_position += 1
-	add_child(add_ball_special)
-	add_ball_special.connect("special_area_entered", self, "specialarea_signal_received")
-	live_destroyables.append(add_ball_special)
-	free_columns.remove(column_for_add_special)
+	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
+	var column_for_add_ball_special = free_columns[random_free_column]
+	new_destroyable(health, vert_position, column_for_add_ball_special, "Add-Ball Special")
+	free_columns.erase(column_for_add_ball_special)
 	print(free_columns)
 
 func pause_signal_received():
@@ -86,8 +94,9 @@ func pause_signal_received():
 func restart_signal_received():
 	get_tree().reload_current_scene()
 
-func specialarea_signal_received():
-	ammo += 1
+func specialarea_signal_received(type):
+	if type == "add":
+		ammo += 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -99,7 +108,7 @@ func _ready():
 	add_child(ball)
 	wait.wait_time = 0.1
 	rng.randomize()
-	self.new_block_line(score + 1)
+	self.new_destroyable_line(score + 1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -152,7 +161,7 @@ func _process(delta):
 					live_destroyable.max_possible_health += 1
 				if live_destroyable.current_vert_position == 8:
 					get_tree().reload_current_scene()
-		self.new_block_line(score + 1)
+		self.new_destroyable_line(score + 1)
 	else:
 		var num_incorrect_brick_position = 0
 		for live_destroyable in inv_live_destroyables:

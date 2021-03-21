@@ -6,6 +6,8 @@ signal special_area_entered(type)
 # var a = 2
 # var b = "text"
 
+var mode = null
+
 var hit = false
 var hor_position = null
 var current_vert_position = null
@@ -25,4 +27,4 @@ func _draw():
 func _on_Special_body_entered(body):
 	if "Ball" in body.get_name():
 		hit = true
-		emit_signal("special_area_entered")
+		emit_signal("special_area_entered", mode)
