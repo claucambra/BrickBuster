@@ -61,6 +61,8 @@ func new_destroyable(health, vert_position, column, type):
 		next_destroyable = specials_scene.instance()
 		if type == "Add-Ball Special":
 			next_destroyable.mode = "add-ball"
+		elif type == "Bounce":
+			next_destroyable.mode == "bounce"
 		next_destroyable.connect("special_area_entered", self, "specialarea_signal_received")
 	
 	next_destroyable.hor_position = columns.find(column)
@@ -70,7 +72,6 @@ func new_destroyable(health, vert_position, column, type):
 	next_destroyable.set_position(column.get_point_position(vert_position))
 	next_destroyable.current_vert_position += 1
 	live_destroyables.append(next_destroyable)
-	
 
 func new_destroyable_line(health, vert_position = 0):
 	var free_columns = columns.duplicate()
@@ -160,10 +161,13 @@ func _process(delta):
 				live_destroyables.erase(live_destroyable)
 			else:
 				live_destroyable.current_vert_position += 1
+				if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.current_vert_position == 8):
+					live_destroyable.queue_free()
+					live_destroyables.erase(live_destroyable)
 				if "Brick" in live_destroyable.name:
 					live_destroyable.max_possible_health += 1
-				if live_destroyable.current_vert_position == 8:
-					get_tree().reload_current_scene()
+					if live_destroyable.current_vert_position == 8:
+						get_tree().reload_current_scene()
 		self.new_destroyable_line(score + 1)
 	else:
 		var num_incorrect_brick_position = 0
