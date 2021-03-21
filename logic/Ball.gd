@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 signal ball_no_contact_timeout(self_position, self_linear_velocity)
-signal ball_died(self_position_x)
+signal ball_died(self_position)
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -28,7 +28,7 @@ func _on_Ball_body_entered(body):
 			body.health -= 1
 			body.hit = true
 	if body.get_name() == "BottomWall":
-		emit_signal("ball_died", self.position.x)
+		emit_signal("ball_died", self.position)
 		self.queue_free()
 
 func _draw():

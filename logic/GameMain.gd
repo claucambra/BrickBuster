@@ -14,7 +14,7 @@ var launched = false
 var round_in_progress = false
 var live_balls = []
 var live_destroyables = []
-var round_first_dead_ball_x = null
+var round_first_dead_ball_position = null
 var score = 0
 var ammo = 1
 var first_click_position = Vector2(0,0)
@@ -128,8 +128,8 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 		new_destroyable(line_point, columns[3], "Bounce_Special")
 
 func on_ball_died(ball_position_x):
-	if round_first_dead_ball_x == null:
-		round_first_dead_ball_x = ball_position_x
+	if round_first_dead_ball_position == null:
+		round_first_dead_ball_position = ball_position_x
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -171,20 +171,32 @@ func _process(delta):
 		print(line_direction.normalized())
 		launched = true
 	
+	if round_first_dead_ball_position != null && ball.position != round_first_dead_ball_position:
+		drag_enabled = false
+		var reposition = ball.position - round_first_dead_ball_position
+		# Snap ball into position when they are imperceptibly close
+		# Otherwise they will never reach the intended position
+		if round_first_dead_ball_position.distance_to(ball.position) < 0.5:
+			ball.position = round_first_dead_ball_position
+			round_first_dead_ball_position = null
+		else:
+			var reposition_velocity = reposition * 6 * delta
+			ball.position -= reposition_velocity
+	
 	# Round progress checking section
 	for live_ball in live_balls:
 		if !is_instance_valid(live_ball):
 			live_balls.erase(live_ball)
-	# We have an inverted array so blocks don't get superimposed when newer blocks moved down
-	#inv_live_destroyables.invert()
+	
+	var copy_live_destroyables = live_destroyables.duplicate()
+	# We need a copy of our live destroyables to not bungle things up
 	if !live_balls.empty():
 		round_in_progress = true
 	elif launched:
 		score += 1
 		launched = false
 		round_in_progress = false
-		round_first_dead_ball_x = null
-		for live_destroyable in live_destroyables:
+		for live_destroyable in copy_live_destroyables:
 			if !is_instance_valid(live_destroyable):
 				live_destroyables.erase(live_destroyable)
 			else:
@@ -199,7 +211,7 @@ func _process(delta):
 		self.new_destroyable_line(score + 1)
 	else:
 		var num_incorrect_brick_position = 0
-		for live_destroyable in live_destroyables:
+		for live_destroyable in copy_live_destroyables:
 			var destination = columns[live_destroyable.hor_position].get_point_position(live_destroyable.current_vert_position)
 			if live_destroyable.position != destination:
 				num_incorrect_brick_position += 1
