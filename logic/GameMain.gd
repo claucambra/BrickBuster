@@ -46,12 +46,14 @@ func launch_balls(direction, amount):
 		wait.start()
 		yield(wait, "timeout")
 
+# It is important that you pay attention to the string you feed in for the parameter.
+# A wrong string can trip up the whole game.
 func new_destroyable(health, vert_position, column, type):
 	var next_destroyable
 	if "Brick" in type:
 		if type == "Brick":
 			next_destroyable = brick_scene.instance()
-		elif type == "Slanted Brick":
+		elif type == "Slanted_Brick":
 			next_destroyable = slanted_brick_scene.instance()
 			rng.randomize()
 			next_destroyable.rotation_degrees = rng.randi_range(0,3) * 90
@@ -59,10 +61,10 @@ func new_destroyable(health, vert_position, column, type):
 		next_destroyable.max_possible_health = health
 	elif "Special" in type:
 		next_destroyable = specials_scene.instance()
-		if type == "Add-Ball Special":
+		if type == "Add-Ball_Special":
 			next_destroyable.mode = "add-ball"
-		elif type == "Bounce":
-			next_destroyable.mode == "bounce"
+		elif type == "Bounce_Special":
+			next_destroyable.mode = "bounce"
 		next_destroyable.connect("special_area_entered", self, "specialarea_signal_received")
 	
 	next_destroyable.hor_position = columns.find(column)
@@ -80,16 +82,22 @@ func new_destroyable_line(health, vert_position = 0):
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
 			free_columns.erase(column)
 			if rng.randi_range(0,3) == 3:
-				new_destroyable(health, vert_position, column, "Slanted Brick")
+				new_destroyable(health, vert_position, column, "Slanted_Brick")
 			else:
 				new_destroyable(health, vert_position, column, "Brick")
 	
 	rng.randomize()
 	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
 	var column_for_add_ball_special = free_columns[random_free_column]
-	new_destroyable(health, vert_position, column_for_add_ball_special, "Add-Ball Special")
+	new_destroyable(health, vert_position, column_for_add_ball_special, "Add-Ball_Special")
 	free_columns.erase(column_for_add_ball_special)
-	print(free_columns)
+	
+	rng.randomize()
+	if !free_columns.empty() && rng.randi_range(0, 3) == 3:
+		random_free_column = rng.randi_range(0, (free_columns.size() - 1))
+		var column_for_bounce_special = free_columns[random_free_column]
+		new_destroyable(health, vert_position, column_for_bounce_special, "Bounce_Special")
+		free_columns.erase(column_for_bounce_special)
 
 func pause_signal_received():
 	paused = !paused
