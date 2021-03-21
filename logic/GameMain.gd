@@ -14,6 +14,7 @@ var launched = false
 var round_in_progress = false
 var live_balls = []
 var live_destroyables = []
+var round_dead_balls = []
 var score = 0
 var ammo = 1
 var first_click_position = Vector2(0,0)
@@ -41,7 +42,8 @@ func launch_balls(direction, amount):
 	for i in amount:
 		var next_ball = ball_scene.instance()
 		add_child(next_ball)
-		next_ball.connect("ball_no_contact_timeout", self, "ball_no_contact_timeout_signal_received")
+		next_ball.connect("ball_no_contact_timeout", self, "on_ball_no_contact_timeout")
+		next_ball.position = ball.position
 		next_ball.launch(direction)
 		live_balls.append(next_ball)
 		wait.start()
@@ -66,7 +68,7 @@ func new_destroyable(vert_position, column, type, health = null):
 			next_destroyable.mode = "add-ball"
 		elif type == "Bounce_Special":
 			next_destroyable.mode = "bounce"
-		next_destroyable.connect("special_area_entered", self, "specialarea_signal_received")
+		next_destroyable.connect("special_area_entered", self, "on_special_area_entered")
 	
 	next_destroyable.hor_position = columns.find(column)
 	next_destroyable.current_vert_position = vert_position
@@ -100,18 +102,18 @@ func new_destroyable_line(health, vert_position = 0):
 		new_destroyable(vert_position, column_for_bounce_special, "Bounce_Special")
 		free_columns.erase(column_for_bounce_special)
 
-func pause_signal_received():
+func on_pause_menu_toggled():
 	paused = !paused
 	get_tree().paused = paused
 
-func restart_signal_received():
+func on_restart_button_clicked():
 	get_tree().reload_current_scene()
 
-func specialarea_signal_received(type):
+func on_special_area_entered(type):
 	if type == "add-ball":
 		ammo += 1
 
-func ball_no_contact_timeout_signal_received(ball_position, ball_linear_velocity):
+func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	var midcolumn_points = Array(columns[3].get_points())
 	var distance_to_midcolumn_points = []
 	for point in midcolumn_points:
@@ -126,9 +128,9 @@ func ball_no_contact_timeout_signal_received(ball_position, ball_linear_velocity
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$MetaArea.connect("pause_menu_toggled", self, "pause_signal_received")
+	$MetaArea.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
 	$MetaArea.pause_mode = Node.PAUSE_MODE_PROCESS
-	$MetaArea.connect("restart_button_clicked", self, "restart_signal_received")
+	$MetaArea.connect("restart_button_clicked", self, "on_restart_button_clicked")
 	line.add_point(Vector2(0,0), 0)
 	line.add_point(Vector2(0,0), 1)
 	add_child(ball)
