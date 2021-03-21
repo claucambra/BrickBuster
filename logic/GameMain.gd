@@ -53,13 +53,14 @@ func new_destroyable(health, vert_position, column, type):
 			next_destroyable = brick_scene.instance()
 		elif type == "Slanted Brick":
 			next_destroyable = slanted_brick_scene.instance()
+			rng.randomize()
 			next_destroyable.rotation_degrees = rng.randi_range(0,3) * 90
 		next_destroyable.health = health
 		next_destroyable.max_possible_health = health
 	elif "Special" in type:
 		next_destroyable = specials_scene.instance()
 		if type == "Add-Ball Special":
-			next_destroyable.mode = "add"
+			next_destroyable.mode = "add-ball"
 		next_destroyable.connect("special_area_entered", self, "specialarea_signal_received")
 	
 	next_destroyable.hor_position = columns.find(column)
@@ -74,6 +75,7 @@ func new_destroyable(health, vert_position, column, type):
 func new_destroyable_line(health, vert_position = 0):
 	var free_columns = columns.duplicate()
 	for column in columns:
+		rng.randomize()
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
 			free_columns.erase(column)
 			if rng.randi_range(0,3) == 3:
@@ -81,6 +83,7 @@ func new_destroyable_line(health, vert_position = 0):
 			else:
 				new_destroyable(health, vert_position, column, "Brick")
 	
+	rng.randomize()
 	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
 	var column_for_add_ball_special = free_columns[random_free_column]
 	new_destroyable(health, vert_position, column_for_add_ball_special, "Add-Ball Special")
@@ -95,7 +98,7 @@ func restart_signal_received():
 	get_tree().reload_current_scene()
 
 func specialarea_signal_received(type):
-	if type == "add":
+	if type == "add-ball":
 		ammo += 1
 
 # Called when the node enters the scene tree for the first time.
@@ -112,7 +115,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	rng.randomize()
 	score_label.text = String(score)
 	
 	var ball_center = ball.position
@@ -140,12 +142,13 @@ func _process(delta):
 	if Input.is_action_just_released("click") && !round_in_progress && drag_enabled: 
 		drag_enabled = false
 		self.launch_balls(line_direction.normalized(), ammo)
+		print(line_direction.normalized())
 		launched = true
 	
 	# Round progress checking section
 	var inv_live_destroyables = live_destroyables.duplicate()
 	# We have an inverted array so blocks don't get superimposed when newer blocks moved down
-	inv_live_destroyables.invert() 
+	#inv_live_destroyables.invert()
 	if !live_balls.empty():
 		round_in_progress = true
 	elif launched:
