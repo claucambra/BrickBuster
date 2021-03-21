@@ -1,8 +1,6 @@
 extends Node2D
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+# <-------------------------- MEMBER VARIABLES -------------------------->
 var paused = false
 # These variables are used to keep track of what stage of the round we are in
 # This is used to decide input state and acceptance
@@ -38,6 +36,8 @@ onready var columns = [
 	$Column6
 ]
 
+
+# <-------------------------- GAME HELPER FUNCTIONS -------------------------->
 func launch_balls(direction, amount):
 	for i in amount:
 		var next_ball = ball_scene.instance()
@@ -103,6 +103,8 @@ func new_destroyable_line(health, vert_position = 0):
 		new_destroyable(vert_position, column_for_bounce_special, "Bounce_Special")
 		free_columns.erase(column_for_bounce_special)
 
+
+# <-------------------------- SIGNAL HANDLERS -------------------------->
 func on_pause_menu_toggled():
 	paused = !paused
 	get_tree().paused = paused
@@ -131,6 +133,14 @@ func on_ball_died(ball_position_x):
 	if round_first_dead_ball_position == null:
 		round_first_dead_ball_position = ball_position_x
 
+func _on_ControlArea_mouse_entered():
+	mouse_in_controlarea = true
+
+func _on_ControlArea_mouse_exited():
+	mouse_in_controlarea = false
+
+
+# <-------------------------- STANDARD GAME FUNCTIONS -------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$MetaArea.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
@@ -168,17 +178,18 @@ func _process(delta):
 	if Input.is_action_just_released("click") && !round_in_progress && drag_enabled: 
 		drag_enabled = false
 		self.launch_balls(line_direction.normalized(), ammo)
-		print(line_direction.normalized())
 		launched = true
 	
-	if round_first_dead_ball_position != null && ball.position != round_first_dead_ball_position:
+	if ball.position == round_first_dead_ball_position && !round_in_progress:
+		# So our ball doesn't reposition again if it has reached its position but the round is still on
+		round_first_dead_ball_position = null
+	elif round_first_dead_ball_position != null && ball.position != round_first_dead_ball_position:
 		drag_enabled = false
 		var reposition = ball.position - round_first_dead_ball_position
 		# Snap ball into position when they are imperceptibly close
 		# Otherwise they will never reach the intended position
 		if round_first_dead_ball_position.distance_to(ball.position) < 0.5:
 			ball.position = round_first_dead_ball_position
-			round_first_dead_ball_position = null
 		else:
 			var reposition_velocity = reposition * 6 * delta
 			ball.position -= reposition_velocity
@@ -231,9 +242,3 @@ func _process(delta):
 func _draw():
 	if drag_enabled && !round_in_progress:
 		draw_circle(first_click_position, 25, ColorN("black", 0.5))
-
-func _on_ControlArea_mouse_entered():
-	mouse_in_controlarea = true
-
-func _on_ControlArea_mouse_exited():
-	mouse_in_controlarea = false
