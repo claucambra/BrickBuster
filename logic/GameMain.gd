@@ -41,6 +41,7 @@ func launch_balls(direction, amount):
 	for i in amount:
 		var next_ball = ball_scene.instance()
 		add_child(next_ball)
+		next_ball.connect("ball_no_contact_timeout", self, "ball_no_contact_timeout_signal_received")
 		next_ball.launch(direction)
 		live_balls.append(next_ball)
 		wait.start()
@@ -48,7 +49,7 @@ func launch_balls(direction, amount):
 
 # It is important that you pay attention to the string you feed in for the parameter.
 # A wrong string can trip up the whole game.
-func new_destroyable(health, vert_position, column, type):
+func new_destroyable(vert_position, column, type, health = null):
 	var next_destroyable
 	if "Brick" in type:
 		if type == "Brick":
@@ -82,21 +83,21 @@ func new_destroyable_line(health, vert_position = 0):
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
 			free_columns.erase(column)
 			if rng.randi_range(0,3) == 3:
-				new_destroyable(health, vert_position, column, "Slanted_Brick")
+				new_destroyable(vert_position, column, "Slanted_Brick", health)
 			else:
-				new_destroyable(health, vert_position, column, "Brick")
+				new_destroyable(vert_position, column, "Brick", health)
 	
 	rng.randomize()
 	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
 	var column_for_add_ball_special = free_columns[random_free_column]
-	new_destroyable(health, vert_position, column_for_add_ball_special, "Add-Ball_Special")
+	new_destroyable(vert_position, column_for_add_ball_special, "Add-Ball_Special")
 	free_columns.erase(column_for_add_ball_special)
 	
 	rng.randomize()
 	if !free_columns.empty() && rng.randi_range(0, 3) == 3:
 		random_free_column = rng.randi_range(0, (free_columns.size() - 1))
 		var column_for_bounce_special = free_columns[random_free_column]
-		new_destroyable(health, vert_position, column_for_bounce_special, "Bounce_Special")
+		new_destroyable(vert_position, column_for_bounce_special, "Bounce_Special")
 		free_columns.erase(column_for_bounce_special)
 
 func pause_signal_received():
@@ -109,6 +110,19 @@ func restart_signal_received():
 func specialarea_signal_received(type):
 	if type == "add-ball":
 		ammo += 1
+
+func ball_no_contact_timeout_signal_received(ball_position, ball_linear_velocity):
+	var midcolumn_points = Array(columns[3].get_points())
+	var distance_to_midcolumn_points = []
+	for point in midcolumn_points:
+		distance_to_midcolumn_points.append(point.distance_to(ball_position))
+	var line_point = distance_to_midcolumn_points.find(distance_to_midcolumn_points.min())
+	if ball_linear_velocity.y < 0 && distance_to_midcolumn_points.min() < 0:
+		line_point -= 1 # Line points go top to bottom
+	elif ball_linear_velocity.y > 0 && distance_to_midcolumn_points.min() > 0:
+		line_point += 1
+	if line_point < 8:
+		new_destroyable(line_point, columns[3], "Bounce_Special")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
