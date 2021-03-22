@@ -25,7 +25,8 @@ onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
 onready var specials_scene = load("res://scenes/Specials.tscn")
 # We use a ball instance to mark where our balls will launch from.
-# This ball remains throughout the game, moving position to where the last ball of the last round fell.
+# This ball remains throughout the game, 
+# moving position to where the last ball of the last round fell.
 onready var ball = ball_scene.instance()
 onready var line = $LaunchLine
 onready var wait = $LaunchTimer
