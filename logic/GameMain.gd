@@ -24,6 +24,8 @@ onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
 onready var specials_scene = load("res://scenes/Specials.tscn")
+# We use a ball instance to mark where our balls will launch from.
+# This ball remains throughout the game, moving position to where the last ball of the last round fell.
 onready var ball = ball_scene.instance()
 onready var line = $LaunchLine
 onready var wait = $LaunchTimer
@@ -40,6 +42,7 @@ onready var columns = [
 
 # <-------------------------- GAME SAVING FUNCTIONS -------------------------->
 func save():
+	# This is save_dict is saved in JSON format in our savefile
 	var save_dict = {
 		"score": score,
 		"ammo": ammo,
@@ -67,6 +70,7 @@ func save():
 
 func save_game():
 	var save_game = File.new()
+	# 'user://' data path varies by OS
 	save_game.open("user://savegame.save", File.WRITE)
 	var data = self.save()
 	
@@ -77,8 +81,7 @@ func save_game():
 func load_game():
 	var save_game = File.new()
 
-	# Load the file line by line and process that dictionary to restore
-	# the object it represents.
+	# Load the file line by line and process that dictionary to restore the object it represents.
 	save_game.open("user://savegame.save", File.READ)
 	while save_game.get_position() < save_game.get_len():
 		# Get the saved dictionary from the next line in the save file
@@ -204,6 +207,7 @@ func on_special_area_entered(type):
 		ammo += 1
 
 func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
+	# Create bounce special near live balls when taking too long to move vertically
 	var midcolumn_points = Array(columns[3].get_points())
 	var distance_to_midcolumn_points = []
 	for point in midcolumn_points:
@@ -217,6 +221,7 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 		new_destroyable(line_point, columns[3], "BounceSpecial")
 
 func on_ball_died(ball_position_x):
+	# Set round_first_dead_ball_position to move our launch position ball there
 	if round_first_dead_ball_position == null:
 		round_first_dead_ball_position = ball_position_x
 
@@ -237,10 +242,10 @@ func _ready():
 	line.add_point(Vector2(0,0), 1)
 	add_child(ball)
 	wait.wait_time = 0.1
-	rng.randomize()
 	
 	var save_game = File.new()
 	if not save_game.file_exists("user://savegame.save"):
+		rng.randomize()
 		self.new_destroyable_line(score + 1)
 	else:
 		self.load_game()
@@ -254,6 +259,7 @@ func _process(delta):
 	var line_direction = first_click_position - mouse_position
 	
 	# "click" is defined in input map
+	# Allow clicks when mouse is in the game area and round not in progress
 	if Input.is_action_just_pressed("click") && mouse_in_controlarea && !round_in_progress:
 		first_click_position = get_global_mouse_position()
 		drag_enabled = true
@@ -296,6 +302,7 @@ func _process(delta):
 	if !live_balls.empty():
 		round_in_progress = true
 	elif launched:
+		# Here we deal with the end-of-round process
 		score += 1
 		launched = false
 		round_in_progress = false
@@ -317,6 +324,7 @@ func _process(delta):
 		if !game_over:
 			self.new_destroyable_line(score + 1)
 	else:
+		# Here we deal with the smooth repositioning of blocks
 		var num_incorrect_brick_position = 0
 		for live_destroyable in copy_live_destroyables:
 			var destination = columns[live_destroyable.hor_position].get_point_position(live_destroyable.current_vert_position)
@@ -338,4 +346,5 @@ func _process(delta):
 
 func _draw():
 	if drag_enabled && !round_in_progress:
+		# Touch/click marker
 		draw_circle(first_click_position, 25, ColorN("black", 0.5))
