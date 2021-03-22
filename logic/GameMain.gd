@@ -37,6 +37,67 @@ onready var columns = [
 ]
 
 
+# <-------------------------- GAME SAVING FUNCTIONS -------------------------->
+func save():
+	var save_dict = {
+		"score": score,
+		"ammo": ammo,
+		"launch_ball_position_x": ball.position.x,
+		"launch_ball_position_y": ball.position.y,
+		"destroyables" : []
+	}
+	
+	for destroyable in live_destroyables:
+		var save_destroyable = {
+			"name": destroyable.name,
+			"hor_position" : destroyable.hor_position,
+			"current_vert_position" : destroyable.current_vert_position,
+			"health": null,
+			"special_mode": null,
+			"rotation": destroyable.rotation
+		}
+		if "Brick" in destroyable.name:
+			save_destroyable.health = destroyable.health
+		elif "Special" in destroyable.name:
+			save_destroyable.special_mode = destroyable.mode
+		save_dict.destroyables.append(save_destroyable)
+	
+	return save_dict
+
+func save_game():
+	var save_game = File.new()
+	save_game.open("user://savegame.save", File.WRITE)
+	var data = self.save()
+	
+	# Store the save dictionary as a new line in the save file.
+	save_game.store_line(to_json(data))
+	save_game.close()
+
+func load_game():
+	var save_game = File.new()
+
+	# Load the file line by line and process that dictionary to restore
+	# the object it represents.
+	save_game.open("user://savegame.save", File.READ)
+	while save_game.get_position() < save_game.get_len():
+		# Get the saved dictionary from the next line in the save file
+		var node_data = parse_json(save_game.get_line())
+		
+		self.score = node_data["score"]
+		self.ammo = node_data["ammo"]
+		ball.position = Vector2(node_data["launch_ball_position_x"], node_data["launch_ball_position_y"])
+		
+		for destroyable in node_data["destroyables"]:
+			new_destroyable(destroyable["current_vert_position"] - 1,
+				columns[destroyable["hor_position"]],
+				destroyable["name"],
+				destroyable["health"],
+				destroyable["special_mode"],
+				destroyable["rotation"])
+	
+	save_game.close()
+
+
 # <-------------------------- GAME HELPER FUNCTIONS -------------------------->
 func launch_balls(direction, amount):
 	for i in amount:
@@ -52,23 +113,29 @@ func launch_balls(direction, amount):
 
 # It is important that you pay attention to the string you feed in for the parameter.
 # A wrong string can trip up the whole game.
-func new_destroyable(vert_position, column, type, health = null):
+func new_destroyable(vert_position, column, type, health = null, special_mode = null, rotation = null):
+	print(vert_position, column, type, health, special_mode, rotation)
 	var next_destroyable
 	if "Brick" in type:
-		if type == "Brick":
-			next_destroyable = brick_scene.instance()
-		elif type == "Slanted_Brick":
+		if "SlantedBrick" in type:
 			next_destroyable = slanted_brick_scene.instance()
-			rng.randomize()
-			next_destroyable.rotation_degrees = rng.randi_range(0,3) * 90
+			if rotation == null:
+				rng.randomize()
+				next_destroyable.rotation_degrees = rng.randi_range(0,3) * 90
+			else:
+				next_destroyable.rotation = rotation
+		else:
+			next_destroyable = brick_scene.instance()
 		next_destroyable.health = health
-		next_destroyable.max_possible_health = health
+		next_destroyable.max_possible_health = score
 	elif "Special" in type:
 		next_destroyable = specials_scene.instance()
-		if type == "Add-Ball_Special":
+		if type == "AddBallSpecial" && special_mode == null:
 			next_destroyable.mode = "add-ball"
-		elif type == "Bounce_Special":
+		elif type == "BounceSpecial" && special_mode == null:
 			next_destroyable.mode = "bounce"
+		else:
+			next_destroyable.mode = special_mode
 		next_destroyable.connect("special_area_entered", self, "on_special_area_entered")
 	
 	next_destroyable.hor_position = columns.find(column)
@@ -86,21 +153,21 @@ func new_destroyable_line(health, vert_position = 0):
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
 			free_columns.erase(column)
 			if rng.randi_range(0,3) == 3:
-				new_destroyable(vert_position, column, "Slanted_Brick", health)
+				new_destroyable(vert_position, column, "SlantedBrick", health)
 			else:
 				new_destroyable(vert_position, column, "Brick", health)
 	
 	rng.randomize()
 	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
 	var column_for_add_ball_special = free_columns[random_free_column]
-	new_destroyable(vert_position, column_for_add_ball_special, "Add-Ball_Special")
+	new_destroyable(vert_position, column_for_add_ball_special, "AddBallSpecial")
 	free_columns.erase(column_for_add_ball_special)
 	
 	rng.randomize()
 	if !free_columns.empty() && rng.randi_range(0, 3) == 3:
 		random_free_column = rng.randi_range(0, (free_columns.size() - 1))
 		var column_for_bounce_special = free_columns[random_free_column]
-		new_destroyable(vert_position, column_for_bounce_special, "Bounce_Special")
+		new_destroyable(vert_position, column_for_bounce_special, "BounceSpecial")
 		free_columns.erase(column_for_bounce_special)
 
 
@@ -127,7 +194,7 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	elif ball_linear_velocity.y > 0 && distance_to_midcolumn_points.min() > 0:
 		line_point += 1
 	if line_point < 8:
-		new_destroyable(line_point, columns[3], "Bounce_Special")
+		new_destroyable(line_point, columns[3], "BounceSpecial")
 
 func on_ball_died(ball_position_x):
 	if round_first_dead_ball_position == null:
@@ -151,7 +218,12 @@ func _ready():
 	add_child(ball)
 	wait.wait_time = 0.1
 	rng.randomize()
-	self.new_destroyable_line(score + 1)
+	
+	var save_game = File.new()
+	if not save_game.file_exists("user://savegame.save"):
+		self.new_destroyable_line(score + 1)
+	else:
+		self.load_game()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -235,6 +307,7 @@ func _process(delta):
 					var reposition_velocity = reposition * 6 * delta
 					live_destroyable.position -= reposition_velocity
 		if num_incorrect_brick_position == 0:
+			self.save_game()
 			round_in_progress = false
 		else:
 			round_in_progress= true

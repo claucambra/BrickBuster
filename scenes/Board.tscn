@@ -9,7 +9,9 @@ extents = Vector2( 359.589, 8.62341 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 640 )
 
-[node name="Board" type="Node2D"]
+[node name="Board" type="Node2D" groups=[
+"Persist",
+]]
 script = ExtResource( 1 )
 
 [node name="TopWall" type="StaticBody2D" parent="."]
