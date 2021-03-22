@@ -9,6 +9,7 @@ var mouse_in_controlarea = false
 # launched is used to differentiate between states when there are no live balls
 # i.e. idling vs just after all balls have returned to bottom of screen
 var launched = false
+var all_balls_launched = false
 var round_in_progress = false
 var live_balls = []
 var live_destroyables = []
@@ -100,6 +101,7 @@ func load_game():
 
 # <-------------------------- GAME HELPER FUNCTIONS -------------------------->
 func launch_balls(direction, amount):
+	all_balls_launched = false
 	for i in amount:
 		var next_ball = ball_scene.instance()
 		add_child(next_ball)
@@ -110,6 +112,7 @@ func launch_balls(direction, amount):
 		live_balls.append(next_ball)
 		wait.start()
 		yield(wait, "timeout")
+	all_balls_launched = true
 
 # It is important that you pay attention to the string you feed in for the parameter.
 # A wrong string can trip up the whole game.
@@ -172,9 +175,11 @@ func new_destroyable_line(health, vert_position = 0):
 
 func reset():
 	for ball in live_balls:
-		ball.queue_free()
+		if is_instance_valid(ball):
+			ball.queue_free()
 	for destroyable in live_destroyables:
-		destroyable.queue_free()
+		if is_instance_valid(destroyable):
+			destroyable.queue_free()
 	live_balls.clear()
 	live_destroyables.clear()
 	launched = false
@@ -277,7 +282,7 @@ func _process(delta):
 		# Otherwise they will never reach the intended position
 		if round_first_dead_ball_position.distance_to(ball.position) < 0.5:
 			ball.position = round_first_dead_ball_position
-		else:
+		elif all_balls_launched:
 			var reposition_velocity = reposition * 6 * delta
 			ball.position -= reposition_velocity
 	
@@ -294,6 +299,7 @@ func _process(delta):
 		score += 1
 		launched = false
 		round_in_progress = false
+		var game_over = false
 		for live_destroyable in copy_live_destroyables:
 			if !is_instance_valid(live_destroyable):
 				live_destroyables.erase(live_destroyable)
@@ -303,10 +309,13 @@ func _process(delta):
 					live_destroyable.queue_free()
 					live_destroyables.erase(live_destroyable)
 				if "Brick" in live_destroyable.name:
-					live_destroyable.max_possible_health += 1
 					if live_destroyable.current_vert_position == 8:
+						game_over = true
 						self.reset()
-		self.new_destroyable_line(score + 1)
+					else:
+						live_destroyable.max_possible_health += 1
+		if !game_over:
+			self.new_destroyable_line(score + 1)
 	else:
 		var num_incorrect_brick_position = 0
 		for live_destroyable in copy_live_destroyables:
