@@ -127,7 +127,7 @@ func new_destroyable(vert_position, column, type, health = null, special_mode = 
 		else:
 			next_destroyable = brick_scene.instance()
 		next_destroyable.health = health
-		next_destroyable.max_possible_health = score
+		next_destroyable.max_possible_health = score + 1
 	elif "Special" in type:
 		next_destroyable = specials_scene.instance()
 		if type == "AddBallSpecial" && special_mode == null:
@@ -170,6 +170,21 @@ func new_destroyable_line(health, vert_position = 0):
 		new_destroyable(vert_position, column_for_bounce_special, "BounceSpecial")
 		free_columns.erase(column_for_bounce_special)
 
+func reset():
+	for ball in live_balls:
+		ball.queue_free()
+	for destroyable in live_destroyables:
+		destroyable.queue_free()
+	live_balls.clear()
+	live_destroyables.clear()
+	launched = false
+	round_in_progress = false
+	round_first_dead_ball_position = null
+	score = 0
+	ammo = 1
+	self.new_destroyable_line(score + 1)
+	self.save()
+
 
 # <-------------------------- SIGNAL HANDLERS -------------------------->
 func on_pause_menu_toggled():
@@ -177,7 +192,7 @@ func on_pause_menu_toggled():
 	get_tree().paused = paused
 
 func on_restart_button_clicked():
-	get_tree().reload_current_scene()
+	self.reset()
 
 func on_special_area_entered(type):
 	if type == "add-ball":
@@ -290,7 +305,7 @@ func _process(delta):
 				if "Brick" in live_destroyable.name:
 					live_destroyable.max_possible_health += 1
 					if live_destroyable.current_vert_position == 8:
-						get_tree().reload_current_scene()
+						self.reset()
 		self.new_destroyable_line(score + 1)
 	else:
 		var num_incorrect_brick_position = 0
