@@ -66,12 +66,15 @@ func save():
 			"column_vert_point" : destroyable.column_vert_point,
 			"health": null,
 			"special_mode": null,
-			"rotation": destroyable.rotation
+			"rotation": destroyable.rotation,
+			"laserbeam_direction": null
 		}
 		if "Brick" in destroyable.name:
 			save_destroyable.health = destroyable.health
 		elif "Special" in destroyable.name:
 			save_destroyable.special_mode = destroyable.mode
+			if destroyable.mode == "laser":
+				save_destroyable.laserbeam_direction = destroyable.laserbeam_direction
 		save_dict.destroyables.append(save_destroyable)
 	
 	return save_dict
@@ -106,7 +109,8 @@ func load_game():
 				destroyable["name"],
 				destroyable["health"],
 				destroyable["special_mode"],
-				destroyable["rotation"])
+				destroyable["rotation"],
+				destroyable["laserbeam_direction"])
 	
 	save_game.close()
 
@@ -134,7 +138,7 @@ func launch_balls(direction, amount):
 
 # It is important that you pay attention to the string you feed in for the type.
 # A wrong string can trip up the whole game.
-func new_destroyable(vert_point, column, type, health = null, special_mode = null, rotation = null):
+func new_destroyable(vert_point, column, type, health = null, special_mode = null, rotation = null, laserbeam_direction = null):
 	var next_destroyable
 	if "Brick" in type:
 		if "SlantedBrick" in type:
@@ -156,8 +160,10 @@ func new_destroyable(vert_point, column, type, health = null, special_mode = nul
 			next_destroyable.mode = "bounce"
 		elif type == "LaserSpecial" && special_mode == null:
 			next_destroyable.mode = "laser"
+			next_destroyable.laserbeam_direction = laserbeam_direction
 		else:
 			next_destroyable.mode = special_mode
+		next_destroyable.laserbeam_direction = laserbeam_direction
 		next_destroyable.connect("special_area_entered", self, "on_special_area_entered")
 	
 	next_destroyable.column_num = columns.find(column)
@@ -193,7 +199,12 @@ func new_destroyable_line(health, vert_point = 0):
 		rng.randomize()
 		var decider = rng.randi_range(0, 1)
 		if decider == 1:
-			new_destroyable(vert_point, bounce_special_column, "LaserSpecial")
+			rng.randomize()
+			if rng.randi_range(0,1) == 1:
+				# new_destroyable checks if rotation is not null to create vertical laser
+				new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, "vertical")
+			else:
+				new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, "horizontal")
 		else:
 			new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
 
@@ -229,12 +240,19 @@ func on_pause_menu_toggled():
 func on_restart_button_clicked():
 	self.reset()
 
-func on_special_area_entered(type, special_position):
-	if type == "add-ball":
+func on_special_area_entered(special):
+	if special.mode == "add-ball":
 		ammo += 1
-	if type == "laser":
+	if special.mode == "laser":
 		var laserbeam = laserbeam_scene.instance()
-		laserbeam.position = Vector2(0, special_position.y)
+		if special.laserbeam_direction == "vertical":
+			laserbeam.points[1] = Vector2(0, self.get_viewport_rect().size.y)
+			laserbeam.position = Vector2(special.global_position.x, 0)
+			laserbeam.get_node("LaserArea2D/LaserCollisionShape2D").shape.extents = Vector2(1, 1280)
+		elif special.laserbeam_direction == "horizontal":
+			laserbeam.points[1] = Vector2(self.get_viewport_rect().size.x, 0)
+			laserbeam.position = Vector2(0, special.global_position.y)
+			laserbeam.get_node("LaserArea2D/LaserCollisionShape2D").shape.extents = Vector2(720, 1)
 		add_child(laserbeam)
 		wait.start()
 		yield(wait, "timeout")

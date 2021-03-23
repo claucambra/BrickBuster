@@ -1,12 +1,13 @@
 extends Area2D
 
-signal special_area_entered(type, special_position)
+signal special_area_entered(special)
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 
 var mode = null
+var laserbeam_direction = null
 var colors = {
 	"add-ball": Color("#3cc864"),
 	"bounce": Color("#e64ce0"),
@@ -33,7 +34,7 @@ func _draw():
 func _on_Special_body_entered(body):
 	if "Ball" in body.get_name():
 		hit = true
-		emit_signal("special_area_entered", mode, self.position)
+		emit_signal("special_area_entered", self)
 		if mode == "bounce":
 			body.sleeping = true
 			rng.randomize()
