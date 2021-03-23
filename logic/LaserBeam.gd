@@ -10,7 +10,6 @@ extends Line2D
 func _ready():
 	self.default_color = ColorN("red", 1)
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

@@ -1,6 +1,6 @@
 extends Node2D
 
-# <-------------------------- MEMBER VARIABLES -------------------------->
+# <---------------------------- MEMBER VARIABLES ---------------------------->
 var paused = false
 # These variables are used to keep track of what stage of the round we are in
 # This is used to decide input state and acceptance
@@ -40,6 +40,12 @@ onready var columns = [
 	$Column5,
 	$Column6
 ]
+
+
+
+
+
+
 
 
 # <-------------------------- GAME SAVING FUNCTIONS -------------------------->
@@ -83,7 +89,8 @@ func save_game():
 func load_game():
 	var save_game = File.new()
 
-	# Load the file line by line and process that dictionary to restore the object it represents.
+	# Load the file line by line and process that dictionary 
+	# to restore the object it represents.
 	save_game.open("user://savegame.save", File.READ)
 	while save_game.get_position() < save_game.get_len():
 		# Get the saved dictionary from the next line in the save file
@@ -104,6 +111,12 @@ func load_game():
 	save_game.close()
 
 
+
+
+
+
+
+
 # <-------------------------- GAME HELPER FUNCTIONS -------------------------->
 func launch_balls(direction, amount):
 	all_balls_launched = false
@@ -119,7 +132,7 @@ func launch_balls(direction, amount):
 		yield(wait, "timeout")
 	all_balls_launched = true
 
-# It is important that you pay attention to the string you feed in for the parameter.
+# It is important that you pay attention to the string you feed in for the type.
 # A wrong string can trip up the whole game.
 func new_destroyable(vert_position, column, type, health = null, special_mode = null, rotation = null):
 	var next_destroyable
@@ -168,21 +181,21 @@ func new_destroyable_line(health, vert_position = 0):
 	
 	rng.randomize()
 	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
-	var column_for_add_ball_special = free_columns[random_free_column]
-	new_destroyable(vert_position, column_for_add_ball_special, "AddBallSpecial")
-	free_columns.erase(column_for_add_ball_special)
+	var add_ball_special_column = free_columns[random_free_column]
+	new_destroyable(vert_position, add_ball_special_column, "AddBallSpecial")
+	free_columns.erase(add_ball_special_column)
 	
 	rng.randomize()
 	if !free_columns.empty() && rng.randi_range(0, 4) == 4:
 		random_free_column = rng.randi_range(0, (free_columns.size() - 1))
-		var column_for_bounce_special = free_columns[random_free_column]
-		free_columns.erase(column_for_bounce_special)
+		var bounce_special_column = free_columns[random_free_column]
+		free_columns.erase(bounce_special_column)
 		rng.randomize()
 		var decider = rng.randi_range(0, 1)
 		if decider == 1:
-			new_destroyable(vert_position, column_for_bounce_special, "LaserSpecial")
+			new_destroyable(vert_position, bounce_special_column, "LaserSpecial")
 		else:
-			new_destroyable(vert_position, column_for_bounce_special, "BounceSpecial")
+			new_destroyable(vert_position, bounce_special_column, "BounceSpecial")
 
 func reset():
 	for ball in live_balls:
@@ -202,7 +215,13 @@ func reset():
 	self.save()
 
 
-# <-------------------------- SIGNAL HANDLERS -------------------------->
+
+
+
+
+
+
+# <----------------------------- SIGNAL HANDLERS ----------------------------->
 func on_pause_menu_toggled():
 	paused = !paused
 	get_tree().paused = paused
@@ -247,7 +266,14 @@ func _on_ControlArea_mouse_entered():
 func _on_ControlArea_mouse_exited():
 	mouse_in_controlarea = false
 
-# <-------------------------- STANDARD GAME FUNCTIONS -------------------------->
+
+
+
+
+
+
+
+# <--------------------------- STANDARD GAME FUNCS --------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$MetaArea.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
