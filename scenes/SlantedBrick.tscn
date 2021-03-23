@@ -14,10 +14,9 @@ invert_border = 85.9
 polygon = PoolVector2Array( -551.09, 544.843, 544.429, 544.853, -551.195, -551.378 )
 
 [node name="HealthLabel" type="Label" parent="."]
-margin_left = -45.0
-margin_top = -46.1224
-margin_right = 44.0
-margin_bottom = 42.8776
+margin_left = -47.0
+margin_bottom = 46.0
+valign = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

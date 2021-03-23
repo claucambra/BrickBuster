@@ -235,9 +235,8 @@ func on_special_area_entered(type, special_position):
 	if type == "laser":
 		var laserbeam = laserbeam_scene.instance()
 		laserbeam.position = Vector2(0, special_position.y)
-		laserbeam.points[0] = Vector2.ZERO
-		laserbeam.points[1] = Vector2(self.get_viewport_rect().size.x, 0)
 		add_child(laserbeam)
+		wait.start()
 		yield(wait, "timeout")
 		laserbeam.queue_free()
 

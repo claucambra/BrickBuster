@@ -33,7 +33,7 @@ func _draw():
 func _on_Special_body_entered(body):
 	if "Ball" in body.get_name():
 		hit = true
-		emit_signal("special_area_entered", mode, self.global_position)
+		emit_signal("special_area_entered", mode, self.position)
 		if mode == "bounce":
 			body.sleeping = true
 			rng.randomize()
