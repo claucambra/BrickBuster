@@ -24,6 +24,7 @@ onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
 onready var specials_scene = load("res://scenes/Specials.tscn")
+onready var laserbeam_scene = load("res://scenes/LaserBeam.tscn")
 # We use a ball instance to mark where our balls will launch from.
 # This ball remains throughout the game, 
 # moving position to where the last ball of the last round fell.
@@ -177,8 +178,8 @@ func new_destroyable_line(health, vert_position = 0):
 		var column_for_bounce_special = free_columns[random_free_column]
 		free_columns.erase(column_for_bounce_special)
 		rng.randomize()
-		var decider = rng.randi_range(0, 2)
-		if decider == 2:
+		var decider = rng.randi_range(0, 1)
+		if decider == 1:
 			new_destroyable(vert_position, column_for_bounce_special, "LaserSpecial")
 		else:
 			new_destroyable(vert_position, column_for_bounce_special, "BounceSpecial")
@@ -213,15 +214,13 @@ func on_special_area_entered(type, special_position):
 	if type == "add-ball":
 		ammo += 1
 	if type == "laser":
-		$LaserBeam.position = Vector2(0, special_position.y)
-		$LaserBeam.points[0] = Vector2.ZERO
-		$LaserBeam.points[1] = Vector2(self.get_viewport_rect().size.x, 0)
-		$LaserBeam.visible = true
-		$LaserBeam/LaserArea2D.monitoring = true
-		wait.start()
+		var laserbeam = laserbeam_scene.instance()
+		laserbeam.position = Vector2(0, special_position.y)
+		laserbeam.points[0] = Vector2.ZERO
+		laserbeam.points[1] = Vector2(self.get_viewport_rect().size.x, 0)
+		add_child(laserbeam)
 		yield(wait, "timeout")
-		$LaserBeam/LaserArea2D.monitoring = false
-		$LaserBeam.visible = false
+		laserbeam.queue_free()
 
 func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	# Create bounce special near live balls when taking too long to move vertically
@@ -248,20 +247,17 @@ func _on_ControlArea_mouse_entered():
 func _on_ControlArea_mouse_exited():
 	mouse_in_controlarea = false
 
-func _on_LaserArea2D_body_entered(body):
-	if "Brick" in body.get_name():
-		print("WEEEEE")
-		body.health -= 1
-
 # <-------------------------- STANDARD GAME FUNCTIONS -------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$MetaArea.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
 	$MetaArea.pause_mode = Node.PAUSE_MODE_PROCESS
 	$MetaArea.connect("restart_button_clicked", self, "on_restart_button_clicked")
+	
 	line.add_point(Vector2(0,0), 0)
 	line.add_point(Vector2(0,0), 1)
 	add_child(ball)
+	
 	wait.wait_time = 0.1
 	
 	var save_game = File.new()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://logic/GameMain.gd" type="Script" id=1]
 [ext_resource path="res://scenes/MetaArea.tscn" type="PackedScene" id=2]
@@ -8,9 +8,6 @@ extents = Vector2( 359.589, 8.62341 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 640 )
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 720, 1 )
 
 [node name="Board" type="Node2D" groups=[
 "Persist",
@@ -88,19 +85,5 @@ points = PoolVector2Array( 648, 264, 648, 360, 648, 456, 648, 552, 648, 648, 648
 visible = false
 z_index = 1
 width = 5.0
-
-[node name="LaserBeam" type="Line2D" parent="."]
-visible = false
-z_index = 1
-points = PoolVector2Array( 0, 0, 0, 0 )
-default_color = Color( 0.4, 0.501961, 1, 1 )
-
-[node name="LaserArea2D" type="Area2D" parent="LaserBeam"]
-monitoring = false
-collision_mask = 2
-
-[node name="LaserCollisionShape2D" type="CollisionShape2D" parent="LaserBeam/LaserArea2D"]
-shape = SubResource( 3 )
 [connection signal="mouse_entered" from="ControlArea" to="." method="_on_ControlArea_mouse_entered"]
 [connection signal="mouse_exited" from="ControlArea" to="." method="_on_ControlArea_mouse_exited"]
-[connection signal="body_entered" from="LaserBeam/LaserArea2D" to="." method="_on_LaserArea2D_body_entered"]
