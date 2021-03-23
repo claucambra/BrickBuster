@@ -8,8 +8,8 @@ extends KinematicBody2D
 var health = null
 var max_possible_health = null
 var hit = false
-var hor_position = null
-var current_vert_position = null
+var column_num = null
+var column_vert_point = null
 
 var top_health_colour = Color("#932e2e")
 var bottom_health_colour = Color("#e0c158")

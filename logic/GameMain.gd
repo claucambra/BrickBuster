@@ -62,8 +62,8 @@ func save():
 	for destroyable in live_destroyables:
 		var save_destroyable = {
 			"name": destroyable.name,
-			"hor_position" : destroyable.hor_position,
-			"current_vert_position" : destroyable.current_vert_position,
+			"column_num" : destroyable.column_num,
+			"column_vert_point" : destroyable.column_vert_point,
 			"health": null,
 			"special_mode": null,
 			"rotation": destroyable.rotation
@@ -101,8 +101,8 @@ func load_game():
 		ball.position = Vector2(node_data["launch_ball_position_x"], node_data["launch_ball_position_y"])
 		
 		for destroyable in node_data["destroyables"]:
-			new_destroyable(destroyable["current_vert_position"] - 1,
-				columns[destroyable["hor_position"]],
+			new_destroyable(destroyable["column_vert_point"] - 1,
+				columns[destroyable["column_num"]],
 				destroyable["name"],
 				destroyable["health"],
 				destroyable["special_mode"],
@@ -134,7 +134,7 @@ func launch_balls(direction, amount):
 
 # It is important that you pay attention to the string you feed in for the type.
 # A wrong string can trip up the whole game.
-func new_destroyable(vert_position, column, type, health = null, special_mode = null, rotation = null):
+func new_destroyable(vert_point, column, type, health = null, special_mode = null, rotation = null):
 	var next_destroyable
 	if "Brick" in type:
 		if "SlantedBrick" in type:
@@ -160,29 +160,29 @@ func new_destroyable(vert_position, column, type, health = null, special_mode = 
 			next_destroyable.mode = special_mode
 		next_destroyable.connect("special_area_entered", self, "on_special_area_entered")
 	
-	next_destroyable.hor_position = columns.find(column)
-	next_destroyable.current_vert_position = vert_position
+	next_destroyable.column_num = columns.find(column)
+	next_destroyable.column_vert_point = vert_point
 	add_child(next_destroyable)
 	# We set it at 0 and then add 1 to vert position to get swanky movement down
-	next_destroyable.set_position(column.get_point_position(vert_position))
-	next_destroyable.current_vert_position += 1
+	next_destroyable.set_position(column.get_point_position(vert_point))
+	next_destroyable.column_vert_point += 1
 	live_destroyables.append(next_destroyable)
 
-func new_destroyable_line(health, vert_position = 0):
+func new_destroyable_line(health, vert_point = 0):
 	var free_columns = columns.duplicate()
 	for column in columns:
 		rng.randomize()
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
 			free_columns.erase(column)
 			if rng.randi_range(0,3) == 3:
-				new_destroyable(vert_position, column, "SlantedBrick", health)
+				new_destroyable(vert_point, column, "SlantedBrick", health)
 			else:
-				new_destroyable(vert_position, column, "Brick", health)
+				new_destroyable(vert_point, column, "Brick", health)
 	
 	rng.randomize()
 	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
 	var add_ball_special_column = free_columns[random_free_column]
-	new_destroyable(vert_position, add_ball_special_column, "AddBallSpecial")
+	new_destroyable(vert_point, add_ball_special_column, "AddBallSpecial")
 	free_columns.erase(add_ball_special_column)
 	
 	rng.randomize()
@@ -193,9 +193,9 @@ func new_destroyable_line(health, vert_position = 0):
 		rng.randomize()
 		var decider = rng.randi_range(0, 1)
 		if decider == 1:
-			new_destroyable(vert_position, bounce_special_column, "LaserSpecial")
+			new_destroyable(vert_point, bounce_special_column, "LaserSpecial")
 		else:
-			new_destroyable(vert_position, bounce_special_column, "BounceSpecial")
+			new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
 
 func reset():
 	for ball in live_balls:
@@ -354,12 +354,12 @@ func _process(delta):
 			if !is_instance_valid(live_destroyable):
 				live_destroyables.erase(live_destroyable)
 			else:
-				live_destroyable.current_vert_position += 1
-				if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.current_vert_position == 8):
+				live_destroyable.column_vert_point += 1
+				if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
 					live_destroyable.queue_free()
 					live_destroyables.erase(live_destroyable)
 				if "Brick" in live_destroyable.name:
-					if live_destroyable.current_vert_position == 8:
+					if live_destroyable.column_vert_point == 8:
 						game_over = true
 						self.reset()
 					else:
@@ -370,7 +370,7 @@ func _process(delta):
 		# Here we deal with the smooth repositioning of blocks
 		var num_incorrect_brick_position = 0
 		for live_destroyable in copy_live_destroyables:
-			var destination = columns[live_destroyable.hor_position].get_point_position(live_destroyable.current_vert_position)
+			var destination = columns[live_destroyable.column_num].get_point_position(live_destroyable.column_vert_point)
 			if live_destroyable.position != destination:
 				num_incorrect_brick_position += 1
 				var reposition = live_destroyable.position - destination

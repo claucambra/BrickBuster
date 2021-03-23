@@ -14,8 +14,8 @@ var colors = {
 }
 
 var hit = false
-var hor_position = null
-var current_vert_position = null
+var column_num = null
+var column_vert_point = null
 var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
