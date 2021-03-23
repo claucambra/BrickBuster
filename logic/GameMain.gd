@@ -121,7 +121,6 @@ func launch_balls(direction, amount):
 # It is important that you pay attention to the string you feed in for the parameter.
 # A wrong string can trip up the whole game.
 func new_destroyable(vert_position, column, type, health = null, special_mode = null, rotation = null):
-	print(vert_position, column, type, health, special_mode, rotation)
 	var next_destroyable
 	if "Brick" in type:
 		if "SlantedBrick" in type:
@@ -141,6 +140,8 @@ func new_destroyable(vert_position, column, type, health = null, special_mode = 
 			next_destroyable.mode = "add-ball"
 		elif type == "BounceSpecial" && special_mode == null:
 			next_destroyable.mode = "bounce"
+		elif type == "LaserSpecial" && special_mode == null:
+			next_destroyable.mode = "laser"
 		else:
 			next_destroyable.mode = special_mode
 		next_destroyable.connect("special_area_entered", self, "on_special_area_entered")
@@ -171,11 +172,16 @@ func new_destroyable_line(health, vert_position = 0):
 	free_columns.erase(column_for_add_ball_special)
 	
 	rng.randomize()
-	if !free_columns.empty() && rng.randi_range(0, 3) == 3:
+	if !free_columns.empty() && rng.randi_range(0, 4) == 4:
 		random_free_column = rng.randi_range(0, (free_columns.size() - 1))
 		var column_for_bounce_special = free_columns[random_free_column]
-		new_destroyable(vert_position, column_for_bounce_special, "BounceSpecial")
 		free_columns.erase(column_for_bounce_special)
+		rng.randomize()
+		var decider = rng.randi_range(0, 2)
+		if decider == 2:
+			new_destroyable(vert_position, column_for_bounce_special, "LaserSpecial")
+		else:
+			new_destroyable(vert_position, column_for_bounce_special, "BounceSpecial")
 
 func reset():
 	for ball in live_balls:
@@ -203,9 +209,19 @@ func on_pause_menu_toggled():
 func on_restart_button_clicked():
 	self.reset()
 
-func on_special_area_entered(type):
+func on_special_area_entered(type, special_position):
 	if type == "add-ball":
 		ammo += 1
+	if type == "laser":
+		$LaserBeam.position = Vector2(0, special_position.y)
+		$LaserBeam.points[0] = Vector2.ZERO
+		$LaserBeam.points[1] = Vector2(self.get_viewport_rect().size.x, 0)
+		$LaserBeam.visible = true
+		$LaserBeam/LaserArea2D.monitoring = true
+		wait.start()
+		yield(wait, "timeout")
+		$LaserBeam/LaserArea2D.monitoring = false
+		$LaserBeam.visible = false
 
 func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	# Create bounce special near live balls when taking too long to move vertically
@@ -232,6 +248,10 @@ func _on_ControlArea_mouse_entered():
 func _on_ControlArea_mouse_exited():
 	mouse_in_controlarea = false
 
+func _on_LaserArea2D_body_entered(body):
+	if "Brick" in body.get_name():
+		print("WEEEEE")
+		body.health -= 1
 
 # <-------------------------- STANDARD GAME FUNCTIONS -------------------------->
 # Called when the node enters the scene tree for the first time.
