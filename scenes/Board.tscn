@@ -51,7 +51,10 @@ __meta__ = {
 [node name="LaunchTimer" type="Timer" parent="."]
 wait_time = 0.1
 
-[node name="MetaArea" parent="." instance=ExtResource( 2 )]
+[node name="MetaAreaWrapper" type="Node2D" parent="."]
+z_index = 2
+
+[node name="MetaArea" parent="MetaAreaWrapper" instance=ExtResource( 2 )]
 
 [node name="Column0" type="Line2D" parent="."]
 visible = false

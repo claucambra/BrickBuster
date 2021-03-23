@@ -19,7 +19,8 @@ var ammo = 1
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
 
-onready var score_label = $MetaArea/MarginContainer/HBoxContainer/ScoreLabel
+onready var meta_area = $MetaAreaWrapper/MetaArea
+onready var score_label = $MetaAreaWrapper/MetaArea/MarginContainer/HBoxContainer/ScoreLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
@@ -293,9 +294,9 @@ func _on_ControlArea_mouse_exited():
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$MetaArea.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
-	$MetaArea.pause_mode = Node.PAUSE_MODE_PROCESS
-	$MetaArea.connect("restart_button_clicked", self, "on_restart_button_clicked")
+	meta_area.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
+	meta_area.pause_mode = Node.PAUSE_MODE_PROCESS
+	meta_area.connect("restart_button_clicked", self, "on_restart_button_clicked")
 	
 	line.add_point(Vector2(0,0), 0)
 	line.add_point(Vector2(0,0), 1)
