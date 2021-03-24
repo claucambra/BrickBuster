@@ -417,7 +417,7 @@ func _process(delta):
 					var reposition = live_destroyable.position - destination
 					# Snap blocks into position when they are imperceptibly close
 					# Otherwise they will never reach the intended position
-					if reposition.y > -2:
+					if reposition.y > -0.5:
 						live_destroyable.position = destination
 					else:
 						var reposition_velocity = reposition * 6 * delta
