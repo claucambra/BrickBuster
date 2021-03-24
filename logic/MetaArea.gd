@@ -45,3 +45,6 @@ func _on_Button_mouse_entered():
 
 func _on_Button_mouse_exited():
 	mouse_on_button = false
+
+func _on_PopupMenu_popup_hide():
+	menu_button.pressed = false

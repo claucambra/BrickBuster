@@ -1,6 +1,7 @@
 extends Node2D
 
 # <---------------------------- MEMBER VARIABLES ---------------------------->
+var game_over = false
 var paused = false
 # These variables are used to keep track of what stage of the round we are in
 # This is used to decide input state and acceptance
@@ -170,6 +171,8 @@ func new_destroyable(vert_point, column, type, health = null, special_mode = nul
 	next_destroyable.column_num = columns.find(column)
 	next_destroyable.column_vert_point = vert_point
 	add_child(next_destroyable)
+	# Set opacity to 0
+	next_destroyable.modulate.a = 0
 	# We set it at 0 and then add 1 to vert position to get swanky movement down
 	next_destroyable.set_position(column.get_point_position(vert_point))
 	next_destroyable.column_vert_point += 1
@@ -210,9 +213,6 @@ func new_destroyable_line(health, vert_point = 0):
 			new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
 
 func reset():
-	for ball in live_balls:
-		if is_instance_valid(ball):
-			ball.queue_free()
 	for destroyable in live_destroyables:
 		if is_instance_valid(destroyable):
 			destroyable.queue_free()
@@ -313,97 +313,118 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	score_label.text = String(score)
+	if game_over:
+		for ball in live_balls:
+			if is_instance_valid(ball):
+				ball.queue_free()
+		
+		var all_transparent = true
+		for destroyable in live_destroyables:
+			if !is_instance_valid(destroyable):
+				destroyable.queue_free()
+			elif destroyable.modulate.a > 0:
+				destroyable.modulate.a -= 0.05
+				all_transparent = false
+		
+		if all_transparent:
+			game_over = false
+			self.reset()
 	
-	var ball_center = ball.position
-	var mouse_position = get_global_mouse_position()
-	var line_direction = first_click_position - mouse_position
-	
-	# "click" is defined in input map
-	# Allow clicks when mouse is in the game area and round not in progress
-	if Input.is_action_just_pressed("click") && mouse_in_controlarea && !round_in_progress:
-		first_click_position = get_global_mouse_position()
-		drag_enabled = true
-	
-	# Line drawing and touch place responsibilities
-	update() # Updates _draw func
-	line.visible = false
-	if drag_enabled && !round_in_progress:
-		line.visible = true
-		line.set_point_position(0, ball_center)
-		line.set_point_position(1, line_direction.normalized()*100000)
-	
-	# Launch handling
-	if Input.is_action_just_released("click") && !round_in_progress && drag_enabled: 
-		drag_enabled = false
-		self.launch_balls(line_direction.normalized(), ammo)
-		launched = true
-	
-	if ball.position == round_first_dead_ball_position && !round_in_progress:
-		# So our ball doesn't reposition again if it has reached its position but the round is still on
-		round_first_dead_ball_position = null
-	elif round_first_dead_ball_position != null && ball.position != round_first_dead_ball_position:
-		drag_enabled = false
-		var reposition = ball.position - round_first_dead_ball_position
-		# Snap ball into position when they are imperceptibly close
-		# Otherwise they will never reach the intended position
-		if round_first_dead_ball_position.distance_to(ball.position) < 0.5:
-			ball.position = round_first_dead_ball_position
-		elif all_balls_launched:
-			var reposition_velocity = reposition * 6 * delta
-			ball.position -= reposition_velocity
-	
-	# Round progress checking section
-	for live_ball in live_balls:
-		if !is_instance_valid(live_ball):
-			live_balls.erase(live_ball)
-	
-	var copy_live_destroyables = live_destroyables.duplicate()
-	# We need a copy of our live destroyables to not bungle things up
-	if !live_balls.empty():
-		round_in_progress = true
-	elif launched:
-		# Here we deal with the end-of-round process
-		score += 1
-		launched = false
-		round_in_progress = false
-		var game_over = false
-		for live_destroyable in copy_live_destroyables:
-			if !is_instance_valid(live_destroyable):
-				live_destroyables.erase(live_destroyable)
-			else:
-				live_destroyable.column_vert_point += 1
-				if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
-					live_destroyable.queue_free()
-					live_destroyables.erase(live_destroyable)
-				if "Brick" in live_destroyable.name:
-					if live_destroyable.column_vert_point == 8:
-						game_over = true
-						self.reset()
-					else:
-						live_destroyable.max_possible_health += 1
-		if !game_over:
-			self.new_destroyable_line(score + 1)
 	else:
-		# Here we deal with the smooth repositioning of blocks
-		var num_incorrect_brick_position = 0
-		for live_destroyable in copy_live_destroyables:
-			var destination = columns[live_destroyable.column_num].get_point_position(live_destroyable.column_vert_point)
-			if live_destroyable.position != destination:
-				num_incorrect_brick_position += 1
-				var reposition = live_destroyable.position - destination
-				# Snap blocks into position when they are imperceptibly close
-				# Otherwise they will never reach the intended position
-				if reposition.y > -2:
-					live_destroyable.position = destination
-				else:
-					var reposition_velocity = reposition * 6 * delta
-					live_destroyable.position -= reposition_velocity
-		if num_incorrect_brick_position == 0:
-			self.save_game()
+		score_label.text = String(score)
+		
+		var ball_center = ball.position
+		var mouse_position = get_global_mouse_position()
+		var line_direction = first_click_position - mouse_position
+		
+		# "click" is defined in input map
+		# Allow clicks when mouse is in the game area and round not in progress
+		if Input.is_action_just_pressed("click") && mouse_in_controlarea && !round_in_progress:
+			first_click_position = get_global_mouse_position()
+			drag_enabled = true
+		
+		# Line drawing and touch place responsibilities
+		update() # Updates _draw func
+		line.visible = false
+		if drag_enabled && !round_in_progress:
+			line.visible = true
+			line.set_point_position(0, ball_center)
+			line.set_point_position(1, line_direction.normalized()*100000)
+		
+		# Launch handling
+		if Input.is_action_just_released("click") && !round_in_progress && drag_enabled: 
+			drag_enabled = false
+			self.launch_balls(line_direction.normalized(), ammo)
+			launched = true
+		
+		if ball.position == round_first_dead_ball_position && !round_in_progress:
+			# So our ball doesn't reposition again if it has reached its position but the round is still on
+			round_first_dead_ball_position = null
+		elif round_first_dead_ball_position != null && ball.position != round_first_dead_ball_position:
+			drag_enabled = false
+			var reposition = ball.position - round_first_dead_ball_position
+			# Snap ball into position when they are imperceptibly close
+			# Otherwise they will never reach the intended position
+			if round_first_dead_ball_position.distance_to(ball.position) < 0.5:
+				ball.position = round_first_dead_ball_position
+			elif all_balls_launched:
+				var reposition_velocity = reposition * 6 * delta
+				ball.position -= reposition_velocity
+		
+		# Round progress checking section
+		for live_ball in live_balls:
+			if !is_instance_valid(live_ball):
+				live_balls.erase(live_ball)
+		
+		var copy_live_destroyables = live_destroyables.duplicate()
+		# We need a copy of our live destroyables to not bungle things up
+		if !live_balls.empty():
+			round_in_progress = true
+		elif launched:
+			# Here we deal with the end-of-round process
+			score += 1
+			launched = false
 			round_in_progress = false
-		else:
-			round_in_progress= true
+			for live_destroyable in copy_live_destroyables:
+				if !is_instance_valid(live_destroyable):
+					live_destroyables.erase(live_destroyable)
+				else:
+					live_destroyable.column_vert_point += 1
+					if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
+						live_destroyable.queue_free()
+						live_destroyables.erase(live_destroyable)
+					if "Brick" in live_destroyable.name:
+						if live_destroyable.column_vert_point == 8:
+							game_over = true
+						else:
+							live_destroyable.max_possible_health += 1
+			if !game_over:
+				self.new_destroyable_line(score + 1)
+		elif !game_over:
+			# Here we deal with the smooth opacity change and repositioning of blocks
+			var num_incorrect_brick_position = 0
+			for live_destroyable in copy_live_destroyables:
+				# If destroyable not fully opaque
+				if live_destroyable.modulate.a < 1:
+					live_destroyable.modulate.a += 0.05
+					
+					# If destroyable not at point it's supposed to be
+				var destination = columns[live_destroyable.column_num].get_point_position(live_destroyable.column_vert_point)
+				if live_destroyable.position != destination:
+					num_incorrect_brick_position += 1
+					var reposition = live_destroyable.position - destination
+					# Snap blocks into position when they are imperceptibly close
+					# Otherwise they will never reach the intended position
+					if reposition.y > -2:
+						live_destroyable.position = destination
+					else:
+						var reposition_velocity = reposition * 6 * delta
+						live_destroyable.position -= reposition_velocity
+			if num_incorrect_brick_position == 0:
+				self.save_game()
+				round_in_progress = false
+			else:
+				round_in_progress= true
 
 func _draw():
 	if drag_enabled && !round_in_progress:

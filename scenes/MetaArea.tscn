@@ -52,3 +52,4 @@ valign = 1
 [connection signal="toggled" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_toggled"]
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_exited"]
+[connection signal="popup_hide" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_popup_hide"]

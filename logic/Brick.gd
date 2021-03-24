@@ -35,5 +35,4 @@ func _process(_delta):
 		self.modulate.a = 0.5
 		timer.start()
 		self.hit = false
-	else:
 		self.modulate.a = 1
