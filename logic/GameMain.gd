@@ -213,9 +213,12 @@ func new_destroyable_line(health, vert_point = 0):
 			new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
 
 func reset():
-	for destroyable in live_destroyables:
-		if is_instance_valid(destroyable):
-			destroyable.queue_free()
+	for live_ball in live_balls:
+		if is_instance_valid(live_ball):
+			live_ball.queue_free()
+	for live_destroyable in live_destroyables:
+		if is_instance_valid(live_destroyable):
+			live_destroyable.queue_free()
 	live_balls.clear()
 	live_destroyables.clear()
 	launched = false
@@ -223,6 +226,9 @@ func reset():
 	round_first_dead_ball_position = null
 	score = 0
 	ammo = 1
+	ball.queue_free()
+	ball = ball_scene.instance()
+	add_child(ball)
 	self.new_destroyable_line(score + 1)
 	self.save()
 
@@ -314,16 +320,12 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if game_over:
-		for ball in live_balls:
-			if is_instance_valid(ball):
-				ball.queue_free()
-		
 		var all_transparent = true
-		for destroyable in live_destroyables:
-			if !is_instance_valid(destroyable):
-				destroyable.queue_free()
-			elif destroyable.modulate.a > 0:
-				destroyable.modulate.a -= 0.05
+		for live_destroyable in live_destroyables:
+			if !is_instance_valid(live_destroyable):
+				live_destroyable.queue_free()
+			elif live_destroyable.modulate.a > 0:
+				live_destroyable.modulate.a -= 0.05
 				all_transparent = false
 		
 		if all_transparent:
