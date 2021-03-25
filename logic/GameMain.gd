@@ -324,7 +324,11 @@ func _process(delta):
 	if game_over:
 		var all_transparent = true
 		for live_destroyable in live_destroyables:
-			if !is_instance_valid(live_destroyable):
+			if "Brick" in live_destroyable.name:
+				live_destroyable.health = 0
+				# Setting health to 0 makes bricks queue_free themselves
+				# You'll run into issues if you lump bricks in with the rest.
+			elif !is_instance_valid(live_destroyable):
 				live_destroyable.queue_free()
 			elif live_destroyable.modulate.a > 0:
 				live_destroyable.modulate.a -= 0.05
