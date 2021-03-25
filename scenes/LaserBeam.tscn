@@ -1,9 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://logic/LaserBeam.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1, 1 )
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.5, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
 
 [node name="LaserBeam" type="Line2D"]
 z_index = 1
@@ -18,4 +25,14 @@ collision_mask = 2
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 416.256, 2.80872e-06 )
+rotation = 1.5708
+scale = Vector2( 0.0443835, 835.61 )
+enabled = false
+texture = SubResource( 3 )
+color = Color( 1, 0, 0, 1 )
+energy = 3.0
+shadow_enabled = true
 [connection signal="body_entered" from="LaserArea2D" to="." method="_on_LaserArea2D_body_entered"]

@@ -257,17 +257,12 @@ func on_special_area_entered(special):
 	if special.mode == "laser":
 		var laserbeam = laserbeam_scene.instance()
 		if special.laserbeam_direction == "vertical":
-			laserbeam.points[1] = Vector2(0, self.get_viewport_rect().size.y)
 			laserbeam.position = Vector2(special.global_position.x, 0)
-			laserbeam.get_node("LaserArea2D/LaserCollisionShape2D").shape.extents = Vector2(1, 1280)
+			laserbeam.rotation_degrees = 90
 		elif special.laserbeam_direction == "horizontal":
-			laserbeam.points[1] = Vector2(self.get_viewport_rect().size.x, 0)
 			laserbeam.position = Vector2(0, special.global_position.y)
-			laserbeam.get_node("LaserArea2D/LaserCollisionShape2D").shape.extents = Vector2(720, 1)
 		add_child(laserbeam)
-		wait.start()
-		yield(wait, "timeout")
-		laserbeam.queue_free()
+
 
 func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	# Create bounce special near live balls when taking too long to move vertically
