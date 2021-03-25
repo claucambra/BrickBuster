@@ -352,14 +352,18 @@ func _process(delta):
 	else:
 		score_label.text = String(score)
 		
+		# <-------------- CALCULATE LAUNCH LINE AND BALL ANGLES -------------->
 		var ball_center = ball.position
 		var mouse_position = get_global_mouse_position()
 		var line_direction = first_click_position - mouse_position
+		# We can calculate a minimum coordinate set for the launch line to stop us scoring against ourselves
 		var reasonable_angle
 		if line_direction.normalized().x > -0.998 && line_direction.normalized().x < 0.998 && line_direction.normalized().y < 0:
 			 reasonable_angle = true
 		else:
 			reasonable_angle = false
+		
+		# <-------------- SETTING LAUNCH LINE AND LAUNCHING BALL -------------->
 		# "click" is defined in input map
 		# Allow clicks when mouse is in the game area and round not in progress
 		if Input.is_action_just_pressed("click") && mouse_in_controlarea && !round_in_progress:
@@ -381,6 +385,7 @@ func _process(delta):
 				launched = true
 			drag_enabled = false
 		
+		# <---- SMOOTHLY REPOSITION INDICATOR BALL AFTER FIRST BALL RETURN ---->
 		if ball.position == round_first_dead_ball_position && !round_in_progress:
 			# So our ball doesn't reposition again if it has reached its position but the round is still on
 			round_first_dead_ball_position = null
@@ -395,7 +400,7 @@ func _process(delta):
 				var reposition_velocity = reposition * 6 * delta
 				ball.position -= reposition_velocity
 		
-		# Round progress checking section
+		# <---------------------- ROUND PROGRESS CHECKS ---------------------->
 		for live_ball in live_balls:
 			if !is_instance_valid(live_ball):
 				live_balls.erase(live_ball)
@@ -404,6 +409,7 @@ func _process(delta):
 		# We need a copy of our live destroyables to not bungle things up
 		if !live_balls.empty():
 			round_in_progress = true
+		# <--------------------- END OF ROUND PROCESSING --------------------->
 		elif launched:
 			# Here we deal with the end-of-round process
 			score += 1
@@ -418,12 +424,14 @@ func _process(delta):
 						live_destroyable.queue_free()
 						live_destroyables.erase(live_destroyable)
 					if "Brick" in live_destroyable.name:
+						# Game over once blocks reach bottom of screen
 						if live_destroyable.column_vert_point == 8:
 							game_over = true
 						else:
 							live_destroyable.max_possible_health += 1
 			if !game_over:
 				self.new_destroyable_line(score + 1)
+		# <------------------------ SET UP NEXT ROUND ------------------------>
 		elif !game_over:
 			# Here we deal with the smooth opacity change and repositioning of blocks
 			var num_incorrect_brick_position = 0
@@ -431,8 +439,7 @@ func _process(delta):
 				# If destroyable not fully opaque
 				if live_destroyable.modulate.a < 1:
 					live_destroyable.modulate.a += 0.05
-					
-					# If destroyable not at point it's supposed to be
+				# If destroyable not at point it's supposed to be
 				var destination = columns[live_destroyable.column_num].get_point_position(live_destroyable.column_vert_point)
 				if live_destroyable.position != destination:
 					num_incorrect_brick_position += 1
