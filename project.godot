@@ -38,14 +38,12 @@ click={
 [physics]
 
 common/physics_fps=300
-2d/thread_model=2
 
 [rendering]
 
 quality/driver/driver_name="GLES2"
 quality/intended_usage/framebuffer_allocation=0
 quality/intended_usage/framebuffer_allocation.mobile=0
-threads/thread_model=2
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
 quality/directional_shadow/size=256

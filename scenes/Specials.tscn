@@ -16,6 +16,5 @@ shape = SubResource( 1 )
 [node name="Light2D" type="Light2D" parent="."]
 texture = ExtResource( 2 )
 texture_scale = 0.3
-range_item_cull_mask = 3
 shadow_enabled = true
 [connection signal="body_entered" from="." to="." method="_on_Special_body_entered"]
