@@ -261,8 +261,6 @@ func on_special_area_entered(special):
 			laserbeam.rotation_degrees = 90
 		elif special.laserbeam_direction == "horizontal":
 			laserbeam.position = Vector2(0, special.global_position.y)
-			laserbeam.position = Vector2(special.global_position.x, 0)
-			laserbeam.rotation_degrees = 90
 		add_child(laserbeam)
 
 
