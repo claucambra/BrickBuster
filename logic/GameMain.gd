@@ -67,6 +67,7 @@ func save():
 			"column_num" : destroyable.column_num,
 			"column_vert_point" : destroyable.column_vert_point,
 			"health": null,
+			"mega": null,
 			"special_mode": null,
 			"rotation": destroyable.rotation,
 			"laserbeam_direction": null
@@ -152,8 +153,11 @@ func new_destroyable(vert_point, column, type, health = null, special_mode = nul
 				next_destroyable.rotation = rotation
 		else:
 			next_destroyable = brick_scene.instance()
+		if "Mega" in type:
+			next_destroyable.mega = true
 		next_destroyable.health = health
 		next_destroyable.max_possible_health = score + 1
+		
 	elif "Special" in type:
 		next_destroyable = specials_scene.instance()
 		if type == "AddBallSpecial" && special_mode == null:
@@ -184,14 +188,21 @@ func new_destroyable(vert_point, column, type, health = null, special_mode = nul
 
 func new_destroyable_line(health, vert_point = 0):
 	var free_columns = columns.duplicate()
+	var normal_brick = "Brick"
+	var slanted_brick = "SlantedBrick"
+	rng.randomize()
+	if rng.randi_range(0,9) == 9:
+		normal_brick += "Mega"
+		slanted_brick += "Mega"
 	for column in columns:
 		rng.randomize()
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
 			free_columns.erase(column)
 			if rng.randi_range(0,3) == 3:
-				new_destroyable(vert_point, column, "SlantedBrick", health)
+				new_destroyable(vert_point, column, slanted_brick, health)
+				print(slanted_brick)
 			else:
-				new_destroyable(vert_point, column, "Brick", health)
+				new_destroyable(vert_point, column, normal_brick, health)
 	
 	rng.randomize()
 	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
@@ -313,7 +324,7 @@ func _ready():
 	wait.wait_time = 0.1
 	
 	var save_game = File.new()
-	if not save_game.file_exists("user://savegame.save"):
+	if not save_game.file_exists("user://savegame.sav"):
 		rng.randomize()
 		self.new_destroyable_line(score + 1)
 	else:
