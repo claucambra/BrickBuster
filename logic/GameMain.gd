@@ -324,7 +324,7 @@ func _ready():
 	wait.wait_time = 0.1
 	
 	var save_game = File.new()
-	if not save_game.file_exists("user://savegame.sav"):
+	if not save_game.file_exists("user://savegame.save"):
 		rng.randomize()
 		self.new_destroyable_line(score + 1)
 	else:
