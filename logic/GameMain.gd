@@ -158,11 +158,13 @@ func new_destroyable(vert_point, column, type, health = null, special_mode = nul
 		next_destroyable = specials_scene.instance()
 		if type == "AddBallSpecial" && special_mode == null:
 			next_destroyable.mode = "add-ball"
-		elif type == "BounceSpecial" && special_mode == null:
-			next_destroyable.mode = "bounce"
 		elif type == "LaserSpecial" && special_mode == null:
 			next_destroyable.mode = "laser"
 			next_destroyable.laserbeam_direction = laserbeam_direction
+		elif "BounceSpecial" in type && special_mode == null:
+			next_destroyable.mode = "bounce"
+			if type == "BounceSpecial_NC":
+				next_destroyable.hit = true
 		else:
 			next_destroyable.mode = special_mode
 		next_destroyable.laserbeam_direction = laserbeam_direction
@@ -171,11 +173,13 @@ func new_destroyable(vert_point, column, type, health = null, special_mode = nul
 	next_destroyable.column_num = columns.find(column)
 	next_destroyable.column_vert_point = vert_point
 	add_child(next_destroyable)
-	# Set opacity to 0
-	next_destroyable.modulate.a = 0
 	# We set it at 0 and then add 1 to vert position to get swanky movement down
 	next_destroyable.set_position(column.get_point_position(vert_point))
-	next_destroyable.column_vert_point += 1
+	# Add exception for bounce specials introduced in middle of round
+	if type != "BounceSpecial_NC":
+		# Set opacity to 0
+		next_destroyable.modulate.a = 0
+		next_destroyable.column_vert_point += 1
 	live_destroyables.append(next_destroyable)
 
 func new_destroyable_line(health, vert_point = 0):
@@ -272,12 +276,16 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	for point in midcolumn_points:
 		distance_to_midcolumn_points.append(point.distance_to(ball_position))
 	var line_point = distance_to_midcolumn_points.find(distance_to_midcolumn_points.min())
+	
+	var things_at_point = get_world_2d().direct_space_state.intersect_point(columns[3].get_point_position(line_point), 32, [], 1, true, true)
+	
 	if ball_linear_velocity.y < 0 && distance_to_midcolumn_points.min() < 0:
 		line_point -= 1 # Line points go top to bottom
 	elif ball_linear_velocity.y > 0 && distance_to_midcolumn_points.min() > 0:
 		line_point += 1
-	if line_point < 8:
-		new_destroyable(line_point, columns[3], "BounceSpecial")
+	print(line_point)
+	if line_point < 8 && things_at_point.empty():
+		new_destroyable(1, columns[3], "BounceSpecial_NC")
 
 func on_ball_died(ball_position_x):
 	# Set round_first_dead_ball_position to move our launch position ball there

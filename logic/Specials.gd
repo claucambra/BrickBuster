@@ -29,7 +29,7 @@ func _process(_delta):
 		self.queue_free()
 
 func _draw():
-	draw_arc($CollisionShape2D.position, 20, 1, 359, 2000, colors[mode], 5, true)
+	draw_arc($CollisionShape2D.position, 20, 1, 360, 2000, colors[mode], 5, true)
 
 func _on_Special_body_entered(body):
 	if "Ball" in body.get_name():

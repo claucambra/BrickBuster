@@ -22,27 +22,35 @@ color = Color( 0.27451, 0.27451, 0.27451, 1 )
 [node name="MetaArea" parent="MetaAreaWrapper" instance=ExtResource( 2 )]
 light_mask = 2
 
-[node name="TopWall" type="StaticBody2D" parent="."]
+[node name="TopWall" type="StaticBody2D" parent="." groups=[
+"PlayBoardElements",
+]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
 position = Vector2( 360, 184 )
 scale = Vector2( 1.00114, -0.927707 )
 shape = SubResource( 1 )
 
-[node name="RightWall" type="StaticBody2D" parent="."]
+[node name="RightWall" type="StaticBody2D" parent="." groups=[
+"PlayBoardElements",
+]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
 position = Vector2( 728, 640 )
 shape = SubResource( 2 )
 
-[node name="BottomWall" type="StaticBody2D" parent="."]
+[node name="BottomWall" type="StaticBody2D" parent="." groups=[
+"PlayBoardElements",
+]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
 position = Vector2( 360, 1096 )
 scale = Vector2( 1.00114, -0.927707 )
 shape = SubResource( 1 )
 
-[node name="LeftWall" type="StaticBody2D" parent="."]
+[node name="LeftWall" type="StaticBody2D" parent="." groups=[
+"PlayBoardElements",
+]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
 position = Vector2( -8, 639.719 )
@@ -59,31 +67,45 @@ __meta__ = {
 [node name="LaunchTimer" type="Timer" parent="."]
 wait_time = 0.1
 
-[node name="Column0" type="Line2D" parent="."]
+[node name="Column0" type="Line2D" parent="." groups=[
+"PlayBoardElements",
+]]
 visible = false
 points = PoolVector2Array( 72, 264, 72, 360, 72, 456, 72, 552, 72, 648, 72, 744, 72, 840, 72, 936, 72, 1032 )
 
-[node name="Column1" type="Line2D" parent="."]
+[node name="Column1" type="Line2D" parent="." groups=[
+"PlayBoardElements",
+]]
 visible = false
 points = PoolVector2Array( 168, 264, 168, 360, 168, 456, 168, 552, 168, 648, 168, 744, 168, 840, 168, 936, 168, 1032 )
 
-[node name="Column2" type="Line2D" parent="."]
+[node name="Column2" type="Line2D" parent="." groups=[
+"PlayBoardElements",
+]]
 visible = false
 points = PoolVector2Array( 264, 264, 264, 360, 264, 456, 264, 552, 264, 648, 264, 744, 264, 840, 264, 936, 264, 1032 )
 
-[node name="Column3" type="Line2D" parent="."]
+[node name="Column3" type="Line2D" parent="." groups=[
+"PlayBoardElements",
+]]
 visible = false
 points = PoolVector2Array( 360, 264, 360, 360, 360, 456, 360, 552, 360, 648, 360, 744, 360, 840, 360, 936, 360, 1032 )
 
-[node name="Column4" type="Line2D" parent="."]
+[node name="Column4" type="Line2D" parent="." groups=[
+"PlayBoardElements",
+]]
 visible = false
 points = PoolVector2Array( 456, 264, 456, 360, 456, 456, 456, 552, 456, 648, 456, 744, 456, 840, 456, 936, 456, 1032 )
 
-[node name="Column5" type="Line2D" parent="."]
+[node name="Column5" type="Line2D" parent="." groups=[
+"PlayBoardElements",
+]]
 visible = false
 points = PoolVector2Array( 552, 264, 552, 360, 552, 456, 552, 552, 552, 648, 552, 744, 552, 840, 552, 936, 552, 1032 )
 
-[node name="Column6" type="Line2D" parent="."]
+[node name="Column6" type="Line2D" parent="." groups=[
+"PlayBoardElements",
+]]
 visible = false
 points = PoolVector2Array( 648, 264, 648, 360, 648, 456, 648, 552, 648, 648, 648, 744, 648, 840, 648, 936, 648, 1032 )
 
@@ -92,7 +114,9 @@ visible = false
 z_index = 1
 width = 5.0
 
-[node name="Background" type="Polygon2D" parent="."]
+[node name="Background" type="Polygon2D" parent="." groups=[
+"PlayBoardElements",
+]]
 z_index = -1
 color = Color( 0.156863, 0.156863, 0.156863, 1 )
 polygon = PoolVector2Array( 0, 192, 720, 192, 720, 1088, 0, 1088 )
