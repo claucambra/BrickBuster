@@ -32,7 +32,7 @@ func _process(_delta):
 	brick_shape.color = gradient.interpolate(float(health)/float(max_possible_health))
 	$Light2D.color = brick_shape.color
 	if health <= 0:
-		$CollisionShape2D.disabled = true
+		$Collision2D.disabled = true
 		if self.modulate.a > 0:
 			self.modulate.a -= 0.05
 		else:

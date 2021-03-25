@@ -17,7 +17,7 @@ antialiased = true
 invert_border = 85.9
 polygon = PoolVector2Array( -551.09, 544.843, 544.429, 544.853, -551.195, -551.378 )
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+[node name="Collision2D" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( -46.828, -46.859, 46.2656, 46.3125, -46.828, 46.312 )
 
 [node name="HealthLabel" type="Label" parent="."]
