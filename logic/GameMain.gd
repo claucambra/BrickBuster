@@ -355,7 +355,11 @@ func _process(delta):
 		var ball_center = ball.position
 		var mouse_position = get_global_mouse_position()
 		var line_direction = first_click_position - mouse_position
-		
+		var reasonable_angle
+		if line_direction.normalized().x > -0.998 && line_direction.normalized().x < 0.998 && line_direction.normalized().y < 0:
+			 reasonable_angle = true
+		else:
+			reasonable_angle = false
 		# "click" is defined in input map
 		# Allow clicks when mouse is in the game area and round not in progress
 		if Input.is_action_just_pressed("click") && mouse_in_controlarea && !round_in_progress:
@@ -365,16 +369,17 @@ func _process(delta):
 		# Line drawing and touch place responsibilities
 		update() # Updates _draw func
 		line.visible = false
-		if drag_enabled && !round_in_progress:
+		if drag_enabled && !round_in_progress && reasonable_angle:
 			line.visible = true
 			line.set_point_position(0, ball_center)
 			line.set_point_position(1, line_direction.normalized()*100000)
 		
 		# Launch handling
-		if Input.is_action_just_released("click") && !round_in_progress && drag_enabled: 
+		if Input.is_action_just_released("click"):
+			if !round_in_progress && drag_enabled && reasonable_angle: 
+				self.launch_balls(line_direction.normalized(), ammo)
+				launched = true
 			drag_enabled = false
-			self.launch_balls(line_direction.normalized(), ammo)
-			launched = true
 		
 		if ball.position == round_first_dead_ball_position && !round_in_progress:
 			# So our ball doesn't reposition again if it has reached its position but the round is still on
