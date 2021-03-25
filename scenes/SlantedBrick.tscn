@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://sprites/light.png" type="Texture" id=1]
 [ext_resource path="res://logic/Brick.gd" type="Script" id=2]
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( -46.8594, -46.8828, 46.2891, 46.2969, -46.8438, 46.3047 )
 
 [node name="SlantedBrick" type="KinematicBody2D"]
 position = Vector2( 120, 376 )
@@ -13,7 +17,11 @@ antialiased = true
 invert_border = 85.9
 polygon = PoolVector2Array( -551.09, 544.843, 544.429, 544.853, -551.195, -551.378 )
 
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -46.828, -46.859, 46.2656, 46.3125, -46.828, 46.312 )
+
 [node name="HealthLabel" type="Label" parent="."]
+light_mask = -2147483646
 margin_left = -47.0
 margin_bottom = 46.0
 valign = 2
@@ -21,7 +29,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( -46.828, -46.859, 46.2656, 46.3125, -46.828, 46.312 )
-
 [node name="Timer" type="Timer" parent="."]
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 0.0234375, 0 )
+texture = ExtResource( 1 )
+energy = 1.5
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 0.0078125, 0 )
+occluder = SubResource( 1 )

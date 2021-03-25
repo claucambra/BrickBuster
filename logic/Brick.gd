@@ -29,6 +29,7 @@ func _ready():
 func _process(_delta):
 	label.text = String(health)
 	brick_shape.color = gradient.interpolate(float(health)/float(max_possible_health))
+	$Light2D.color = brick_shape.color
 	if health <= 0:
 		self.queue_free()
 	if hit:

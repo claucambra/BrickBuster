@@ -14,6 +14,14 @@ extents = Vector2( 8, 640 )
 ]]
 script = ExtResource( 1 )
 
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 0.27451, 0.27451, 0.27451, 1 )
+
+[node name="MetaAreaWrapper" type="CanvasLayer" parent="."]
+
+[node name="MetaArea" parent="MetaAreaWrapper" instance=ExtResource( 2 )]
+light_mask = 2
+
 [node name="TopWall" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
@@ -51,11 +59,6 @@ __meta__ = {
 [node name="LaunchTimer" type="Timer" parent="."]
 wait_time = 0.1
 
-[node name="MetaAreaWrapper" type="Node2D" parent="."]
-z_index = 2
-
-[node name="MetaArea" parent="MetaAreaWrapper" instance=ExtResource( 2 )]
-
 [node name="Column0" type="Line2D" parent="."]
 visible = false
 points = PoolVector2Array( 72, 264, 72, 360, 72, 456, 72, 552, 72, 648, 72, 744, 72, 840, 72, 936, 72, 1032 )
@@ -88,5 +91,10 @@ points = PoolVector2Array( 648, 264, 648, 360, 648, 456, 648, 552, 648, 648, 648
 visible = false
 z_index = 1
 width = 5.0
+
+[node name="Background" type="Polygon2D" parent="."]
+z_index = -1
+color = Color( 0.156863, 0.156863, 0.156863, 1 )
+polygon = PoolVector2Array( 0, 192, 720, 192, 720, 1088, 0, 1088 )
 [connection signal="mouse_entered" from="ControlArea" to="." method="_on_ControlArea_mouse_entered"]
 [connection signal="mouse_exited" from="ControlArea" to="." method="_on_ControlArea_mouse_exited"]
