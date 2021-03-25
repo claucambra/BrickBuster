@@ -9,8 +9,8 @@ signal special_area_entered(special)
 var mode = null
 var laserbeam_direction = null
 var colors = {
-	"add-ball": Color("#3cc864"),
-	"bounce": Color("#e64ce0"),
+	"add-ball": Color("#00ff00"),
+	"bounce": Color("#ff00ff"),
 	"laser": Color("#ff0000")
 }
 
@@ -21,7 +21,7 @@ var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$Light2D.color = colors[mode]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

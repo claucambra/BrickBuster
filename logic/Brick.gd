@@ -11,7 +11,7 @@ var hit = false
 var column_num = null
 var column_vert_point = null
 
-var top_health_colour = Color("#932e2e")
+var top_health_colour = Color("#ff3300")
 var bottom_health_colour = Color("#ffb400")
 var gradient = Gradient.new()
 
