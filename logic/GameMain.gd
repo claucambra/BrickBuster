@@ -20,8 +20,8 @@ var ammo = 1
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
 
-onready var meta_area = $MetaAreaWrapper/MetaArea
-onready var score_label = $MetaAreaWrapper/MetaArea/MarginContainer/HBoxContainer/ScoreLabel
+onready var meta_area = $CanvasLayer/MetaArea
+onready var score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/ScoreLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
@@ -31,7 +31,7 @@ onready var laserbeam_scene = load("res://scenes/LaserBeam.tscn")
 # This ball remains throughout the game, 
 # moving position to where the last ball of the last round fell.
 onready var ball = ball_scene.instance()
-onready var line = $LaunchLine
+onready var line = $CanvasLayer/LaunchLine
 onready var wait = $LaunchTimer
 onready var columns = [
 	$Column0,

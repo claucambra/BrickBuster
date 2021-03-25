@@ -12,7 +12,7 @@ var column_num = null
 var column_vert_point = null
 
 var top_health_colour = Color("#ff3300")
-var bottom_health_colour = Color("#ffb400")
+var bottom_health_colour = Color("#ffe600")
 var gradient = Gradient.new()
 
 onready var brick_shape = $BrickShape

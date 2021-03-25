@@ -38,10 +38,23 @@ click={
 [physics]
 
 common/physics_fps=300
+2d/thread_model=2
 
 [rendering]
 
 quality/driver/driver_name="GLES2"
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=0
+threads/thread_model=2
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
+quality/directional_shadow/size=256
+quality/directional_shadow/size.mobile=256
+quality/shadow_atlas/size=256
+quality/shadow_atlas/size.mobile=256
+quality/shadows/filter_mode=0
+quality/reflections/texture_array_reflections=false
+quality/shading/force_vertex_shading=true
+quality/shading/force_lambert_over_burley=true
+quality/shading/force_blinn_over_ggx=true
 environment/default_environment="res://default_env.tres"
