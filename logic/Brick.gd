@@ -24,6 +24,7 @@ func _ready():
 	timer.wait_time = 0.3
 	gradient.set_color(1, top_health_colour)
 	gradient.set_color(0, bottom_health_colour)
+	self.modulate.a = 1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -31,12 +32,16 @@ func _process(_delta):
 	brick_shape.color = gradient.interpolate(float(health)/float(max_possible_health))
 	$Light2D.color = brick_shape.color
 	if health <= 0:
-		self.queue_free()
+		$CollisionShape2D.disabled = true
+		if self.modulate.a > 0:
+			self.modulate.a -= 0.05
+		else:
+			self.queue_free()
+	else:
+		if self.modulate.a < 1:
+			self.modulate.a += 0.05
+	
 	if hit:
 		self.modulate.a = 0.5
-		$Light2D.energy = 10
-		timer.start()
 		self.hit = false
-		self.modulate.a = 1
-		$Light2D.energy = 0.5
 
