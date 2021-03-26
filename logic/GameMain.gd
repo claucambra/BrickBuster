@@ -460,4 +460,4 @@ func _process(delta):
 func _draw():
 	if drag_enabled && !round_in_progress:
 		# Touch/click marker
-		draw_circle(first_click_position, 25, ColorN("black", 0.5))
+		draw_circle(first_click_position, 25, ColorN("white", 0.5))

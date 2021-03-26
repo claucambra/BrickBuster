@@ -24,6 +24,8 @@ func _ready():
 func _process(delta):
 	if popup.visible && Input.is_action_just_released("click") && !(mouse_in_popup || mouse_on_button):
 		menu_button.pressed = false
+	if Input.is_action_just_pressed("escape"):
+		menu_button.pressed = !menu_button.pressed
 
 func _on_Button_toggled(_button_pressed):
 	popup.visible = !popup.visible
