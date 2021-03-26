@@ -231,9 +231,11 @@ func reset():
 	for live_ball in live_balls:
 		if is_instance_valid(live_ball):
 			live_ball.queue_free()
+			live_balls.erase(live_ball)
 	for live_destroyable in live_destroyables:
 		if is_instance_valid(live_destroyable):
 			live_destroyable.queue_free()
+			live_destroyables.erase(live_destroyable)
 	live_balls.clear()
 	live_destroyables.clear()
 	launched = false
@@ -335,15 +337,17 @@ func _process(delta):
 	if game_over:
 		var all_transparent = true
 		for live_destroyable in live_destroyables:
-			if "Brick" in live_destroyable.name:
+			if !is_instance_valid(live_destroyable):
+				live_destroyables.erase(live_destroyable)
+			elif "Brick" in live_destroyable.name:
 				live_destroyable.health = 0
 				# Setting health to 0 makes bricks queue_free themselves
-				# You'll run into issues if you lump bricks in with the rest.
-			elif !is_instance_valid(live_destroyable):
-				live_destroyable.queue_free()
 			elif live_destroyable.modulate.a > 0:
 				live_destroyable.modulate.a -= 0.05
 				all_transparent = false
+			else:
+				live_destroyable.queue_free()
+				live_destroyables.erase(live_destroyable)
 		
 		if all_transparent:
 			game_over = false
