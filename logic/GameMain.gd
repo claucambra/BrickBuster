@@ -375,14 +375,15 @@ func _process(delta):
 		
 		# Line drawing and touch place responsibilities
 		update() # Updates _draw func
-		launch_line.visible = false
+		if !drag_enabled && launch_line.modulate.a > 0:
+			launch_line.modulate.a -= 0.1
 		if drag_enabled && !round_in_progress && reasonable_angle:
 			$LaunchRayCast2D.position = ball.position
 			$LaunchRayCast2D.cast_to = line_direction.normalized()*100000
-			print($LaunchRayCast2D.get_collision_point())
-			launch_line.visible = true
 			launch_line.set_point_position(0, ball.position)
 			launch_line.set_point_position(1, $LaunchRayCast2D.get_collision_point())
+			if launch_line.modulate.a < 1:
+				launch_line.modulate.a += 0.1
 		
 		# Launch handling
 		if Input.is_action_just_released("click"):
