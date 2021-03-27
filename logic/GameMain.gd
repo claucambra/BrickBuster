@@ -31,7 +31,7 @@ onready var laserbeam_scene = load("res://scenes/LaserBeam.tscn")
 # This ball remains throughout the game, 
 # moving position to where the last ball of the last round fell.
 onready var ball = ball_scene.instance()
-onready var line = $CanvasLayer/LaunchLine
+onready var launch_line = $CanvasLayer/LaunchLine
 onready var wait = $LaunchTimer
 onready var columns = [
 	$Column0,
@@ -319,8 +319,8 @@ func _ready():
 	meta_area.pause_mode = Node.PAUSE_MODE_PROCESS
 	meta_area.connect("restart_button_clicked", self, "on_restart_button_clicked")
 	
-	line.add_point(Vector2(0,0), 0)
-	line.add_point(Vector2(0,0), 1)
+	launch_line.add_point(Vector2(0,0), 0)
+	launch_line.add_point(Vector2(0,0), 1)
 	add_child(ball)
 	
 	wait.wait_time = 0.1
@@ -357,7 +357,6 @@ func _process(delta):
 		score_label.text = String(score)
 		
 		# <-------------- CALCULATE LAUNCH LINE AND BALL ANGLES -------------->
-		var ball_center = ball.position
 		var mouse_position = get_global_mouse_position()
 		var line_direction = first_click_position - mouse_position
 		# We can calculate a minimum coordinate set for the launch line to stop us scoring against ourselves
@@ -376,11 +375,14 @@ func _process(delta):
 		
 		# Line drawing and touch place responsibilities
 		update() # Updates _draw func
-		line.visible = false
+		launch_line.visible = false
 		if drag_enabled && !round_in_progress && reasonable_angle:
-			line.visible = true
-			line.set_point_position(0, ball_center)
-			line.set_point_position(1, line_direction.normalized()*100000)
+			$LaunchRayCast2D.position = ball.position
+			$LaunchRayCast2D.cast_to = line_direction.normalized()*100000
+			print($LaunchRayCast2D.get_collision_point())
+			launch_line.visible = true
+			launch_line.set_point_position(0, ball.position)
+			launch_line.set_point_position(1, $LaunchRayCast2D.get_collision_point())
 		
 		# Launch handling
 		if Input.is_action_just_released("click"):
