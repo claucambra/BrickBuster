@@ -375,7 +375,7 @@ func _process(delta):
 		
 		# Line drawing and touch place responsibilities
 		update() # Updates _draw func
-		if !drag_enabled && launch_line.modulate.a > 0:
+		if (!drag_enabled || !reasonable_angle) && launch_line.modulate.a > 0:
 			launch_line.modulate.a -= 0.1
 		if drag_enabled && !round_in_progress && reasonable_angle:
 			$LaunchRayCast2D.position = ball.position
