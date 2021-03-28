@@ -234,6 +234,13 @@ func new_destroyable_line(health, vert_point = 0):
 		else:
 			new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
 
+func update_score_labels():
+	current_score_label.text = String(score)
+	if past_scores.empty() || score > past_scores.max():
+		high_score_label.text = "High Score:" + String(score)
+	else:
+		high_score_label.text = "High Score:" + String(past_scores.max())
+
 func reset():
 	for live_ball in live_balls:
 		if is_instance_valid(live_ball):
@@ -249,12 +256,8 @@ func reset():
 	score = 0
 	ammo = 1
 	self.new_destroyable_line(score + 1)
+	self.update_score_labels()
 	game_over = false
-	current_score_label.text = String(score)
-	if past_scores.empty():
-		high_score_label.text = "High Score:" + String(score)
-	else:
-		high_score_label.text = "High Score:" + String(past_scores.max())
 	self.save()
 
 
@@ -339,11 +342,7 @@ func _ready():
 	else:
 		self.load_game()
 	
-	current_score_label.text = String(score)
-	if past_scores.empty():
-		high_score_label.text = "High Score:" + String(score)
-	else:
-		high_score_label.text = "High Score:" + String(past_scores.max())
+	self.update_score_labels()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -447,9 +446,7 @@ func _process(delta):
 							live_destroyable.max_possible_health += 1
 			if !game_over:
 				score += 1
-				current_score_label.text = String(score)
-				if past_scores.empty() || score > past_scores.max():
-					high_score_label.text = "High Score:" + String(score)
+				self.update_score_labels()
 				self.new_destroyable_line(score + 1)
 			else:
 				past_scores.append(score)
