@@ -22,7 +22,8 @@ var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
 
 onready var meta_area = $CanvasLayer/MetaArea
-onready var score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/ScoreLabel
+onready var current_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/CurrentScoreLabel
+onready var high_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
@@ -233,11 +234,9 @@ func reset():
 	for live_ball in live_balls:
 		if is_instance_valid(live_ball):
 			live_ball.queue_free()
-			live_balls.erase(live_ball)
 	for live_destroyable in live_destroyables:
 		if is_instance_valid(live_destroyable):
 			live_destroyable.queue_free()
-			live_destroyables.erase(live_destroyable)
 	live_balls.clear()
 	live_destroyables.clear()
 	launched = false
@@ -245,10 +244,8 @@ func reset():
 	round_first_dead_ball_position = null
 	score = 0
 	ammo = 1
-	ball.queue_free()
-	ball = ball_scene.instance()
-	add_child(ball)
 	self.new_destroyable_line(score + 1)
+	game_over = false
 	self.save()
 
 
@@ -332,6 +329,12 @@ func _ready():
 		self.new_destroyable_line(score + 1)
 	else:
 		self.load_game()
+	
+	current_score_label.text = String(score)
+	if past_scores.empty():
+		high_score_label.text = "High Score:" + String(score)
+	else:
+		high_score_label.text = "High Score:" + String(past_scores.max())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -351,12 +354,9 @@ func _process(delta):
 				live_destroyables.erase(live_destroyable)
 		
 		if all_transparent:
-			game_over = false
 			self.reset()
 	
 	else:
-		score_label.text = String(score)
-		
 		# <-------------- CALCULATE LAUNCH LINE AND BALL ANGLES -------------->
 		var mouse_position = get_global_mouse_position()
 		var line_direction = first_click_position - mouse_position
@@ -438,6 +438,9 @@ func _process(delta):
 							live_destroyable.max_possible_health += 1
 			if !game_over:
 				score += 1
+				current_score_label.text = String(score)
+				if past_scores.empty() || score > past_scores.max():
+					high_score_label.text = "High Score:" + String(score)
 				self.new_destroyable_line(score + 1)
 			else:
 				past_scores.append(score)
