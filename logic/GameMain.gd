@@ -16,6 +16,7 @@ var live_balls = []
 var live_destroyables = []
 var round_first_dead_ball_position = null
 var score = 0
+var past_scores = []
 var ammo = 1
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
@@ -55,6 +56,7 @@ func save():
 	# This is save_dict is saved in JSON format in our savefile
 	var save_dict = {
 		"score": score,
+		"past_scores": past_scores,
 		"ammo": ammo,
 		"launch_ball_position_x": ball.position.x,
 		"launch_ball_position_y": ball.position.y,
@@ -102,8 +104,9 @@ func load_game():
 		# Get the saved dictionary from the next line in the save file
 		var node_data = parse_json(save_game.get_line())
 		
-		self.score = node_data["score"]
-		self.ammo = node_data["ammo"]
+		score = node_data["score"]
+		past_scores = node_data["past_scores"]
+		ammo = node_data["ammo"]
 		ball.position = Vector2(node_data["launch_ball_position_x"], node_data["launch_ball_position_y"])
 		
 		for destroyable in node_data["destroyables"]:
@@ -200,7 +203,6 @@ func new_destroyable_line(health, vert_point = 0):
 			free_columns.erase(column)
 			if rng.randi_range(0,3) == 3:
 				new_destroyable(vert_point, column, slanted_brick, health)
-				print(slanted_brick)
 			else:
 				new_destroyable(vert_point, column, normal_brick, health)
 	
@@ -290,7 +292,6 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 		line_point -= 1 # Line points go top to bottom
 	elif ball_linear_velocity.y > 0 && distance_to_midcolumn_points.min() > 0:
 		line_point += 1
-	print(line_point)
 	if line_point < 8 && things_at_point.empty():
 		new_destroyable(line_point, columns[3], "BounceSpecial_NC")
 
@@ -419,7 +420,6 @@ func _process(delta):
 		# <--------------------- END OF ROUND PROCESSING --------------------->
 		elif launched:
 			# Here we deal with the end-of-round process
-			score += 1
 			launched = false
 			round_in_progress = false
 			for live_destroyable in copy_live_destroyables:
@@ -437,7 +437,10 @@ func _process(delta):
 						else:
 							live_destroyable.max_possible_health += 1
 			if !game_over:
+				score += 1
 				self.new_destroyable_line(score + 1)
+			else:
+				past_scores.append(score)
 		# <------------------------ SET UP NEXT ROUND ------------------------>
 		elif !game_over:
 			# Here we deal with the smooth opacity change and repositioning of blocks
