@@ -160,10 +160,10 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 				next_destroyable.rotation = rotation
 		else:
 			next_destroyable = brick_scene.instance()
-		if mega:
-			next_destroyable.mega = true
-			if from_save:
-				next_destroyable.health = health / 2
+		
+		next_destroyable.mega = mega
+		if mega && from_save:
+			next_destroyable.health = health / 2
 		else:
 			next_destroyable.health = health
 		next_destroyable.max_possible_health = score + 1
