@@ -250,6 +250,11 @@ func reset():
 	ammo = 1
 	self.new_destroyable_line(score + 1)
 	game_over = false
+	current_score_label.text = String(score)
+	if past_scores.empty():
+		high_score_label.text = "High Score:" + String(score)
+	else:
+		high_score_label.text = "High Score:" + String(past_scores.max())
 	self.save()
 
 
