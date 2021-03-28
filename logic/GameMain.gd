@@ -77,6 +77,7 @@ func save():
 		}
 		if "Brick" in destroyable.name:
 			save_destroyable.health = destroyable.health
+			save_destroyable.mega = destroyable.mega
 		elif "Special" in destroyable.name:
 			save_destroyable.special_mode = destroyable.mode
 			if destroyable.mode == "laser":
@@ -115,9 +116,11 @@ func load_game():
 				columns[destroyable["column_num"]],
 				destroyable["name"],
 				destroyable["health"],
+				destroyable["mega"],
 				destroyable["special_mode"],
 				destroyable["rotation"],
-				destroyable["laserbeam_direction"])
+				destroyable["laserbeam_direction"],
+				true)
 	
 	save_game.close()
 
@@ -145,7 +148,7 @@ func launch_balls(direction, amount):
 
 # It is important that you pay attention to the string you feed in for the type.
 # A wrong string can trip up the whole game.
-func new_destroyable(vert_point, column, type, health = null, special_mode = null, rotation = null, laserbeam_direction = null):
+func new_destroyable(vert_point, column, type, health = null, mega = null, special_mode = null, rotation = null, laserbeam_direction = null, from_save = false):
 	var next_destroyable
 	if "Brick" in type:
 		if "SlantedBrick" in type:
@@ -157,9 +160,12 @@ func new_destroyable(vert_point, column, type, health = null, special_mode = nul
 				next_destroyable.rotation = rotation
 		else:
 			next_destroyable = brick_scene.instance()
-		if "Mega" in type:
+		if mega:
 			next_destroyable.mega = true
-		next_destroyable.health = health
+			if from_save:
+				next_destroyable.health = health / 2
+		else:
+			next_destroyable.health = health
 		next_destroyable.max_possible_health = score + 1
 		
 	elif "Special" in type:
@@ -192,20 +198,18 @@ func new_destroyable(vert_point, column, type, health = null, special_mode = nul
 
 func new_destroyable_line(health, vert_point = 0):
 	var free_columns = columns.duplicate()
-	var normal_brick = "Brick"
-	var slanted_brick = "SlantedBrick"
+	var mega = false
 	rng.randomize()
 	if rng.randi_range(0,9) == 9:
-		normal_brick += "Mega"
-		slanted_brick += "Mega"
+		mega = true
 	for column in columns:
 		rng.randomize()
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
 			free_columns.erase(column)
 			if rng.randi_range(0,3) == 3:
-				new_destroyable(vert_point, column, slanted_brick, health)
+				new_destroyable(vert_point, column, "SlantedBrick", health, mega)
 			else:
-				new_destroyable(vert_point, column, normal_brick, health)
+				new_destroyable(vert_point, column, "Brick", health, mega)
 	
 	rng.randomize()
 	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
@@ -224,9 +228,9 @@ func new_destroyable_line(health, vert_point = 0):
 			rng.randomize()
 			if rng.randi_range(0,1) == 1:
 				# new_destroyable checks if rotation is not null to create vertical laser
-				new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, "vertical")
+				new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "vertical")
 			else:
-				new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, "horizontal")
+				new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "horizontal")
 		else:
 			new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
 
