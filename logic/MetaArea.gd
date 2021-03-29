@@ -16,6 +16,7 @@ var mouse_on_button = false
 func _ready():
 	popup.add_item("Continue", 0)
 	popup.add_item("Restart", 1)
+	popup.add_item("Quit to main menu", 2)
 	popup.connect("id_pressed", self, "_on_MenuItem_pressed")
 	popup.popup_centered()
 	popup.visible = false
@@ -33,8 +34,11 @@ func _on_Button_toggled(_button_pressed):
 
 func _on_MenuItem_pressed(id):
 	menu_button.pressed = false
-	if id == 1:
-		emit_signal("restart_button_clicked")
+	match id:
+		1:
+			emit_signal("restart_button_clicked")
+		2:
+			get_tree().change_scene("res://scenes/MainMenu.tscn")
 
 func _on_PopupMenu_mouse_entered():
 	mouse_in_popup = true
