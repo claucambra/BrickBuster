@@ -17,3 +17,6 @@ func _ready():
 
 func _on_ContinueButton_pressed():
 	get_tree().change_scene("res://scenes/Board.tscn")
+
+func _on_QuitButton_pressed():
+	get_tree().quit()

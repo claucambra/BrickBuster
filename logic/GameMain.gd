@@ -24,6 +24,7 @@ var rng = RandomNumberGenerator.new()
 onready var meta_area = $CanvasLayer/MetaArea
 onready var current_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/CurrentScoreLabel
 onready var high_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
+onready var ammo_label = $BottomPanel/CenterContainer/AmmoLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
@@ -134,6 +135,7 @@ func load_game():
 # <-------------------------- GAME HELPER FUNCTIONS -------------------------->
 func launch_balls(direction, amount):
 	all_balls_launched = false
+	var num_balls_left = ammo
 	for i in amount:
 		var next_ball = ball_scene.instance()
 		add_child(next_ball)
@@ -142,6 +144,8 @@ func launch_balls(direction, amount):
 		next_ball.position = ball.position
 		next_ball.launch(direction)
 		live_balls.append(next_ball)
+		num_balls_left -= 1
+		ammo_label.text = "x" + String(num_balls_left)
 		wait.start()
 		yield(wait, "timeout")
 	all_balls_launched = true
@@ -235,13 +239,14 @@ func new_destroyable_line(health, vert_point = 0):
 			new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
 
 func update_score_labels():
+	ammo_label.text = "x" + String(ammo)
 	current_score_label.text = String(score)
 	if past_scores.empty() || score > past_scores.max():
 		high_score_label.text = "High Score:" + String(score)
 	else:
 		high_score_label.text = "High Score:" + String(past_scores.max())
 
-func reset():
+func reset(from_main_menu = false):
 	for live_ball in live_balls:
 		if is_instance_valid(live_ball):
 			live_ball.queue_free()
@@ -255,8 +260,8 @@ func reset():
 	round_first_dead_ball_position = null
 	score = 0
 	ammo = 1
-	self.new_destroyable_line(score + 1)
 	self.update_score_labels()
+	self.new_destroyable_line(score + 1)
 	game_over = false
 	self.save()
 
