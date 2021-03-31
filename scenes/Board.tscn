@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://logic/GameMain.gd" type="Script" id=1]
 [ext_resource path="res://scenes/MetaArea.tscn" type="PackedScene" id=2]
+[ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 359.589, 8.62341 )
@@ -166,8 +167,8 @@ __meta__ = {
 
 [node name="AmmoLabel" type="Label" parent="BottomPanel/CenterContainer"]
 margin_left = 20.0
-margin_top = 13.0
 margin_right = 20.0
-margin_bottom = 27.0
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 3 )
 [connection signal="mouse_entered" from="ControlArea" to="." method="_on_ControlArea_mouse_entered"]
 [connection signal="mouse_exited" from="ControlArea" to="." method="_on_ControlArea_mouse_exited"]

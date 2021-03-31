@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://logic/MetaArea.gd" type="Script" id=1]
+[ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=2]
 
 [node name="MetaPanel" type="Panel"]
 margin_right = 720.0
@@ -32,12 +33,14 @@ rect_min_size = Vector2( 150, 150 )
 margin_right = 338.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
 toggle_mode = true
 text = "Pause"
 
 [node name="PopupMenu" type="PopupMenu" parent="MarginContainer/HBoxContainer/Button"]
 margin_right = 20.0
 margin_bottom = 20.0
+custom_fonts/font = ExtResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 342.0
@@ -55,6 +58,7 @@ margin_right = 338.0
 margin_bottom = 73.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
 align = 1
 valign = 1
 
@@ -64,6 +68,7 @@ margin_right = 338.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
 align = 1
 valign = 1
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_mouse_entered"]
