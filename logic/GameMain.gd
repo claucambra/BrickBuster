@@ -24,7 +24,7 @@ var rng = RandomNumberGenerator.new()
 onready var meta_area = $CanvasLayer/MetaArea
 onready var current_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/CurrentScoreLabel
 onready var high_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
-onready var ammo_label = $BottomPanel/CenterContainer/AmmoLabel
+onready var ammo_label = $CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
 onready var ball_scene = load("res://scenes/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
@@ -242,9 +242,9 @@ func update_score_labels():
 	ammo_label.text = "x" + String(ammo)
 	current_score_label.text = String(score)
 	if past_scores.empty() || score > past_scores.max():
-		high_score_label.text = "High Score:" + String(score)
+		high_score_label.text = "High Score: " + String(score)
 	else:
-		high_score_label.text = "High Score:" + String(past_scores.max())
+		high_score_label.text = "High Score: " + String(past_scores.max())
 
 func reset(from_main_menu = false):
 	for live_ball in live_balls:
@@ -346,6 +346,9 @@ func _ready():
 		self.new_destroyable_line(score + 1)
 	else:
 		self.load_game()
+		if live_destroyables.empty():
+			# Caused by 'new game' from main menu, impossible in normal game flow.
+			self.new_destroyable_line(score + 1)
 	
 	self.update_score_labels()
 
