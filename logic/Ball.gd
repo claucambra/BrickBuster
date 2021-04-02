@@ -27,7 +27,7 @@ func _on_Ball_body_entered(body):
 		if "Brick" in body.get_name():
 			body.health -= 1
 			body.hit = true
-	if body.get_name() == "BottomWall":
+	if body.get_name() == "EliminatorBottomWall":
 		emit_signal("ball_died", self.position)
 		self.queue_free()
 

@@ -80,12 +80,12 @@ light_mask = 0
 position = Vector2( 728, 640 )
 shape = SubResource( 2 )
 
-[node name="BottomWall" type="StaticBody2D" parent="." groups=[
+[node name="EliminatorBottomWall" type="StaticBody2D" parent="." groups=[
 "PlayBoardElements",
 ]]
 light_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EliminatorBottomWall"]
 light_mask = 0
 position = Vector2( 360, 1096 )
 scale = Vector2( 1.00114, -0.927707 )

@@ -1,4 +1,4 @@
-extends MarginContainer
+extends Node2D
 
 
 # Declare member variables here. Examples:
@@ -6,17 +6,19 @@ extends MarginContainer
 # var b = "text"
 
 var save_game = File.new()
+var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if not save_game.file_exists("user://savegame.save"):
-		$VBoxContainer/ContinueButton.visible = false
-
+		$CanvasLayer/MainMenu/VBoxContainer/ContinueButton.visible = false
+	
+	rng.randomize()
+	$Ball.launch(Vector2(rng.randf_range(1, -1),rng.randf_range(-0, -1)))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-
 
 func _on_ContinueButton_pressed():
 	get_tree().change_scene("res://scenes/Board.tscn")
