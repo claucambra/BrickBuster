@@ -14,6 +14,8 @@ func _ready():
 		$CanvasLayer/MainMenu/VBoxContainer/ContinueButton.visible = false
 	
 	rng.randomize()
+	$TitleBrick.health = 90000
+	$TitleBrick.max_possible_health = 100000
 	$Ball.launch(Vector2(rng.randf_range(1, -1),rng.randf_range(-0, -1)))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
