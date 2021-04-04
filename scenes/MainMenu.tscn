@@ -6,16 +6,16 @@
 [ext_resource path="res://logic/Brick.gd" type="Script" id=4]
 [ext_resource path="res://sprites/light.png" type="Texture" id=5]
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 160, 160 )
 
-[sub_resource type="OccluderPolygon2D" id=4]
+[sub_resource type="OccluderPolygon2D" id=2]
 polygon = PoolVector2Array( 312, 64, 632, 64, 632, 384, 312, 384 )
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 360, 10 )
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 16, 640 )
 
 [node name="Node2D" type="Node2D"]
@@ -47,31 +47,54 @@ __meta__ = {
 
 [node name="ContinueButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_right = 216.0
-margin_bottom = 424.0
+margin_bottom = 317.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Continue Game"
 
 [node name="NewGameButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 428.0
+margin_top = 321.0
 margin_right = 216.0
-margin_bottom = 852.0
+margin_bottom = 638.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "New Game"
 
 [node name="ScoresButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-visible = false
-margin_top = 428.0
-margin_right = 720.0
-margin_bottom = 852.0
+margin_top = 642.0
+margin_right = 216.0
+margin_bottom = 959.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
 text = "Scores"
 
+[node name="PopupMenu" type="Popup" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ItemList" type="ItemList" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/MarginContainer/VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 2 )
+auto_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 856.0
+margin_top = 963.0
 margin_right = 216.0
 margin_bottom = 1280.0
 size_flags_horizontal = 3
@@ -88,7 +111,7 @@ polygon = PoolVector2Array( 320, 64, 640, 64, 640, 384, 320, 384 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TitleBrick"]
 position = Vector2( 480, 224 )
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="Label" type="Label" parent="TitleBrick"]
 margin_left = 232.0
@@ -123,7 +146,7 @@ texture_scale = 0.5
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="TitleBrick"]
 position = Vector2( 8, 0 )
-occluder = SubResource( 4 )
+occluder = SubResource( 2 )
 
 [node name="Ball" parent="." instance=ExtResource( 3 )]
 position = Vector2( 472, 1216 )
@@ -132,25 +155,25 @@ position = Vector2( 472, 1216 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
 position = Vector2( 360, -8 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="RightWall" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
 position = Vector2( 736, 640 )
-shape = SubResource( 2 )
+shape = SubResource( 4 )
 
 [node name="BottomWall" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
 position = Vector2( 360, 1288 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="LeftWall" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
 position = Vector2( 200, 640 )
-shape = SubResource( 2 )
+shape = SubResource( 4 )
 
 [node name="Background" type="Polygon2D" parent="."]
 z_index = -1
@@ -158,4 +181,6 @@ color = Color( 0.0980392, 0.0980392, 0.0980392, 1 )
 polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ContinueButton" to="." method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton" to="." method="_on_NewGameButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton" to="." method="_on_ScoresButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="body_entered" from="Ball" to="." method="_on_Ball_body_entered"]
