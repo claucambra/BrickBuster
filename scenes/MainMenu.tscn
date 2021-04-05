@@ -124,8 +124,8 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 241.0
+margin_bottom = 47.0
 
 [node name="CheckButton" type="CheckButton" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer"]
 margin_right = 76.0

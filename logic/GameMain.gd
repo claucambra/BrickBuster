@@ -20,6 +20,7 @@ var past_scores = []
 var ammo = 1
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
+var lighting_enabled = true
 
 onready var meta_area = $CanvasLayer/MetaArea
 onready var current_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/CurrentScoreLabel
@@ -138,6 +139,7 @@ func launch_balls(direction, amount):
 	var num_balls_left = ammo
 	for i in amount:
 		var next_ball = ball_scene.instance()
+		next_ball.get_node("Light2D").enabled = lighting_enabled
 		add_child(next_ball)
 		next_ball.connect("ball_no_contact_timeout", self, "on_ball_no_contact_timeout")
 		next_ball.connect("ball_died", self, "on_ball_died")
@@ -174,6 +176,7 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 		
 	elif "Special" in type:
 		next_destroyable = specials_scene.instance()
+		next_destroyable.get_node("Light2D").enabled = lighting_enabled
 		if type == "AddBallSpecial" && special_mode == null:
 			next_destroyable.mode = "add-ball"
 		elif type == "LaserSpecial" && special_mode == null:
@@ -330,12 +333,18 @@ func _on_ControlArea_mouse_exited():
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var config = ConfigFile.new()
+	var err = config.load("user://settings.cfg")
+	if err == OK:
+		lighting_enabled = config.get_value("lighting", "enabled")
+	
 	meta_area.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
 	meta_area.pause_mode = Node.PAUSE_MODE_PROCESS
 	meta_area.connect("restart_button_clicked", self, "on_restart_button_clicked")
 	
 	launch_line.add_point(Vector2(0,0), 0)
 	launch_line.add_point(Vector2(0,0), 1)
+	ball.get_node("Light2D").enabled = lighting_enabled
 	add_child(ball)
 	
 	wait.wait_time = 0.1

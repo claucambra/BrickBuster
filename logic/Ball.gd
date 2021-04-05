@@ -16,11 +16,6 @@ func launch (vector):
 func _ready():
 	$Timer.wait_time = 5.0
 	$Timer.start()
-	
-	var config = ConfigFile.new()
-	var err = config.load("user://settings.cfg")
-	if err == OK:
-		$Light2D.enabled = config.get_value("lighting", "enabled")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta):

@@ -6,6 +6,8 @@ extends Node2D
 # var b = "text"
 
 var save_game = File.new()
+var config = ConfigFile.new()
+var err = config.load("user://settings.cfg")
 var rng = RandomNumberGenerator.new()
 onready var popup_score_menu = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu
 onready var popup_score_list = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/MarginContainer/VBoxContainer/ItemList
@@ -16,7 +18,6 @@ func _ready():
 	if not save_game.file_exists("user://savegame.save"):
 		$CanvasLayer/MainMenu/VBoxContainer/ContinueButton.visible = false
 		$CanvasLayer/MainMenu/VBoxContainer/ScoresButton.disabled = true
-		popup_score_menu.disabled = true
 	else:
 		save_game.open("user://savegame.save", File.READ)
 		while save_game.get_position() < save_game.get_len():
@@ -48,10 +49,9 @@ func _ready():
 	popup_options_menu.popup_centered()
 	popup_options_menu.visible = false
 	
-	var config = ConfigFile.new()
-	var err = config.load("user://settings.cfg")
 	if err == OK:
 		$CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/CheckButton.pressed = config.get_value("lighting", "enabled")
+		$Ball/Light2D.enabled = config.get_value("lighting", "enabled")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -143,8 +143,6 @@ func _on_OptionsButton_pressed():
 	popup_options_menu.visible = !popup_options_menu.visible
 
 func _on_CheckButton_toggled(button_pressed):
-	var config = ConfigFile.new()
-	var err = config.load("user://settings.cfg")
 	if err == OK || err == ERR_FILE_NOT_FOUND:
 		config.set_value("lighting", "enabled", button_pressed)
 		config.save("user://settings.cfg")
