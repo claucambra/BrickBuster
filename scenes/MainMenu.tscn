@@ -47,24 +47,24 @@ __meta__ = {
 
 [node name="ContinueButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_right = 216.0
-margin_bottom = 317.0
+margin_bottom = 252.0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Continue Game"
 
 [node name="NewGameButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 321.0
+margin_top = 256.0
 margin_right = 216.0
-margin_bottom = 638.0
+margin_bottom = 509.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "New Game"
 
 [node name="ScoresButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 642.0
+margin_top = 513.0
 margin_right = 216.0
-margin_bottom = 959.0
+margin_bottom = 766.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
@@ -104,8 +104,37 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="OptionsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
+margin_top = 770.0
+margin_right = 216.0
+margin_bottom = 1023.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Options"
+
+[node name="PopupMenu" type="Popup" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="CheckButton" type="CheckButton" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer"]
+margin_right = 76.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 2 )
+text = "Light effects"
+
 [node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 963.0
+margin_top = 1027.0
 margin_right = 216.0
 margin_bottom = 1280.0
 size_flags_horizontal = 3
@@ -194,5 +223,7 @@ polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton" to="." method="_on_NewGameButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton" to="." method="_on_ScoresButton_pressed"]
 [connection signal="item_selected" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/MarginContainer/VBoxContainer/HBoxContainer/SortOptionButton" to="." method="_on_SortOptionButton_item_selected"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
+[connection signal="toggled" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/CheckButton" to="." method="_on_CheckButton_toggled"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="body_entered" from="Ball" to="." method="_on_Ball_body_entered"]

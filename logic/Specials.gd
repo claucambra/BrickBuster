@@ -21,6 +21,11 @@ var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var config = ConfigFile.new()
+	var err = config.load("user://settings.cfg")
+	if err == OK:
+		$Light2D.enabled = config.get_value("lighting", "enabled")
+	
 	$Light2D.color = colors[mode]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

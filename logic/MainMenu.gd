@@ -7,15 +7,16 @@ extends Node2D
 
 var save_game = File.new()
 var rng = RandomNumberGenerator.new()
-onready var popup_menu = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu
+onready var popup_score_menu = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu
 onready var popup_score_list = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/MarginContainer/VBoxContainer/ItemList
+onready var popup_options_menu = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if not save_game.file_exists("user://savegame.save"):
 		$CanvasLayer/MainMenu/VBoxContainer/ContinueButton.visible = false
 		$CanvasLayer/MainMenu/VBoxContainer/ScoresButton.disabled = true
-		popup_menu.disabled = true
+		popup_score_menu.disabled = true
 	else:
 		save_game.open("user://savegame.save", File.READ)
 		while save_game.get_position() < save_game.get_len():
@@ -42,8 +43,15 @@ func _ready():
 	$TitleBrick.max_possible_health = 100000
 	$Ball.launch(Vector2(rng.randf_range(1, -1),rng.randf_range(-0, -1)))
 	
-	popup_menu.popup_centered()
-	popup_menu.visible = false
+	popup_score_menu.popup_centered()
+	popup_score_menu.visible = false
+	popup_options_menu.popup_centered()
+	popup_options_menu.visible = false
+	
+	var config = ConfigFile.new()
+	var err = config.load("user://settings.cfg")
+	if err == OK:
+		$CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/CheckButton.pressed = config.get_value("lighting", "enabled")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -80,7 +88,7 @@ func _on_Ball_body_entered(body):
 	pass # Replace with function body.
 
 func _on_ScoresButton_pressed():
-	popup_menu.visible = !popup_menu.visible
+	popup_score_menu.visible = !popup_score_menu.visible
 
 class Sorter:
 	static func sort_id_ascending(a, b):
@@ -130,3 +138,13 @@ func _on_SortOptionButton_item_selected(index):
 		if score[0] == top_score:
 			popup_score_list.set_item_custom_bg_color(item_index,ColorN("red", 1))
 		item_index += 1
+
+func _on_OptionsButton_pressed():
+	popup_options_menu.visible = !popup_options_menu.visible
+
+func _on_CheckButton_toggled(button_pressed):
+	var config = ConfigFile.new()
+	var err = config.load("user://settings.cfg")
+	if err == OK || err == ERR_FILE_NOT_FOUND:
+		config.set_value("lighting", "enabled", button_pressed)
+		config.save("user://settings.cfg")
