@@ -43,6 +43,7 @@ func _ready():
 	$TitleBrick.health = 90000
 	$TitleBrick.max_possible_health = 100000
 	$Ball.launch(Vector2(rng.randf_range(1, -1),rng.randf_range(-0, -1)))
+	$Ball.get_node("Light2D").energy = 1
 	
 	popup_score_menu.popup_centered()
 	popup_score_menu.visible = false
