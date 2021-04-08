@@ -13,6 +13,7 @@ func _ready():
 	self.points[1] = Vector2(length, 0)
 	$LaserArea2D/LaserCollisionShape2D.shape.extents = Vector2(length, 1)
 	self.modulate.a = 1
+	$LaserBeamAudio.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
