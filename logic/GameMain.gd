@@ -136,7 +136,6 @@ func load_game():
 # <-------------------------- GAME HELPER FUNCTIONS -------------------------->
 func launch_balls(direction, amount):
 	all_balls_launched = false
-	var num_balls_left = ammo
 	for i in amount:
 		var next_ball = ball_scene.instance()
 		next_ball.get_node("Light2D").enabled = lighting_enabled
@@ -146,8 +145,6 @@ func launch_balls(direction, amount):
 		next_ball.position = ball.position
 		next_ball.launch(direction)
 		live_balls.append(next_ball)
-		num_balls_left -= 1
-		ammo_label.text = "x" + String(num_balls_left)
 		wait.start()
 		yield(wait, "timeout")
 	all_balls_launched = true
@@ -382,6 +379,9 @@ func _process(delta):
 			self.reset()
 	
 	else:
+		# <------------- UPDATE AMMO LABEL AS BALLS TOUCH BOTTOM ------------->
+		ammo_label.text = "x" + String(ammo - live_balls.size())
+		
 		# <-------------- CALCULATE LAUNCH LINE AND BALL ANGLES -------------->
 		var mouse_position = get_global_mouse_position()
 		var line_direction = first_click_position - mouse_position
