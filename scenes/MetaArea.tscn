@@ -34,7 +34,6 @@ margin_right = 338.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
-toggle_mode = true
 text = "Pause"
 
 [node name="PopupMenu" type="PopupMenu" parent="MarginContainer/HBoxContainer/Button"]
@@ -71,9 +70,6 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 valign = 1
-[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_mouse_entered"]
-[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_mouse_exited"]
-[connection signal="toggled" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_toggled"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_exited"]
-[connection signal="popup_hide" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_popup_hide"]

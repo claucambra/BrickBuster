@@ -1,6 +1,6 @@
 extends Panel
 
-signal pause_menu_toggled
+signal pause_menu_toggled(popup_open)
 signal restart_button_clicked
 
 # Declare member variables here. Examples:
@@ -19,21 +19,16 @@ func _ready():
 	popup.add_item("Quit to main menu", 2)
 	popup.connect("id_pressed", self, "_on_MenuItem_pressed")
 	popup.popup_centered()
-	popup.visible = false
+	popup.hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if popup.visible && Input.is_action_just_released("click") && !(mouse_in_popup || mouse_on_button):
-		menu_button.pressed = false
 	if Input.is_action_just_pressed("escape"):
-		menu_button.pressed = !menu_button.pressed
-
-func _on_Button_toggled(_button_pressed):
-	popup.visible = !popup.visible
-	emit_signal("pause_menu_toggled")
+		popup.visible = !popup.visible
+		emit_signal("pause_menu_toggled", popup.visible)
 
 func _on_MenuItem_pressed(id):
-	menu_button.pressed = false
+	emit_signal("pause_menu_toggled", false)
 	match id:
 		1:
 			emit_signal("restart_button_clicked")
@@ -52,5 +47,6 @@ func _on_Button_mouse_entered():
 func _on_Button_mouse_exited():
 	mouse_on_button = false
 
-func _on_PopupMenu_popup_hide():
-	menu_button.pressed = false
+func _on_Button_pressed():
+	popup.visible = !popup.visible
+	emit_signal("pause_menu_toggled", popup.visible)

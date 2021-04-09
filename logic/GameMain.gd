@@ -2,7 +2,6 @@ extends Node2D
 
 # <---------------------------- MEMBER VARIABLES ---------------------------->
 var game_over = false
-var paused = false
 # These variables are used to keep track of what stage of the round we are in
 # This is used to decide input state and acceptance
 var drag_enabled = false
@@ -273,9 +272,8 @@ func reset(from_main_menu = false):
 
 
 # <----------------------------- SIGNAL HANDLERS ----------------------------->
-func on_pause_menu_toggled():
-	paused = !paused
-	get_tree().paused = paused
+func on_pause_menu_toggled(popup_open):
+	get_tree().paused = popup_open
 
 func on_restart_button_clicked():
 	self.reset()
