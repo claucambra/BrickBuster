@@ -38,6 +38,7 @@ func _on_Special_body_entered(body):
 		if mode == "add-ball":
 			$AddBallAudio.play()
 			$CollisionShape2D.set_deferred("disabled", true)
+			$Light2D.enabled = false
 		if mode == "bounce":
 			body.sleeping = true
 			rng.randomize()

@@ -135,6 +135,7 @@ margin_bottom = 47.0
 [node name="CheckButton" type="CheckButton" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer"]
 margin_right = 76.0
 margin_bottom = 40.0
+mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 2 )
 text = "Light effects"
 
