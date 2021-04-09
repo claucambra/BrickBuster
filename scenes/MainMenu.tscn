@@ -123,7 +123,6 @@ script = ExtResource( 6 )
 [node name="PopupMenu" type="Popup" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton"]
 margin_right = 40.0
 margin_bottom = 40.0
-size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu"]
@@ -132,7 +131,7 @@ margin_bottom = 40.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer"]
 margin_right = 241.0
-margin_bottom = 47.0
+margin_bottom = 167.0
 
 [node name="SettingsSwitchesContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer"]
 margin_right = 40.0
@@ -144,6 +143,22 @@ margin_bottom = 47.0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 2 )
 text = "Light effects"
+
+[node name="AudioSwitch" type="CheckButton" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
+margin_right = 117.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 2 )
+pressed = true
+text = "Audio"
+
+[node name="VolumeSlider" type="HSlider" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
+margin_right = 16.0
+margin_bottom = 16.0
+max_value = 10.0
+value = 10.0
+rounded = true
+tick_count = 5
+ticks_on_borders = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer"]
 margin_right = 40.0
@@ -258,6 +273,7 @@ polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
 [connection signal="item_selected" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/MarginContainer/VBoxContainer/HBoxContainer/SortOptionButton" to="." method="_on_SortOptionButton_item_selected"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="toggled" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer/LightSwitch" to="." method="_on_CheckButton_toggled"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer/AudioSwitch" to="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" method="_on_AudioSwitch_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/HBoxContainer/ApplyButton" to="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" method="_on_ApplyButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/HBoxContainer/OkButton" to="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" method="_on_OkButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

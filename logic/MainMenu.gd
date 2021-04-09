@@ -51,7 +51,7 @@ func _ready():
 	popup_options_menu.popup_centered()
 	popup_options_menu.visible = false
 	
-	$Ball/Light2D.enabled = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton.lighting_enabled
+	$Ball/Light2D.enabled = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton.light_switch.pressed
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
