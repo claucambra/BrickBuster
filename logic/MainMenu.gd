@@ -6,8 +6,6 @@ extends Node2D
 # var b = "text"
 
 var save_game = File.new()
-var config = ConfigFile.new()
-var err = config.load("user://settings.cfg")
 var rng = RandomNumberGenerator.new()
 onready var popup_score_menu = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu
 onready var popup_score_list = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/MarginContainer/VBoxContainer/ItemList
@@ -53,9 +51,7 @@ func _ready():
 	popup_options_menu.popup_centered()
 	popup_options_menu.visible = false
 	
-	if err == OK:
-		$CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/CheckButton.pressed = config.get_value("lighting", "enabled")
-		$Ball/Light2D.enabled = config.get_value("lighting", "enabled")
+	$Ball/Light2D.enabled = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton.lighting_enabled
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -92,6 +88,7 @@ func _on_Ball_body_entered(body):
 	pass # Replace with function body.
 
 func _on_ScoresButton_pressed():
+	popup_options_menu.visible = false
 	popup_score_menu.visible = !popup_score_menu.visible
 
 class Sorter:
@@ -144,9 +141,5 @@ func _on_SortOptionButton_item_selected(index):
 		item_index += 1
 
 func _on_OptionsButton_pressed():
+	popup_score_menu.visible = false
 	popup_options_menu.visible = !popup_options_menu.visible
-
-func _on_CheckButton_toggled(button_pressed):
-	if err == OK || err == ERR_FILE_NOT_FOUND:
-		config.set_value("lighting", "enabled", button_pressed)
-		config.save("user://settings.cfg")
