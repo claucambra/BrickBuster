@@ -24,9 +24,8 @@ func _ready():
 	$Light2D.color = colors[mode]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	if hit && mode == "add-ball":
-		self.modulate.a -= 0.1
+#func _process(_delta):
+	#pass
 
 func _draw():
 	draw_arc($CollisionShape2D.position, 20, 1, 360, 2000, colors[mode], 5, true)
@@ -39,6 +38,7 @@ func _on_Special_body_entered(body):
 			$AddBallAudio.play()
 			$CollisionShape2D.set_deferred("disabled", true)
 			$Light2D.enabled = false
+			self.modulate.a = 0
 		if mode == "bounce":
 			body.sleeping = true
 			rng.randomize()
