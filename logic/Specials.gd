@@ -26,7 +26,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if hit && mode == "add-ball":
-		self.queue_free()
+		self.modulate.a -= 0.1
 
 func _draw():
 	draw_arc($CollisionShape2D.position, 20, 1, 360, 2000, colors[mode], 5, true)
@@ -35,9 +35,16 @@ func _on_Special_body_entered(body):
 	if "Ball" in body.get_name():
 		hit = true
 		emit_signal("special_area_entered", self)
+		if mode == "add-ball":
+			$AddBallAudio.play()
+			$CollisionShape2D.set_deferred("disabled", true)
 		if mode == "bounce":
 			body.sleeping = true
 			rng.randomize()
 			var rand_x = rng.randf_range(0, -1)
 			var rand_y = rng.randf_range(0, -1)
 			body.launch(Vector2(rand_x, rand_y))
+
+
+func _on_AddBallAudio_finished():
+	self.queue_free()
