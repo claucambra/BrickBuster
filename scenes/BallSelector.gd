@@ -1,5 +1,6 @@
 extends Button
 
+signal color_changed
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -25,6 +26,8 @@ func _on_ApplyButton_pressed():
 	if err == OK || err == ERR_FILE_NOT_FOUND:
 		config.set_value("ball", "color", color_picker.color)
 		config.save("user://settings.cfg")
+	
+	emit_signal("color_changed")
 
 func _on_OkButton_pressed():
 	$PopupMenu.hide()

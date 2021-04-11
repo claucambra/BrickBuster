@@ -1,5 +1,6 @@
 extends Button
 
+signal options_changed
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -33,8 +34,7 @@ func _on_ApplyButton_pressed():
 		config.set_value("audio", "volume", volume_slider.value)
 		config.save("user://settings.cfg")
 	
-	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), !audio_switch.pressed)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), volume_slider.value)
+	emit_signal("options_changed")
 
 func _on_OkButton_pressed():
 	$PopupMenu.hide()

@@ -51,10 +51,8 @@ func _ready():
 		config.set_value("audio", "volume", 10)
 		config.set_value("ball", "color", "#ffffff")
 	
-	if config.get_value("audio", "volume") == 0:
-		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
-	else:
-		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume"))
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume") == 0)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume"))
 	
 	rng.randomize()
 	$TitleBrick.health = 90000
@@ -68,6 +66,9 @@ func _ready():
 	popup_balls_menu.visible = false
 	popup_options_menu.popup_centered()
 	popup_options_menu.visible = false
+	
+	balls_button.connect("color_changed", self, "on_color_changed")
+	options_button.connect("options_changed", self, "on_options_changed")
 	
 	$Ball/Light2D.enabled = config.get_value("lighting", "enabled")
 	$Ball.set_color(config.get_value("ball", "color"))
@@ -170,3 +171,13 @@ func _on_BallsButton_pressed():
 	popup_options_menu.visible = false
 	popup_balls_menu.visible = !popup_balls_menu.visible
 
+
+func on_color_changed():
+	config.load("user://settings.cfg")
+	$Ball.set_color(config.get_value("ball", "color"))
+
+func on_options_changed():
+	config.load("user://settings.cfg")
+	$Ball/Light2D.enabled = config.get_value("lighting", "enabled")
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume") == 0)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume"))

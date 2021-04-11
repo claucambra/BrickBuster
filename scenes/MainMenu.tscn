@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/Balls/Ball.tscn" type="PackedScene" id=3]
 [ext_resource path="res://logic/Brick.gd" type="Script" id=4]
 [ext_resource path="res://sprites/light.png" type="Texture" id=5]
-[ext_resource path="res://logic/SettingsMenu.gd" type="Script" id=6]
+[ext_resource path="res://logic/OptionsMenu.gd" type="Script" id=6]
 [ext_resource path="res://scenes/BallSelector.gd" type="Script" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -143,10 +143,10 @@ margin_bottom = -4.0
 [node name="ColorPicker" type="ColorPicker" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 328.0
-margin_bottom = 482.0
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 340.0
+margin_bottom = 494.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer"]
 margin_right = 40.0
@@ -330,7 +330,6 @@ polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
 [connection signal="item_selected" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/ScrollContainer/VBoxContainer/HBoxContainer/SortOptionButton" to="." method="_on_SortOptionButton_item_selected"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton" to="." method="_on_BallsButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer/HBoxContainer/ApplyButton" to="CanvasLayer/MainMenu/VBoxContainer/BallsButton" method="_on_ApplyButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer/HBoxContainer/ApplyButton" to="." method="_on_BallSelector_ApplyButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer/HBoxContainer/OkButton" to="CanvasLayer/MainMenu/VBoxContainer/BallsButton" method="_on_OkButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="toggled" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer/LightSwitch" to="." method="_on_CheckButton_toggled"]

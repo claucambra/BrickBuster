@@ -17,6 +17,7 @@ func launch (vector):
 func set_color(color):
 	ball_color = color
 	$Light2D.color = color
+	update()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
