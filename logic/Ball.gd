@@ -8,10 +8,15 @@ signal ball_died(self_position)
 # var b = "text"
 
 export var speed = 250
+var ball_color = "#ffffff"
 
 func launch (vector):
 	apply_impulse(Vector2(0,0), vector.normalized() * speed)
 	$LaunchAudio.play()
+
+func set_color(color):
+	ball_color = color
+	$Light2D.color = color
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,7 +41,7 @@ func _on_Ball_body_entered(body):
 		$WallHitAudio.play()
 
 func _draw():
-	draw_circle($CollisionShape2D.position, 10, ColorN("white", 1))
+	draw_circle($CollisionShape2D.position, 10, Color(ball_color))
 
 func _on_Timer_timeout():
 	emit_signal("ball_no_contact_timeout", self.position, self.linear_velocity)

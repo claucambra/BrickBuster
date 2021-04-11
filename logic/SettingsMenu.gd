@@ -14,6 +14,7 @@ onready var volume_slider = $PopupMenu/MarginContainer/VBoxContainer/SettingsSwi
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print(config.get_value("lighting", "enabled"))
 	if err == OK:
 		light_switch.pressed = config.get_value("lighting", "enabled")
 		volume_slider.value = config.get_value("audio", "volume")
@@ -21,8 +22,6 @@ func _ready():
 			audio_switch.pressed = false
 	
 	volume_slider.visible = audio_switch.pressed
-	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), !audio_switch.pressed)
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), volume_slider.value)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

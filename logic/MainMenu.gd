@@ -7,8 +7,14 @@ extends Node2D
 
 var save_game = File.new()
 var rng = RandomNumberGenerator.new()
+var config = ConfigFile.new()
+var err = config.load("user://settings.cfg")
+
 onready var popup_score_menu = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu
-onready var popup_score_list = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/MarginContainer/VBoxContainer/ItemList
+onready var popup_score_list = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/ScrollContainer/VBoxContainer/ItemList
+onready var balls_button = $CanvasLayer/MainMenu/VBoxContainer/BallsButton
+onready var popup_balls_menu = $CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu
+onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
 onready var popup_options_menu = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu
 
 # Called when the node enters the scene tree for the first time.
@@ -31,7 +37,7 @@ func _ready():
 					if score == top_score:
 						popup_score_list.set_item_custom_bg_color(item_index,ColorN("red", 1))
 					item_index += 1
-		var sort_options_button = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/MarginContainer/VBoxContainer/HBoxContainer/SortOptionButton
+		var sort_options_button = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/ScrollContainer/VBoxContainer/HBoxContainer/SortOptionButton
 		sort_options_button.add_item("By attainment (asc)", 0)
 		sort_options_button.add_item("By attainment (desc)", 1)
 		sort_options_button.add_item("By score (asc)", 2)
@@ -39,6 +45,16 @@ func _ready():
 	else:
 		$CanvasLayer/MainMenu/VBoxContainer/ContinueButton.visible = false
 		$CanvasLayer/MainMenu/VBoxContainer/ScoresButton.disabled = true
+	
+	if err == ERR_FILE_NOT_FOUND:
+		config.set_value("lighting", "enabled", true)
+		config.set_value("audio", "volume", 10)
+		config.set_value("ball", "color", "#ffffff")
+	
+	if config.get_value("audio", "volume") == 0:
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
+	else:
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume"))
 	
 	rng.randomize()
 	$TitleBrick.health = 90000
@@ -48,10 +64,13 @@ func _ready():
 	
 	popup_score_menu.popup_centered()
 	popup_score_menu.visible = false
+	popup_balls_menu.popup_centered()
+	popup_balls_menu.visible = false
 	popup_options_menu.popup_centered()
 	popup_options_menu.visible = false
 	
-	$Ball/Light2D.enabled = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton.light_switch.pressed
+	$Ball/Light2D.enabled = config.get_value("lighting", "enabled")
+	$Ball.set_color(config.get_value("ball", "color"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -89,6 +108,7 @@ func _on_Ball_body_entered(body):
 
 func _on_ScoresButton_pressed():
 	popup_options_menu.visible = false
+	popup_balls_menu.visible = false
 	popup_score_menu.visible = !popup_score_menu.visible
 
 class Sorter:
@@ -142,4 +162,11 @@ func _on_SortOptionButton_item_selected(index):
 
 func _on_OptionsButton_pressed():
 	popup_score_menu.visible = false
+	popup_balls_menu.visible = false
 	popup_options_menu.visible = !popup_options_menu.visible
+
+func _on_BallsButton_pressed():
+	popup_score_menu.visible = false
+	popup_options_menu.visible = false
+	popup_balls_menu.visible = !popup_balls_menu.visible
+

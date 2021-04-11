@@ -20,12 +20,13 @@ var ammo = 1
 var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
 var lighting_enabled = true
+var ball_color = "#ffffff"
 
 onready var meta_area = $CanvasLayer/MetaArea
 onready var current_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/CurrentScoreLabel
 onready var high_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
 onready var ammo_label = $CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
-onready var ball_scene = load("res://scenes/Ball.tscn")
+onready var ball_scene = load("res://scenes/Balls/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
 onready var specials_scene = load("res://scenes/Specials.tscn")
@@ -138,6 +139,7 @@ func launch_balls(direction, amount):
 	for i in amount:
 		var next_ball = ball_scene.instance()
 		next_ball.get_node("Light2D").enabled = lighting_enabled
+		next_ball.set_color(ball_color)
 		add_child(next_ball)
 		next_ball.connect("ball_no_contact_timeout", self, "on_ball_no_contact_timeout")
 		next_ball.connect("ball_died", self, "on_ball_died")
@@ -332,6 +334,7 @@ func _ready():
 	var err = config.load("user://settings.cfg")
 	if err == OK:
 		lighting_enabled = config.get_value("lighting", "enabled")
+		ball_color = config.get_value("ball", "color")
 	
 	meta_area.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
 	meta_area.pause_mode = Node.PAUSE_MODE_PROCESS
@@ -340,6 +343,7 @@ func _ready():
 	launch_line.add_point(Vector2(0,0), 0)
 	launch_line.add_point(Vector2(0,0), 1)
 	ball.get_node("Light2D").enabled = lighting_enabled
+	ball.set_color(ball_color)
 	add_child(ball)
 	
 	wait.wait_time = 0.1
