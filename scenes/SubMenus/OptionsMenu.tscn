@@ -10,38 +10,59 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_right = 40.0
 margin_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 400, 800 )
+size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -83.5
+margin_bottom = 83.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="MarginContainer"]
+margin_right = 400.0
+margin_bottom = 167.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-margin_right = 241.0
+margin_right = 400.0
 margin_bottom = 167.0
 
 [node name="SettingsSwitchesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 400.0
+margin_bottom = 118.0
 
 [node name="LightSwitch" type="CheckButton" parent="MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
-margin_right = 241.0
+margin_right = 400.0
 margin_bottom = 47.0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 1 )
 text = "Light effects"
 
 [node name="AudioSwitch" type="CheckButton" parent="MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
-margin_right = 117.0
-margin_bottom = 40.0
+margin_top = 51.0
+margin_right = 400.0
+margin_bottom = 98.0
 custom_fonts/font = ExtResource( 1 )
 pressed = true
 text = "Audio"
 
 [node name="VolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
-margin_right = 16.0
-margin_bottom = 16.0
+margin_top = 102.0
+margin_right = 400.0
+margin_bottom = 118.0
 max_value = 10.0
 value = 10.0
 rounded = true
@@ -49,19 +70,21 @@ tick_count = 5
 ticks_on_borders = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_top = 122.0
+margin_right = 400.0
+margin_bottom = 167.0
 
 [node name="ApplyButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 12.0
-margin_bottom = 20.0
+margin_right = 198.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Apply"
 
 [node name="OkButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 12.0
-margin_bottom = 20.0
+margin_left = 202.0
+margin_right = 400.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "OK"
