@@ -1,4 +1,4 @@
-extends Button
+extends Popup
 
 signal options_changed
 
@@ -9,13 +9,13 @@ signal options_changed
 var config = ConfigFile.new()
 var err = config.load("user://settings.cfg")
 
-onready var light_switch = $PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer/LightSwitch
-onready var audio_switch = $PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
-onready var volume_slider = $PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer/VolumeSlider
+onready var light_switch = $MarginContainer/VBoxContainer/SettingsSwitchesContainer/LightSwitch
+onready var audio_switch = $MarginContainer/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
+onready var volume_slider = $MarginContainer/VBoxContainer/SettingsSwitchesContainer/VolumeSlider
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(config.get_value("lighting", "enabled"))
+	print(config.get_value("audio", "volume"))
 	if err == OK:
 		light_switch.pressed = config.get_value("lighting", "enabled")
 		volume_slider.value = config.get_value("audio", "volume")
@@ -37,7 +37,7 @@ func _on_ApplyButton_pressed():
 	emit_signal("options_changed")
 
 func _on_OkButton_pressed():
-	$PopupMenu.hide()
+	hide()
 
 func _on_AudioSwitch_pressed():
 	volume_slider.visible = audio_switch.pressed

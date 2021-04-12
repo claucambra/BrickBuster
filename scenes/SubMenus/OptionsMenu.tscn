@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=1]
+[ext_resource path="res://logic/OptionsMenu.gd" type="Script" id=2]
+
+[node name="PopupMenu" type="Popup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_vertical = 3
+script = ExtResource( 2 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 241.0
+margin_bottom = 167.0
+
+[node name="SettingsSwitchesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="LightSwitch" type="CheckButton" parent="MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
+margin_right = 241.0
+margin_bottom = 47.0
+mouse_default_cursor_shape = 2
+custom_fonts/font = ExtResource( 1 )
+text = "Light effects"
+
+[node name="AudioSwitch" type="CheckButton" parent="MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
+margin_right = 117.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 1 )
+pressed = true
+text = "Audio"
+
+[node name="VolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
+margin_right = 16.0
+margin_bottom = 16.0
+max_value = 10.0
+value = 10.0
+rounded = true
+tick_count = 5
+ticks_on_borders = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ApplyButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 1 )
+text = "Apply"
+
+[node name="OkButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 1 )
+text = "OK"
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SettingsSwitchesContainer/AudioSwitch" to="." method="_on_AudioSwitch_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/ApplyButton" to="." method="_on_ApplyButton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OkButton" to="." method="_on_OkButton_pressed"]

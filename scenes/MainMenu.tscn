@@ -1,12 +1,13 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://logic/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=2]
 [ext_resource path="res://scenes/Balls/Ball.tscn" type="PackedScene" id=3]
 [ext_resource path="res://logic/Brick.gd" type="Script" id=4]
 [ext_resource path="res://sprites/light.png" type="Texture" id=5]
-[ext_resource path="res://logic/OptionsMenu.gd" type="Script" id=6]
-[ext_resource path="res://scenes/BallSelector.gd" type="Script" id=7]
+[ext_resource path="res://scenes/SubMenus/OptionsMenu.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/SubMenus/ScoreMenu.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/SubMenus/BallMenu.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 160, 160 )
@@ -76,43 +77,7 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Scores"
 
-[node name="PopupMenu" type="Popup" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton"]
-margin_right = 40.0
-margin_bottom = 40.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu"]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 0, 400 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-scroll_horizontal_enabled = false
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/ScrollContainer"]
-margin_right = 121.0
-margin_bottom = 49.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/ScrollContainer/VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="SortOptionButton" type="OptionButton" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/ScrollContainer/VBoxContainer/HBoxContainer"]
-margin_right = 29.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
-text = "Sort by"
-
-[node name="ItemList" type="ItemList" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/ScrollContainer/VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 2 )
-auto_height = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="ScoresMenu" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton" instance=ExtResource( 9 )]
 
 [node name="BallsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 642.0
@@ -122,49 +87,8 @@ rect_min_size = Vector2( 300, 0 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Balls"
-script = ExtResource( 7 )
 
-[node name="PopupMenu" type="Popup" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="TabContainer" type="TabContainer" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu"]
-margin_right = 8.0
-margin_bottom = 36.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-
-[node name="ColorPicker" type="ColorPicker" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 340.0
-margin_bottom = 494.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="ApplyButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer/HBoxContainer"]
-margin_right = 12.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
-text = "Apply"
-
-[node name="OkButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer/HBoxContainer"]
-margin_right = 12.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
-text = "Ok"
+[node name="BallsMenu" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton" instance=ExtResource( 10 )]
 
 [node name="OptionsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 856.0
@@ -175,65 +99,8 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Options"
-script = ExtResource( 6 )
 
-[node name="PopupMenu" type="Popup" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton"]
-margin_right = 40.0
-margin_bottom = 40.0
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer"]
-margin_right = 241.0
-margin_bottom = 167.0
-
-[node name="SettingsSwitchesContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="LightSwitch" type="CheckButton" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
-margin_right = 241.0
-margin_bottom = 47.0
-mouse_default_cursor_shape = 2
-custom_fonts/font = ExtResource( 2 )
-text = "Light effects"
-
-[node name="AudioSwitch" type="CheckButton" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
-margin_right = 117.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 2 )
-pressed = true
-text = "Audio"
-
-[node name="VolumeSlider" type="HSlider" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
-margin_right = 16.0
-margin_bottom = 16.0
-max_value = 10.0
-value = 10.0
-rounded = true
-tick_count = 5
-ticks_on_borders = true
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="ApplyButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 12.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
-text = "Apply"
-
-[node name="OkButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 12.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
-text = "OK"
+[node name="OptionsMenu" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" instance=ExtResource( 8 )]
 
 [node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 1070.0
@@ -327,14 +194,7 @@ polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ContinueButton" to="." method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton" to="." method="_on_NewGameButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton" to="." method="_on_ScoresButton_pressed"]
-[connection signal="item_selected" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton/PopupMenu/ScrollContainer/VBoxContainer/HBoxContainer/SortOptionButton" to="." method="_on_SortOptionButton_item_selected"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton" to="." method="_on_BallsButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer/HBoxContainer/ApplyButton" to="CanvasLayer/MainMenu/VBoxContainer/BallsButton" method="_on_ApplyButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton/PopupMenu/TabContainer/VBoxContainer/HBoxContainer/OkButton" to="CanvasLayer/MainMenu/VBoxContainer/BallsButton" method="_on_OkButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
-[connection signal="toggled" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer/LightSwitch" to="." method="_on_CheckButton_toggled"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/SettingsSwitchesContainer/AudioSwitch" to="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" method="_on_AudioSwitch_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/HBoxContainer/ApplyButton" to="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" method="_on_ApplyButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton/PopupMenu/MarginContainer/VBoxContainer/HBoxContainer/OkButton" to="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" method="_on_OkButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="body_entered" from="Ball" to="." method="_on_Ball_body_entered"]

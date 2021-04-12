@@ -1,4 +1,4 @@
-extends Button
+extends Popup
 
 signal color_changed
 
@@ -9,7 +9,7 @@ signal color_changed
 var config = ConfigFile.new()
 var err = config.load("user://settings.cfg")
 
-onready var color_picker = $PopupMenu/TabContainer/VBoxContainer/ColorPicker
+onready var color_picker = $TabContainer/ColourMenu/VBoxContainer/ColorPicker
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -30,4 +30,4 @@ func _on_ApplyButton_pressed():
 	emit_signal("color_changed")
 
 func _on_OkButton_pressed():
-	$PopupMenu.hide()
+	hide()
