@@ -7,8 +7,8 @@ extends Popup
 
 var save_game = File.new()
 
-onready var popup_score_list = $ScrollContainer/VBoxContainer/ItemList
-onready var sort_options_button = $ScrollContainer/VBoxContainer/HBoxContainer/SortOptionButton
+onready var popup_score_list = $MarginContainer/VBoxContainer/ScrollContainer/ItemList
+onready var sort_options_button = $MarginContainer/VBoxContainer/HBoxContainer/SortOptionButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -87,3 +87,6 @@ func _on_SortOptionButton_item_selected(index):
 		if score[0] == top_score:
 			popup_score_list.set_item_custom_bg_color(item_index,ColorN("red", 1))
 		item_index += 1
+
+func _on_OkButton_pressed():
+	hide()
