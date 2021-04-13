@@ -40,22 +40,22 @@ func _ready():
 
 class Sorter:
 	static func sort_id_ascending(a, b):
-		if a[1] < b[1]:
+		if int(a[1]) < int(b[1]):
 			return true
 		return false
 	
 	static func sort_id_descending(a, b):
-		if a[1] > b[1]:
+		if int(a[1]) > int(b[1]):
 			return true
 		return false
 	
 	static func sort_score_ascending(a, b):
-		if a[0] < b[0]:
+		if int(a[0]) < int(b[0]):
 			return true
 		return false
 	
 	static func sort_score_descending(a, b):
-		if a[0] > b[0]:
+		if int(a[0]) > int(b[0]):
 			return true
 		return false
 
@@ -67,6 +67,7 @@ func _on_SortOptionButton_item_selected(index):
 	
 	scores.sort_custom(Sorter, "sort_score_descending")
 	var top_score = scores[0][0]
+	print(top_score)
 	
 	match index:
 		0:
