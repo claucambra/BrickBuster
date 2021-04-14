@@ -78,6 +78,7 @@ custom_fonts/font = ExtResource( 2 )
 text = "Scores"
 
 [node name="ScoresMenu" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton" instance=ExtResource( 9 )]
+visible = false
 
 [node name="BallsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 642.0

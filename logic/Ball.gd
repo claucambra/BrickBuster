@@ -7,6 +7,9 @@ signal ball_died(self_position)
 # var a = 2
 # var b = "text"
 
+var ball_name = "Standard ball"
+var ball_desc = "A standard circular ball."
+
 export var speed = 250
 var ball_color = "#ffffff"
 
