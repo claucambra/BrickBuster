@@ -112,6 +112,7 @@ margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Ok"
+[connection signal="pressed" from="TabContainer/BallPicker/HBoxContainer/ApplyButton" to="." method="_on_ApplyButton_pressed"]
 [connection signal="pressed" from="TabContainer/BallPicker/HBoxContainer/OkButton" to="." method="_on_OkButton_pressed"]
 [connection signal="pressed" from="TabContainer/ColourMenu/VBoxContainer/HBoxContainer/ApplyButton" to="." method="_on_ApplyButton_pressed"]
 [connection signal="pressed" from="TabContainer/ColourMenu/VBoxContainer/HBoxContainer/OkButton" to="." method="_on_OkButton_pressed"]

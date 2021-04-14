@@ -301,11 +301,13 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 		distance_to_midcolumn_points.append(point.distance_to(ball_position))
 	var line_point = distance_to_midcolumn_points.find(distance_to_midcolumn_points.min())
 	
-	var things_at_point = get_world_2d().direct_space_state.intersect_point(columns[3].get_point_position(line_point), 32, [], 1, true, true)
 	if ball_linear_velocity.y < 0 && distance_to_midcolumn_points.min() < 0:
 		line_point -= 1 # Line points go top to bottom
 	elif ball_linear_velocity.y > 0 && distance_to_midcolumn_points.min() > 0:
 		line_point += 1
+	
+	var things_at_point = get_world_2d().direct_space_state.intersect_point(columns[3].get_point_position(line_point), 32, [], 1, true, true)
+	
 	if line_point < 8 && things_at_point.empty():
 		new_destroyable(line_point, columns[3], "BounceSpecial_NC")
 
