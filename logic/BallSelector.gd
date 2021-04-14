@@ -38,7 +38,7 @@ func _ready():
 	fetch_balls()
 	for ball_scene in ball_scenes:
 		var ball = ball_scene.instance()
-		ball_list.add_item(ball.ball_name)
+		ball_list.add_item(ball.ball_name, ball.ball_icon)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

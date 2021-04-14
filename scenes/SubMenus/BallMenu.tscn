@@ -4,7 +4,6 @@
 [ext_resource path="res://logic/BallSelector.gd" type="Script" id=2]
 
 [node name="PopupMenu" type="Popup"]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -41,6 +40,7 @@ margin_right = 392.0
 margin_bottom = 739.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+scroll_horizontal_enabled = false
 
 [node name="ItemList" type="ItemList" parent="TabContainer/BallPicker/ScrollContainer"]
 margin_right = 392.0
@@ -48,6 +48,7 @@ margin_bottom = 739.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
+fixed_icon_size = Vector2( 25, 25 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/BallPicker"]
 margin_top = 694.0
