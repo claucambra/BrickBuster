@@ -1,6 +1,9 @@
 extends Node2D
 
 # <---------------------------- MEMBER VARIABLES ---------------------------->
+var config = ConfigFile.new()
+var err = config.load("user://settings.cfg")
+
 var game_over = false
 # These variables are used to keep track of what stage of the round we are in
 # This is used to decide input state and acceptance
@@ -22,11 +25,13 @@ var rng = RandomNumberGenerator.new()
 var lighting_enabled = true
 var ball_color = "#ffffff"
 
+var ball_scene = null
+var ball = null
+
 onready var meta_area = $CanvasLayer/MetaArea
 onready var current_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/CurrentScoreLabel
 onready var high_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
 onready var ammo_label = $CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
-onready var ball_scene = load("res://scenes/Balls/Ball.tscn")
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
 onready var specials_scene = load("res://scenes/Specials.tscn")
@@ -34,7 +39,6 @@ onready var laserbeam_scene = load("res://scenes/LaserBeam.tscn")
 # We use a ball instance to mark where our balls will launch from.
 # This ball remains throughout the game, 
 # moving position to where the last ball of the last round fell.
-onready var ball = ball_scene.instance()
 onready var launch_line = $CanvasLayer/LaunchLine
 onready var wait = $LaunchTimer
 onready var columns = [
@@ -332,9 +336,10 @@ func _on_ControlArea_mouse_exited():
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var config = ConfigFile.new()
-	var err = config.load("user://settings.cfg")
 	if err == OK:
+		ball_scene = load("res://scenes/Balls/" + config.get_value("ball", "ball_file_name"))
+		ball = ball_scene.instance()
+		ball.marker_ball = true
 		lighting_enabled = config.get_value("lighting", "enabled")
 		ball_color = config.get_value("ball", "color")
 	
@@ -344,6 +349,7 @@ func _ready():
 	
 	launch_line.add_point(Vector2(0,0), 0)
 	launch_line.add_point(Vector2(0,0), 1)
+	$LaunchRayCast2D.add_exception(ball)
 	ball.get_node("Light2D").enabled = lighting_enabled
 	ball.set_color(ball_color)
 	add_child(ball)

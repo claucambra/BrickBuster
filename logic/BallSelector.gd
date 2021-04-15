@@ -1,6 +1,7 @@
 extends Popup
 
 signal color_changed
+signal ball_changed
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -26,7 +27,7 @@ func fetch_balls():
 			break
 		elif not file_name.begins_with("."):
 			var ball_scene = load(path + file_name)
-			ball_scenes.append(ball_scene)
+			ball_scenes.append({"filename": file_name, "ball_scene": ball_scene})
 
 	ball_scenes_dir.list_dir_end()
 
@@ -36,9 +37,17 @@ func _ready():
 		color_picker.color = config.get_value("ball", "color")
 	
 	fetch_balls()
+	var iterator = 0
 	for ball_scene in ball_scenes:
-		var ball = ball_scene.instance()
-		ball_list.add_item(ball.ball_name, ball.ball_icon)
+		var ball_filename = ball_scene["filename"]
+		var ball_meta = ball_scene["ball_scene"].instance().get_node("MetaNode")
+		ball_list.add_item(ball_meta.ball_name, ball_meta.ball_icon)
+		ball_list.set_item_metadata(iterator, ball_filename)
+		if ball_filename == config.get_value("ball", "ball_file_name"):
+			ball_list.set_item_custom_bg_color(iterator, ColorN("red", 1))
+		iterator += 1
+	if config.get_value("ball", "ball_file_name") == null:
+		ball_list.set_item_custom_bg_color(0, ColorN("red", 1))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -49,9 +58,18 @@ func _ready():
 func _on_ApplyButton_pressed():
 	if err == OK || err == ERR_FILE_NOT_FOUND:
 		config.set_value("ball", "color", color_picker.color)
+		if !ball_list.is_anything_selected() && config.get_value("ball", "ball_file_name") == null:
+			config.set_value("ball", "ball_file_name", "Ball.tscn")
+		elif ball_list.is_anything_selected():
+			config.set_value("ball", "ball_file_name", ball_list.get_item_metadata(ball_list.get_selected_items()[0]))
+			for item_index in ball_list.get_item_count():
+				 ball_list.set_item_custom_bg_color(item_index, ColorN("red", 0))
+			ball_list.set_item_custom_bg_color(ball_list.get_selected_items()[0], ColorN("red", 1))
+			ball_list.unselect_all()
+		
 		config.save("user://settings.cfg")
-	
-	emit_signal("color_changed")
+		emit_signal("color_changed")
+		emit_signal("ball_changed")
 
 func _on_OkButton_pressed():
 	hide()

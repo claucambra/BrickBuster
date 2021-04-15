@@ -88,8 +88,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColorPicker" type="ColorPicker" parent="TabContainer/ColourMenu/VBoxContainer"]
-margin_right = 392.0
-margin_bottom = 690.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 396.0
+margin_bottom = 694.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

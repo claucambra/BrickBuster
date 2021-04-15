@@ -1,8 +1,7 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://logic/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=2]
-[ext_resource path="res://scenes/Balls/Ball.tscn" type="PackedScene" id=3]
 [ext_resource path="res://logic/Brick.gd" type="Script" id=4]
 [ext_resource path="res://sprites/light.png" type="Texture" id=5]
 [ext_resource path="res://scenes/SubMenus/OptionsMenu.tscn" type="PackedScene" id=8]
@@ -159,9 +158,6 @@ texture_scale = 0.5
 position = Vector2( 40, -16 )
 occluder = SubResource( 2 )
 
-[node name="Ball" parent="." instance=ExtResource( 3 )]
-position = Vector2( 512, 1216 )
-
 [node name="TopWall" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
@@ -198,4 +194,3 @@ polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton" to="." method="_on_BallsButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
-[connection signal="body_entered" from="Ball" to="." method="_on_Ball_body_entered"]

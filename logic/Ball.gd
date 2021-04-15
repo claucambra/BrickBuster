@@ -7,12 +7,9 @@ signal ball_died(self_position)
 # var a = 2
 # var b = "text"
 
-var ball_name = "Standard ball"
-var ball_desc = "A standard circular ball."
-var ball_icon = load("res://icons/ball.png")
-
 export var speed = 250
 var ball_color = "#ffffff"
+var marker_ball = false
 
 func launch (vector):
 	apply_impulse(Vector2(0,0), vector.normalized() * speed)
@@ -21,16 +18,22 @@ func launch (vector):
 func set_color(color):
 	ball_color = color
 	$Light2D.color = color
-	update()
+	if ($MetaNode.ball_name == "Standard ball"):
+		update()
+	else:
+		$Polygon2D.color = color
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Timer.wait_time = 5.0
 	$Timer.start()
+	
+	if $MetaNode.ball_name != "Standard ball":
+		$Polygon2D.color = ball_color
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-# func _process(delta):
-	# pass
+#func _process(delta):
+	#pass
 
 func _on_Ball_body_entered(body):
 	if !("Wall" in body.get_name()):
@@ -39,14 +42,15 @@ func _on_Ball_body_entered(body):
 			body.health -= 1
 			body.hit = true
 			$BrickHitAudio.play()
-	elif body.get_name() == "EliminatorBottomWall":
+	elif body.get_name() == "EliminatorBottomWall" && marker_ball == false:
 		emit_signal("ball_died", self.position)
 		self.queue_free()
 	else:
 		$WallHitAudio.play()
 
 func _draw():
-	draw_circle($CollisionShape2D.position, 10, Color(ball_color))
+	if ($MetaNode.ball_name == "Standard ball"):
+		draw_circle($CollisionThing2D.position, 10, Color(ball_color))
 
 func _on_Timer_timeout():
 	emit_signal("ball_no_contact_timeout", self.position, self.linear_velocity)
