@@ -315,10 +315,10 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	if line_point < 8 && things_at_point.empty():
 		new_destroyable(line_point, columns[3], "BounceSpecial_NC")
 
-func on_ball_died(ball_position_x):
+func on_ball_died(ball_position):
 	# Set round_first_dead_ball_position to move our launch position ball there
 	if round_first_dead_ball_position == null:
-		round_first_dead_ball_position = ball_position_x
+		round_first_dead_ball_position = ball_position
 
 func _on_ControlArea_mouse_entered():
 	mouse_in_controlarea = true
@@ -429,19 +429,20 @@ func _process(delta):
 			drag_enabled = false
 		
 		# <---- SMOOTHLY REPOSITION INDICATOR BALL AFTER FIRST BALL RETURN ---->
-		if ball.position == round_first_dead_ball_position && !round_in_progress:
-			# So our ball doesn't reposition again if it has reached its position but the round is still on
-			round_first_dead_ball_position = null
-		elif round_first_dead_ball_position != null && ball.position != round_first_dead_ball_position:
+		if round_first_dead_ball_position != null && ball.position.x != round_first_dead_ball_position.x:
 			drag_enabled = false
+			print("UNEQUAL!!")
 			var reposition = ball.position - round_first_dead_ball_position
 			# Snap ball into position when they are imperceptibly close
 			# Otherwise they will never reach the intended position
-			if round_first_dead_ball_position.distance_to(ball.position) < 0.5:
-				ball.position = round_first_dead_ball_position
+			# We also don't want to go to the Y position of the dead ball, only the X
+			if round_first_dead_ball_position.distance_to(Vector2(ball.position.x, round_first_dead_ball_position.y)) < 0.5:
+				ball.position.x = round_first_dead_ball_position.x
+				# So our ball doesn't reposition again if it has reached its position but the round is still on
+				round_first_dead_ball_position = null
 			elif all_balls_launched:
 				var reposition_velocity = reposition * 6 * delta
-				ball.position -= reposition_velocity
+				ball.position.x -= reposition_velocity.x
 		
 		# <---------------------- ROUND PROGRESS CHECKS ---------------------->
 		for live_ball in live_balls:
