@@ -7,7 +7,7 @@ extends Node
 
 var ball_name = "Square ball"
 var ball_desc = "A square ball."
-var ball_icon = load("res://icons/ball.png")
+var ball_icon = load("res://icons/square_ball.png")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
