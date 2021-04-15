@@ -22,6 +22,10 @@ var rng = RandomNumberGenerator.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Light2D.color = colors[mode]
+	if mode == "laser":
+		$Line2D.visible = true
+		if laserbeam_direction == "vertical":
+			$Line2D.rotation_degrees = 90
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(_delta):
