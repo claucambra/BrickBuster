@@ -431,7 +431,6 @@ func _process(delta):
 		# <---- SMOOTHLY REPOSITION INDICATOR BALL AFTER FIRST BALL RETURN ---->
 		if round_first_dead_ball_position != null && ball.position.x != round_first_dead_ball_position.x:
 			drag_enabled = false
-			print("UNEQUAL!!")
 			var reposition = ball.position - round_first_dead_ball_position
 			# Snap ball into position when they are imperceptibly close
 			# Otherwise they will never reach the intended position
