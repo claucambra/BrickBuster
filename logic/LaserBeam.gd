@@ -16,7 +16,7 @@ func _ready():
 	$LaserBeamAudio.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if self.modulate.a > 0:
 		self.modulate.a -= 0.1
 	else:

@@ -251,7 +251,7 @@ func update_score_labels():
 	else:
 		high_score_label.text = "High Score: " + String(past_scores.max())
 
-func reset(from_main_menu = false):
+func reset():
 	for live_ball in live_balls:
 		if is_instance_valid(live_ball):
 			live_ball.queue_free()

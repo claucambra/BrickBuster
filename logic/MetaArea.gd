@@ -22,7 +22,7 @@ func _ready():
 	popup.hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("escape"):
 		popup.visible = !popup.visible
 		emit_signal("pause_menu_toggled", popup.visible)
