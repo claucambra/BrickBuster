@@ -8,6 +8,7 @@ extends Node
 var ball_name = "Triangular ball"
 var ball_desc = "A triangular ball."
 var ball_icon = load("res://icons/triangle_ball.png")
+var min_score = 60
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
