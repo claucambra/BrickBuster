@@ -37,12 +37,16 @@ func _ready():
 		config.set_value("audio", "volume", 10)
 		config.set_value("ball", "color", "#ffffff")
 		config.set_value("ball", "ball_file_name", "Ball.tscn")
+		config.save("user://settings.cfg")
+		config.load("user://settings.cfg")
 	
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume") == 0)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume"))
 	
 	if config.get_value("ball", "ball_file_name") == null:
 		config.set_value("ball", "ball_file_name", "Ball.tscn")
+		config.save("user://settings.cfg")
+		config.load("user://settings.cfg")
 	var ball_scene = load("res://scenes/Balls/" + config.get_value("ball", "ball_file_name"))
 	ball = ball_scene.instance()
 	add_child(ball)
