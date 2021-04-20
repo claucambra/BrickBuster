@@ -37,8 +37,6 @@ func _ready():
 	if err == OK:
 		color_picker.color = config.get_value("ball", "color")
 	
-	save_game
-	
 	fetch_balls()
 	var iterator = 0
 	for ball_scene in ball_scenes:

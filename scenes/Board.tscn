@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://logic/GameMain.gd" type="Script" id=1]
 [ext_resource path="res://scenes/MetaArea.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=3]
+[ext_resource path="res://logic/ModeSelector.gd" type="Script" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 359.589, 8.62341 )
@@ -10,17 +10,19 @@ extents = Vector2( 359.589, 8.62341 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 640 )
 
-[node name="Board" type="Node2D" groups=[
+[node name="GameModeSelector" type="Node"]
+script = ExtResource( 4 )
+
+[node name="Board" type="Node2D" parent="." groups=[
 "Persist",
 ]]
-script = ExtResource( 1 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="Board"]
 
-[node name="MetaArea" parent="CanvasLayer" instance=ExtResource( 2 )]
+[node name="MetaArea" parent="Board/CanvasLayer" instance=ExtResource( 2 )]
 light_mask = 4
 
-[node name="LaunchLine" type="Line2D" parent="CanvasLayer"]
+[node name="LaunchLine" type="Line2D" parent="Board/CanvasLayer"]
 light_mask = 0
 z_index = 1
 width = 5.0
@@ -28,7 +30,7 @@ default_color = Color( 1, 0.843137, 0.392157, 1 )
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="BottomPanel" type="Panel" parent="CanvasLayer"]
+[node name="BottomPanel" type="Panel" parent="Board/CanvasLayer"]
 light_mask = 0
 anchor_left = 0.5
 anchor_right = 0.5
@@ -40,7 +42,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/BottomPanel"]
+[node name="CenterContainer" type="CenterContainer" parent="Board/CanvasLayer/BottomPanel"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -53,55 +55,55 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AmmoLabel" type="Label" parent="CanvasLayer/BottomPanel/CenterContainer"]
+[node name="AmmoLabel" type="Label" parent="Board/CanvasLayer/BottomPanel/CenterContainer"]
 margin_left = 20.0
 margin_right = 20.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 3 )
 
-[node name="TopWall" type="StaticBody2D" parent="." groups=[
+[node name="TopWall" type="StaticBody2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 light_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Board/TopWall"]
 light_mask = 0
 position = Vector2( 360, 184 )
 scale = Vector2( 1.00114, -0.927707 )
 shape = SubResource( 1 )
 
-[node name="RightWall" type="StaticBody2D" parent="." groups=[
+[node name="RightWall" type="StaticBody2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 light_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Board/RightWall"]
 light_mask = 0
 position = Vector2( 728, 640 )
 shape = SubResource( 2 )
 
-[node name="EliminatorBottomWall" type="StaticBody2D" parent="." groups=[
+[node name="EliminatorBottomWall" type="StaticBody2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 light_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EliminatorBottomWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Board/EliminatorBottomWall"]
 light_mask = 0
 position = Vector2( 360, 1096 )
 scale = Vector2( 1.00114, -0.927707 )
 shape = SubResource( 1 )
 
-[node name="LeftWall" type="StaticBody2D" parent="." groups=[
+[node name="LeftWall" type="StaticBody2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 light_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Board/LeftWall"]
 light_mask = 0
 position = Vector2( -8, 639.719 )
 shape = SubResource( 2 )
 
-[node name="ControlArea" type="Control" parent="."]
+[node name="ControlArea" type="Control" parent="Board"]
 light_mask = 0
 margin_top = 200.0
 margin_right = 712.0
@@ -110,66 +112,66 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LaunchRayCast2D" type="RayCast2D" parent="."]
+[node name="LaunchRayCast2D" type="RayCast2D" parent="Board"]
 enabled = true
 
-[node name="LaunchTimer" type="Timer" parent="."]
+[node name="LaunchTimer" type="Timer" parent="Board"]
 wait_time = 0.1
 
-[node name="Column0" type="Line2D" parent="." groups=[
+[node name="Column0" type="Line2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 visible = false
 light_mask = 0
 points = PoolVector2Array( 72, 264, 72, 360, 72, 456, 72, 552, 72, 648, 72, 744, 72, 840, 72, 936, 72, 1032 )
 
-[node name="Column1" type="Line2D" parent="." groups=[
+[node name="Column1" type="Line2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 visible = false
 light_mask = 0
 points = PoolVector2Array( 168, 264, 168, 360, 168, 456, 168, 552, 168, 648, 168, 744, 168, 840, 168, 936, 168, 1032 )
 
-[node name="Column2" type="Line2D" parent="." groups=[
+[node name="Column2" type="Line2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 visible = false
 light_mask = 0
 points = PoolVector2Array( 264, 264, 264, 360, 264, 456, 264, 552, 264, 648, 264, 744, 264, 840, 264, 936, 264, 1032 )
 
-[node name="Column3" type="Line2D" parent="." groups=[
+[node name="Column3" type="Line2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 visible = false
 light_mask = 0
 points = PoolVector2Array( 360, 264, 360, 360, 360, 456, 360, 552, 360, 648, 360, 744, 360, 840, 360, 936, 360, 1032 )
 
-[node name="Column4" type="Line2D" parent="." groups=[
+[node name="Column4" type="Line2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 visible = false
 light_mask = 0
 points = PoolVector2Array( 456, 264, 456, 360, 456, 456, 456, 552, 456, 648, 456, 744, 456, 840, 456, 936, 456, 1032 )
 
-[node name="Column5" type="Line2D" parent="." groups=[
+[node name="Column5" type="Line2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 visible = false
 light_mask = 0
 points = PoolVector2Array( 552, 264, 552, 360, 552, 456, 552, 552, 552, 648, 552, 744, 552, 840, 552, 936, 552, 1032 )
 
-[node name="Column6" type="Line2D" parent="." groups=[
+[node name="Column6" type="Line2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 visible = false
 light_mask = 0
 points = PoolVector2Array( 648, 264, 648, 360, 648, 456, 648, 552, 648, 648, 648, 744, 648, 840, 648, 936, 648, 1032 )
 
-[node name="Background" type="Polygon2D" parent="." groups=[
+[node name="Background" type="Polygon2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
 z_index = -1
 color = Color( 0.0980392, 0.0980392, 0.0980392, 1 )
 polygon = PoolVector2Array( 0, 192, 720, 192, 720, 1088, 0, 1088 )
-[connection signal="mouse_entered" from="ControlArea" to="." method="_on_ControlArea_mouse_entered"]
-[connection signal="mouse_exited" from="ControlArea" to="." method="_on_ControlArea_mouse_exited"]
+[connection signal="mouse_entered" from="Board/ControlArea" to="Board" method="_on_ControlArea_mouse_entered"]
+[connection signal="mouse_exited" from="Board/ControlArea" to="Board" method="_on_ControlArea_mouse_exited"]
