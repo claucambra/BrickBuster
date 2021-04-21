@@ -19,6 +19,24 @@ onready var popup_balls_menu = $CanvasLayer/MainMenu/VBoxContainer/BallsButton/B
 onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
 onready var popup_options_menu = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton/OptionsMenu
 
+func write_save_file(first_save = false):
+	var save_dict = {
+		"score": 0,
+		"ammo": 1,
+		"launch_ball_position_x": 360,
+		"launch_ball_position_y": 1072,
+		"destroyables" : []
+	}
+
+	if !first_save:
+		save_game.open("user://savegame.save", File.READ)
+		var node_data = parse_json(save_game.get_line())
+		save_dict["past_scores"] = node_data["past_scores"]
+	
+	save_game.open("user://savegame.save", File.WRITE)
+	save_game.store_line(to_json(save_dict))
+	save_game.close()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if save_game.file_exists("user://savegame.save"):
@@ -31,6 +49,7 @@ func _ready():
 	else:
 		$CanvasLayer/MainMenu/VBoxContainer/ContinueButton.visible = false
 		$CanvasLayer/MainMenu/VBoxContainer/ScoresButton.disabled = true
+		write_save_file(true)
 	
 	if err == ERR_FILE_NOT_FOUND:
 		config.set_value("lighting", "enabled", true)
@@ -72,23 +91,7 @@ func _on_ContinueButton_pressed():
 	get_tree().change_scene("res://scenes/Board.tscn")
 	
 func _on_NewGameButton_pressed():
-	if save_game.file_exists("user://savegame.save"):
-		save_game.open("user://savegame.save", File.READ)
-		
-		var node_data = parse_json(save_game.get_line())
-		var save_dict = {
-			"score": 0,
-			"past_scores": node_data["past_scores"],
-			"ammo": 1,
-			"launch_ball_position_x": 360,
-			"launch_ball_position_y": 1072,
-			"destroyables" : []
-		}
-		save_game.close()
-		
-		save_game.open("user://savegame.save", File.WRITE)
-		save_game.store_line(to_json(save_dict))
-		save_game.close()
+	write_save_file()
 	
 	get_tree().change_scene("res://scenes/Board.tscn")
 
