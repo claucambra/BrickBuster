@@ -60,4 +60,5 @@ quality/reflections/texture_array_reflections=false
 quality/shading/force_vertex_shading=true
 quality/shading/force_lambert_over_burley=true
 quality/shading/force_blinn_over_ggx=true
+quality/filters/msaa=4
 environment/default_environment="res://default_env.tres"

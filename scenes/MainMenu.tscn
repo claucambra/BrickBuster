@@ -1,9 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://logic/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=2]
+[ext_resource path="res://fonts/NotoSans_Bold_Title.tres" type="DynamicFont" id=3]
 [ext_resource path="res://logic/Brick.gd" type="Script" id=4]
 [ext_resource path="res://sprites/light.png" type="Texture" id=5]
+[ext_resource path="res://fonts/NotoSans_Bold.tres" type="DynamicFont" id=6]
 [ext_resource path="res://scenes/SubMenus/OptionsMenu.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/SubMenus/ScoreMenu.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/SubMenus/BallMenu.tscn" type="PackedScene" id=10]
@@ -53,7 +55,7 @@ margin_bottom = 210.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 0
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 6 )
 text = "Continue Game"
 
 [node name="NewGameButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
@@ -126,10 +128,11 @@ shape = SubResource( 1 )
 [node name="Label" type="Label" parent="TitleBrick"]
 margin_left = 352.0
 margin_top = 48.0
-margin_right = 672.0
+margin_right = 671.0
 margin_bottom = 368.0
-custom_fonts/font = ExtResource( 2 )
-text = "BrickBuster"
+custom_fonts/font = ExtResource( 3 )
+text = "Brick
+Buster"
 align = 1
 valign = 1
 __meta__ = {

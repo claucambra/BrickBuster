@@ -29,7 +29,7 @@ var ball_scene = null
 var ball = null
 
 onready var meta_area = $CanvasLayer/MetaArea
-onready var current_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/CurrentScoreLabel
+onready var current_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/CurrentScoreLabel
 onready var high_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
 onready var ammo_label = $CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
 onready var brick_scene = load("res://scenes/Brick.tscn")
@@ -247,9 +247,9 @@ func update_score_labels():
 	ammo_label.text = "x" + String(ammo)
 	current_score_label.text = String(score)
 	if past_scores.empty() || score > past_scores.max():
-		high_score_label.text = "High Score: " + String(score)
+		high_score_label.text = String(score)
 	else:
-		high_score_label.text = "High Score: " + String(past_scores.max())
+		high_score_label.text = String(past_scores.max())
 
 func reset():
 	for live_ball in live_balls:

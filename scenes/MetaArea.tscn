@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://logic/MetaArea.gd" type="Script" id=1]
 [ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=2]
+[ext_resource path="res://icons/pause.png" type="Texture" id=3]
+[ext_resource path="res://fonts/NotoSans_Bold_Title.tres" type="DynamicFont" id=4]
+[ext_resource path="res://fonts/NotoSans_Bold.tres" type="DynamicFont" id=5]
 
 [node name="MetaPanel" type="Panel"]
 margin_right = 720.0
@@ -28,48 +31,61 @@ margin_top = 20.0
 margin_right = 700.0
 margin_bottom = 170.0
 rect_min_size = Vector2( 150, 150 )
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer"]
-margin_right = 338.0
-margin_bottom = 150.0
 size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 2 )
-text = "Pause"
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Button" type="TextureButton" parent="MarginContainer/HBoxContainer"]
+margin_right = 224.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 150, 150 )
+size_flags_horizontal = 3
+texture_normal = ExtResource( 3 )
+expand = true
+stretch_mode = 5
 
 [node name="PopupMenu" type="PopupMenu" parent="MarginContainer/HBoxContainer/Button"]
 margin_right = 20.0
 margin_bottom = 20.0
 custom_fonts/font = ExtResource( 2 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 342.0
-margin_right = 680.0
+[node name="CurrentScoreLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+margin_left = 228.0
+margin_right = 452.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 2
+custom_fonts/font = ExtResource( 4 )
+align = 1
+valign = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_left = 456.0
+margin_right = 680.0
+margin_bottom = 150.0
+size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CurrentScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_right = 338.0
+[node name="HighScoreTitleLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_right = 224.0
 margin_bottom = 73.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 2 )
+size_flags_horizontal = 7
+size_flags_vertical = 7
+custom_fonts/font = ExtResource( 5 )
+text = "High Score"
 align = 1
-valign = 1
+valign = 2
 
 [node name="HighScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 margin_top = 77.0
-margin_right = 338.0
+margin_right = 224.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
-valign = 1
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_exited"]
