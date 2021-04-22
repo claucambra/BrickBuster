@@ -1,7 +1,6 @@
 extends Node2D
 
 var repositioning_bricks = false
-var just_loaded = true
 
 onready var game_control = get_tree().get_root().get_node("MainGame")
 
@@ -67,26 +66,12 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if just_loaded:
-		var copy_live_destroyables = game_control.live_destroyables.duplicate()
-		smoothly_reposition_destroyables(copy_live_destroyables, delta)
-		just_loaded = false
-	elif !game_control.game_over:
-		
-		# Launch handling
-		if !game_control.repositioning_ball && !repositioning_bricks && !game_control.round_in_progress:
-			game_control.drag_enabled = true
-		else:
-			game_control.drag_enabled = false
-		
-		if Input.is_action_just_released("click"):
-			if game_control.drag_enabled && game_control.reasonable_angle: 
-				game_control.launch_balls()
-				game_control.launched = true
-		
+	if !game_control.game_over:
+		# Before allowing any input we need to make sure everything on the board
+		# is prepped.
 		# <---------------------- ROUND PROGRESS CHECKS ---------------------->
-		var copy_live_destroyables = game_control.live_destroyables.duplicate()
 		# We need a copy of our live destroyables to not bungle things up
+		var copy_live_destroyables = game_control.live_destroyables.duplicate()
 		if !game_control.live_balls.empty():
 			game_control.round_in_progress = true
 		# <--------------------- END OF ROUND PROCESSING --------------------->
@@ -101,6 +86,16 @@ func _process(delta):
 				game_control.new_destroyable_line(game_control.score + 1)
 			else:
 				game_control.past_scores.append(game_control.score)
-		# <------------------------ SET UP NEXT ROUND ------------------------>
-		elif !game_control.game_over:
+		else:
 			smoothly_reposition_destroyables(copy_live_destroyables, delta)
+		
+		# Launch handling
+		if !game_control.repositioning_ball && !repositioning_bricks && !game_control.round_in_progress:
+			game_control.drag_enabled = true
+		else:
+			game_control.drag_enabled = false
+		
+		if Input.is_action_just_released("click"):
+			if game_control.drag_enabled && game_control.reasonable_angle: 
+				game_control.launch_balls()
+				game_control.launched = true

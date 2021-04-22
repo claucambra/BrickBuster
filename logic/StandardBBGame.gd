@@ -1,3 +1,15 @@
+
+# This file contains most of the functionality and the variables that are 
+# universal to all of BrickBuster's gamemodes. This functionality includes:
+#
+# - Saving and loading the game
+# - Pause menu behaviour and function
+# - Launch line calculations and drawing
+# - Destroyable creation (and destroyable line creation) and behaviour
+# - Ball launching and launch cadence
+# - Updating score and ammo labels
+# - Game over procedure and dead ball and destroyable instance handling
+
 extends Node2D
 
 # <---------------------------- MEMBER VARIABLES ---------------------------->
@@ -62,7 +74,7 @@ onready var columns = [
 func save():
 	# This is save_dict is saved in JSON format in our savefile
 	var save_dict = {
-		"game_mode": "standard",
+		"game_mode": $GameModeSelector.selected_game_mode,
 		"score": score,
 		"past_scores": past_scores,
 		"ammo": ammo,
@@ -279,8 +291,8 @@ func reset():
 	round_first_dead_ball_position = null
 	score = 0
 	ammo = 1
-	self.update_score_labels()
-	self.new_destroyable_line(score + 1)
+	update_score_labels()
+	new_destroyable_line(score + 1)
 	game_over = false
 	save()
 
@@ -297,7 +309,7 @@ func on_pause_menu_toggled(popup_open):
 	get_tree().paused = popup_open
 
 func on_restart_button_clicked():
-	self.reset()
+	reset()
 
 func on_special_area_entered(special):
 	if special.mode == "add-ball":

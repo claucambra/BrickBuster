@@ -9,6 +9,7 @@ var game_modes = {
 	"standard": "GameStandard.gd",
 	"chaotic": "GameChaotic.gd"
 }
+var selected_game_mode = null
 
 var save_game = File.new()
 
@@ -16,8 +17,6 @@ onready var board = get_parent().get_node("Board")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var selected_game_mode
-	
 	if save_game.file_exists("user://savegame.save"):
 		save_game.open("user://savegame.save", File.READ)
 		var node_data = parse_json(save_game.get_line())
