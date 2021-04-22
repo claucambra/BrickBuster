@@ -93,7 +93,7 @@ func _on_ContinueButton_pressed():
 	get_tree().change_scene("res://scenes/Board.tscn")
 	
 func _on_NewGameButton_pressed():
-	write_save_file(true)
+	write_save_file()
 	
 	get_tree().change_scene("res://scenes/Board.tscn")
 

@@ -7,7 +7,7 @@
 # - Launch line calculations and drawing
 # - Destroyable creation (and destroyable line creation) and behaviour
 # - Live ball and live destroyable storage
-# - Ball launching and launch cadence
+# - Ball launching and launch cadence, and repositioning after launch
 # - Updating score and ammo labels
 # - Game over procedure and dead ball and destroyable instance handling
 #
@@ -304,6 +304,8 @@ func reset():
 	round_first_dead_ball_position = null
 	score = 0
 	ammo = 1
+	ball.position = Vector2(360, 1072)
+	repositioning_ball = false
 	update_score_labels()
 	new_destroyable_line(score + 1)
 	game_over = false
