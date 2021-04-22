@@ -1,14 +1,27 @@
-
 # This file contains most of the functionality and the variables that are 
 # universal to all of BrickBuster's gamemodes. This functionality includes:
 #
 # - Saving and loading the game
 # - Pause menu behaviour and function
+# - Configuration handling (i.e. lighting, ball colour settings, etc.)
 # - Launch line calculations and drawing
 # - Destroyable creation (and destroyable line creation) and behaviour
+# - Live ball and live destroyable storage
 # - Ball launching and launch cadence
 # - Updating score and ammo labels
 # - Game over procedure and dead ball and destroyable instance handling
+#
+# Aspects of the game loop that vary depending on the game mode are left to the
+# specific scripts that handle that game mode. These game mode scripts are
+# handled, selected, and applied to the Board node by ModeSelector.gd (which is
+# attached to the GameModeSelector node of this scene.
+#
+# GameMode scripts have the responsibility of handling the following:
+#
+# - Drag enabled state (i.e. when input is accepted) and when the user can
+#	launch balls
+# - How destroyables are relocated around the board during the game
+# - How (or if) rounds are implemented and how they affect the game state
 
 extends Node2D
 
