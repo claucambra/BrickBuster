@@ -50,10 +50,11 @@ func _ready():
 			save_game.open("user://savegame.save", File.READ)
 			var node_data = parse_json(save_game.get_line())
 			var past_scores = node_data["past_scores"]
-			for score in past_scores:
-				score = int(score)
-			ball_list.set_item_disabled(iterator, ball_meta.min_score > past_scores.max())
-			ball_list.set_item_tooltip(iterator, "Unlocked after scoring " + String(ball_meta.min_score) + " or more")
+			if past_scores.max():
+				for score in past_scores:
+					score = int(score)
+				ball_list.set_item_disabled(iterator, ball_meta.min_score > past_scores.max())
+				ball_list.set_item_tooltip(iterator, "Unlocked after scoring " + String(ball_meta.min_score) + " or more")
 		elif ball_meta.get("min_score"):
 			ball_list.set_item_selectable(iterator, false)
 		

@@ -27,8 +27,10 @@ func write_save_file(first_save = false):
 		"launch_ball_position_y": 1072,
 		"destroyables" : []
 	}
-
-	if !first_save:
+	
+	if first_save:
+		save_dict["past_scores"] = []
+	else:
 		save_game.open("user://savegame.save", File.READ)
 		var node_data = parse_json(save_game.get_line())
 		save_dict["past_scores"] = node_data["past_scores"]
@@ -91,7 +93,7 @@ func _on_ContinueButton_pressed():
 	get_tree().change_scene("res://scenes/Board.tscn")
 	
 func _on_NewGameButton_pressed():
-	write_save_file()
+	write_save_file(true)
 	
 	get_tree().change_scene("res://scenes/Board.tscn")
 

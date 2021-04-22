@@ -9,18 +9,23 @@ var game_over = false
 # This is used to decide input state and acceptance
 var drag_enabled = false
 var mouse_in_controlarea = false
+var mouse_position = Vector2(0,0)
+var line_direction = Vector2(0,0)
+var first_click_position = Vector2(0,0)
+var reasonable_angle = false
+var draw_touch_marker = false
 # launched is used to differentiate between states when there are no live balls
 # i.e. idling vs just after all balls have returned to bottom of screen
 var launched = false
 var all_balls_launched = false
 var round_in_progress = false
+var repositioning_ball = false
 var live_balls = []
 var live_destroyables = []
 var round_first_dead_ball_position = null
 var score = 0
 var past_scores = []
 var ammo = 1
-var first_click_position = Vector2(0,0)
 var rng = RandomNumberGenerator.new()
 var lighting_enabled = true
 var ball_color = "#ffffff"
@@ -28,10 +33,10 @@ var ball_color = "#ffffff"
 var ball_scene = null
 var ball = null
 
-onready var meta_area = $CanvasLayer/MetaArea
-onready var current_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/CurrentScoreLabel
-onready var high_score_label = $CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
-onready var ammo_label = $CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
+onready var meta_area = $Board/CanvasLayer/MetaArea
+onready var current_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/CurrentScoreLabel
+onready var high_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
+onready var ammo_label = $Board/CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
 onready var specials_scene = load("res://scenes/Specials.tscn")
@@ -39,29 +44,25 @@ onready var laserbeam_scene = load("res://scenes/LaserBeam.tscn")
 # We use a ball instance to mark where our balls will launch from.
 # This ball remains throughout the game, 
 # moving position to where the last ball of the last round fell.
-onready var launch_line = $CanvasLayer/LaunchLine
-onready var wait = $LaunchTimer
+onready var launch_line = $Board/CanvasLayer/LaunchLine
+onready var launch_line_raycast = $Board/LaunchRayCast2D
+onready var wait = $Board/LaunchTimer
 onready var columns = [
-	$Column0,
-	$Column1,
-	$Column2,
-	$Column3,
-	$Column4,
-	$Column5,
-	$Column6
+	$Board/Column0,
+	$Board/Column1,
+	$Board/Column2,
+	$Board/Column3,
+	$Board/Column4,
+	$Board/Column5,
+	$Board/Column6
 ]
-
-
-
-
-
-
 
 
 # <-------------------------- GAME SAVING FUNCTIONS -------------------------->
 func save():
 	# This is save_dict is saved in JSON format in our savefile
 	var save_dict = {
+		"game_mode": "standard",
 		"score": score,
 		"past_scores": past_scores,
 		"ammo": ammo,
@@ -90,16 +91,12 @@ func save():
 				save_destroyable.laserbeam_direction = destroyable.laserbeam_direction
 		save_dict.destroyables.append(save_destroyable)
 	
-	return save_dict
-
-func save_game():
 	var save_game = File.new()
 	# 'user://' data path varies by OS
 	save_game.open("user://savegame.save", File.WRITE)
-	var data = self.save()
 	
 	# Store the save dictionary as a new line in the save file.
-	save_game.store_line(to_json(data))
+	save_game.store_line(to_json(save_dict))
 	save_game.close()
 
 func load_game():
@@ -138,7 +135,24 @@ func load_game():
 
 
 # <-------------------------- GAME HELPER FUNCTIONS -------------------------->
-func launch_balls(direction, amount):
+func launch_line_calc():
+	mouse_position = get_global_mouse_position()
+	line_direction = first_click_position - mouse_position
+	# We can calculate a minimum coordinate set for the launch line to stop us scoring against ourselves
+	if line_direction.normalized().x > -0.998 && line_direction.normalized().x < 0.998 && line_direction.normalized().y < 0:
+		 reasonable_angle = true
+	else:
+		reasonable_angle = false
+
+func setup_line():
+	launch_line_raycast.position = ball.position
+	launch_line_raycast.cast_to = line_direction.normalized()*100000
+	launch_line.set_point_position(0, ball.position)
+	launch_line.set_point_position(1, launch_line_raycast.get_collision_point())
+	if launch_line.modulate.a < 1:
+		launch_line.modulate.a += 0.1
+
+func launch_balls(direction = line_direction.normalized(), amount = ammo):
 	all_balls_launched = false
 	for i in amount:
 		var next_ball = ball_scene.instance()
@@ -268,7 +282,8 @@ func reset():
 	self.update_score_labels()
 	self.new_destroyable_line(score + 1)
 	game_over = false
-	self.save()
+	save()
+
 
 
 
@@ -334,7 +349,6 @@ func _on_ControlArea_mouse_exited():
 
 
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	if err == OK:
 		ball_scene = load("res://scenes/Balls/" + config.get_value("ball", "ball_file_name"))
@@ -349,7 +363,7 @@ func _ready():
 	
 	launch_line.add_point(Vector2(0,0), 0)
 	launch_line.add_point(Vector2(0,0), 1)
-	$LaunchRayCast2D.add_exception(ball)
+	launch_line_raycast.add_exception(ball)
 	ball.get_node("Light2D").enabled = lighting_enabled
 	ball.set_color(ball_color)
 	add_child(ball)
@@ -359,16 +373,15 @@ func _ready():
 	var save_game = File.new()
 	if not save_game.file_exists("user://savegame.save"):
 		rng.randomize()
-		self.new_destroyable_line(score + 1)
+		new_destroyable_line(score + 1)
 	else:
-		self.load_game()
+		load_game()
 		if live_destroyables.empty():
 			# Caused by 'new game' from main menu, impossible in normal game flow.
-			self.new_destroyable_line(score + 1)
+			new_destroyable_line(score + 1)
 	
-	self.update_score_labels()
+	update_score_labels()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if game_over:
 		var all_transparent = true
@@ -386,51 +399,39 @@ func _process(delta):
 				live_destroyables.erase(live_destroyable)
 		
 		if all_transparent:
-			self.reset()
+			reset()
 	
 	else:
 		# <------------- UPDATE AMMO LABEL AS BALLS TOUCH BOTTOM ------------->
 		ammo_label.text = "x" + String(ammo - live_balls.size())
 		
 		# <-------------- CALCULATE LAUNCH LINE AND BALL ANGLES -------------->
-		var mouse_position = get_global_mouse_position()
-		var line_direction = first_click_position - mouse_position
-		# We can calculate a minimum coordinate set for the launch line to stop us scoring against ourselves
-		var reasonable_angle
-		if line_direction.normalized().x > -0.998 && line_direction.normalized().x < 0.998 && line_direction.normalized().y < 0:
-			 reasonable_angle = true
-		else:
-			reasonable_angle = false
+		launch_line_calc()
 		
 		# <-------------- SETTING LAUNCH LINE AND LAUNCHING BALL -------------->
 		# "click" is defined in input map
-		# Allow clicks when mouse is in the game area and round not in progress
-		if Input.is_action_just_pressed("click") && mouse_in_controlarea && !round_in_progress:
-			first_click_position = get_global_mouse_position()
-			drag_enabled = true
-		
-		# Line drawing and touch place responsibilities
-		update() # Updates _draw func
-		if (!drag_enabled || !reasonable_angle) && launch_line.modulate.a > 0:
-			launch_line.modulate.a -= 0.1
-		if drag_enabled && !round_in_progress && reasonable_angle:
-			$LaunchRayCast2D.position = ball.position
-			$LaunchRayCast2D.cast_to = line_direction.normalized()*100000
-			launch_line.set_point_position(0, ball.position)
-			launch_line.set_point_position(1, $LaunchRayCast2D.get_collision_point())
-			if launch_line.modulate.a < 1:
-				launch_line.modulate.a += 0.1
-		
-		# Launch handling
-		if Input.is_action_just_released("click"):
-			if !round_in_progress && drag_enabled && reasonable_angle: 
-				self.launch_balls(line_direction.normalized(), ammo)
-				launched = true
+		# Allow clicks when mouse is in the game area
+		if !mouse_in_controlarea:
 			drag_enabled = false
+		
+		if Input.is_action_just_pressed("click"):
+			first_click_position = get_global_mouse_position()
+		
+		if Input.is_action_pressed("click") && reasonable_angle && drag_enabled:
+			setup_line()
+			draw_touch_marker = true
+		elif !drag_enabled:
+			draw_touch_marker = false
+			if launch_line.modulate.a > 0:
+				launch_line.modulate.a -= 0.1
+		elif launch_line.modulate.a > 0:
+			launch_line.modulate.a -= 0.1
+		
+		update() # Updates _draw func
 		
 		# <---- SMOOTHLY REPOSITION INDICATOR BALL AFTER FIRST BALL RETURN ---->
 		if round_first_dead_ball_position != null && ball.position.x != round_first_dead_ball_position.x:
-			drag_enabled = false
+			repositioning_ball = true
 			var reposition = ball.position - round_first_dead_ball_position
 			# Snap ball into position when they are imperceptibly close
 			# Otherwise they will never reach the intended position
@@ -439,71 +440,16 @@ func _process(delta):
 				ball.position.x = round_first_dead_ball_position.x
 				# So our ball doesn't reposition again if it has reached its position but the round is still on
 				round_first_dead_ball_position = null
+				repositioning_ball = false
 			elif all_balls_launched:
 				var reposition_velocity = reposition * 6 * delta
 				ball.position.x -= reposition_velocity.x
 		
-		# <---------------------- ROUND PROGRESS CHECKS ---------------------->
 		for live_ball in live_balls:
 			if !is_instance_valid(live_ball):
 				live_balls.erase(live_ball)
-		
-		var copy_live_destroyables = live_destroyables.duplicate()
-		# We need a copy of our live destroyables to not bungle things up
-		if !live_balls.empty():
-			round_in_progress = true
-		# <--------------------- END OF ROUND PROCESSING --------------------->
-		elif launched:
-			# Here we deal with the end-of-round process
-			launched = false
-			round_in_progress = false
-			for live_destroyable in copy_live_destroyables:
-				if !is_instance_valid(live_destroyable):
-					live_destroyables.erase(live_destroyable)
-				else:
-					live_destroyable.column_vert_point += 1
-					if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
-						live_destroyable.queue_free()
-						live_destroyables.erase(live_destroyable)
-					if "Brick" in live_destroyable.name:
-						# Game over once blocks reach bottom of screen
-						if live_destroyable.column_vert_point == 8:
-							game_over = true
-						else:
-							live_destroyable.max_possible_health += 1
-			if !game_over:
-				score += 1
-				self.update_score_labels()
-				self.new_destroyable_line(score + 1)
-			else:
-				past_scores.append(score)
-		# <------------------------ SET UP NEXT ROUND ------------------------>
-		elif !game_over:
-			# Here we deal with the smooth opacity change and repositioning of blocks
-			var num_incorrect_brick_position = 0
-			for live_destroyable in copy_live_destroyables:
-				# If destroyable not fully opaque
-				if live_destroyable.modulate.a < 1:
-					live_destroyable.modulate.a += 0.05
-				# If destroyable not at point it's supposed to be
-				var destination = columns[live_destroyable.column_num].get_point_position(live_destroyable.column_vert_point)
-				if live_destroyable.position != destination:
-					num_incorrect_brick_position += 1
-					var reposition = live_destroyable.position - destination
-					# Snap blocks into position when they are imperceptibly close
-					# Otherwise they will never reach the intended position
-					if reposition.y > -0.5:
-						live_destroyable.position = destination
-					else:
-						var reposition_velocity = reposition * 6 * delta
-						live_destroyable.position -= reposition_velocity
-			if num_incorrect_brick_position == 0:
-				self.save_game()
-				round_in_progress = false
-			else:
-				round_in_progress= true
 
 func _draw():
-	if drag_enabled && !round_in_progress:
+	if drag_enabled && draw_touch_marker:
 		# Touch/click marker
 		draw_circle(first_click_position, 25, ColorN("white", 0.5))
