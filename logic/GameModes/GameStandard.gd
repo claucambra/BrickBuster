@@ -62,7 +62,17 @@ func smoothly_reposition_destroyables(copy_live_destroyables, delta):
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	var save_game = File.new()
+	if not save_game.file_exists("user://savegame.save"):
+		game_control.rng.randomize()
+		game_control.new_destroyable_line(game_control.score + 1)
+	else:
+		game_control.load_game()
+		if game_control.live_destroyables.empty():
+			# Caused by 'new game' from main menu, impossible in normal game flow.
+			game_control.new_destroyable_line(game_control.score + 1)
+	
+	game_control.update_score_labels()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

@@ -177,5 +177,6 @@ points = PoolVector2Array( 648, 264, 648, 360, 648, 456, 648, 552, 648, 648, 648
 z_index = -1
 color = Color( 0.0980392, 0.0980392, 0.0980392, 1 )
 polygon = PoolVector2Array( 0, 192, 720, 192, 720, 1088, 0, 1088 )
+
 [connection signal="mouse_entered" from="Board/ControlArea" to="." method="_on_ControlArea_mouse_entered"]
 [connection signal="mouse_exited" from="Board/ControlArea" to="." method="_on_ControlArea_mouse_exited"]

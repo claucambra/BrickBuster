@@ -25,6 +25,8 @@
 
 extends Node2D
 
+signal game_prepped
+
 # <---------------------------- MEMBER VARIABLES ---------------------------->
 var config = ConfigFile.new()
 var err = config.load("user://settings.cfg")
@@ -397,17 +399,7 @@ func _ready():
 	
 	wait.wait_time = 0.1
 	
-	var save_game = File.new()
-	if not save_game.file_exists("user://savegame.save"):
-		rng.randomize()
-		new_destroyable_line(score + 1)
-	else:
-		load_game()
-		if live_destroyables.empty():
-			# Caused by 'new game' from main menu, impossible in normal game flow.
-			new_destroyable_line(score + 1)
-	
-	update_score_labels()
+	emit_signal("game_prepped")
 
 func _process(delta):
 	if game_over:
