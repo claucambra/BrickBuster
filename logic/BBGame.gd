@@ -47,8 +47,12 @@ var launched = false
 var all_balls_launched = false
 var round_in_progress = false
 var repositioning_ball = false
-var live_balls = []
+# live_destroyables is used to simplify the saving procedure.
+# DO NOT use it to handle the bricks during the game. Unexpected breakage will
+# most likely happen.
 var live_destroyables = []
+# live_balls is used for labels. Again, don't touch it.
+var live_balls = []
 var round_first_dead_ball_position = null
 var score = 0
 var past_scores = []
@@ -293,12 +297,11 @@ func update_score_labels():
 		high_score_label.text = String(past_scores.max())
 
 func reset():
-	for live_ball in live_balls:
-		if is_instance_valid(live_ball):
-			live_ball.queue_free()
-	for live_destroyable in live_destroyables:
-		if is_instance_valid(live_destroyable):
-			live_destroyable.queue_free()
+	for live_element in get_children():
+		if "Brick" in live_element.name or "Special" in live_element.name:
+			live_element.queue_free()
+		elif "Ball" in live_element.name && live_element != ball:
+			live_element.queue_free()
 	live_balls.clear()
 	live_destroyables.clear()
 	launched = false
