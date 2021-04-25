@@ -30,7 +30,7 @@ func on_game_prepped():
 			selected_game_mode = "standard"
 		
 		var script = load("res://logic/GameModes/" + game_modes[selected_game_mode])
-		# script = load("res://logic/GameModes/" + game_modes["chaotic"])
+		#script = load("res://logic/GameModes/" + game_modes["chaotic"])
 		board.set_script(script)
 		# _ready() func in a node's script listens for NOTIFICATION_READY
 		# Without this, the _ready() func won't be run

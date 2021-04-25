@@ -4,21 +4,18 @@ var repositioning_bricks = false
 
 onready var game_control = get_tree().get_root().get_node("MainGame")
 
-func round_over_checks(copy_live_destroyables):
-	for live_destroyable in copy_live_destroyables:
-		if !is_instance_valid(live_destroyable):
+func round_over_checks():
+	for live_destroyable in game_control.live_destroyables:
+		live_destroyable.column_vert_point += 1
+		if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
+			live_destroyable.queue_free()
 			game_control.live_destroyables.erase(live_destroyable)
-		else:
-			live_destroyable.column_vert_point += 1
-			if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
-				live_destroyable.queue_free()
-				game_control.live_destroyables.erase(live_destroyable)
-			if "Brick" in live_destroyable.name:
-				# Game over once blocks reach bottom of screen
-				if live_destroyable.column_vert_point == 8:
-					game_control.game_over = true
-				else:
-					live_destroyable.max_possible_health += 1
+		if "Brick" in live_destroyable.name:
+			# Game over once blocks reach bottom of screen
+			if live_destroyable.column_vert_point == 8:
+				game_control.game_over = true
+			else:
+				live_destroyable.max_possible_health += 1
 
 func destroyable_correct_position_check(destroyable):
 	var destination = game_control.columns[destroyable.column_num].get_point_position(destroyable.column_vert_point)
@@ -44,10 +41,10 @@ func destroyable_position_check_and_move(destroyable, delta):
 	else:
 		return 0
 
-func smoothly_reposition_destroyables(copy_live_destroyables, delta):
+func smoothly_reposition_destroyables(delta):
 	# Here we deal with the smooth opacity change and repositioning of blocks
 	var num_incorrect_brick_position = 0
-	for live_destroyable in copy_live_destroyables:
+	for live_destroyable in game_control.live_destroyables:
 		# If destroyable not fully opaque
 		if live_destroyable.modulate.a < 1:
 			live_destroyable.modulate.a += 0.05
@@ -80,8 +77,6 @@ func _process(delta):
 		# Before allowing any input we need to make sure everything on the board
 		# is prepped.
 		# <---------------------- ROUND PROGRESS CHECKS ---------------------->
-		# We need a copy of our live destroyables to not bungle things up
-		var copy_live_destroyables = game_control.live_destroyables.duplicate()
 		if !game_control.live_balls.empty():
 			game_control.round_in_progress = true
 		# <--------------------- END OF ROUND PROCESSING --------------------->
@@ -89,7 +84,7 @@ func _process(delta):
 			# Here we deal with the end-of-round process
 			game_control.launched = false
 			game_control.round_in_progress = false
-			round_over_checks(copy_live_destroyables)
+			round_over_checks()
 			if !game_control.game_over:
 				game_control.score += 1
 				game_control.update_score_labels()
@@ -97,7 +92,7 @@ func _process(delta):
 			else:
 				game_control.past_scores.append(game_control.score)
 		else:
-			smoothly_reposition_destroyables(copy_live_destroyables, delta)
+			smoothly_reposition_destroyables(delta)
 		
 		# Launch handling
 		if !game_control.repositioning_ball && !repositioning_bricks && !game_control.round_in_progress:

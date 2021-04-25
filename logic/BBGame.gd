@@ -216,6 +216,7 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 		else:
 			next_destroyable.health = health
 		next_destroyable.max_possible_health = score + 1
+		next_destroyable.connect("brick_killed", self, "on_destroyable_killed")
 		
 	elif "Special" in type:
 		next_destroyable = specials_scene.instance()
@@ -233,6 +234,7 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 			next_destroyable.mode = special_mode
 		next_destroyable.laserbeam_direction = laserbeam_direction
 		next_destroyable.connect("special_area_entered", self, "on_special_area_entered")
+		next_destroyable.connect("special_killed", self, "on_destroyable_killed")
 	
 	next_destroyable.column_num = columns.find(column)
 	next_destroyable.column_vert_point = vert_point
@@ -327,6 +329,9 @@ func on_pause_menu_toggled(popup_open):
 
 func on_restart_button_clicked():
 	reset()
+
+func on_destroyable_killed(brick):
+	live_destroyables.erase(brick)
 
 func on_special_area_entered(special):
 	if special.mode == "add-ball":

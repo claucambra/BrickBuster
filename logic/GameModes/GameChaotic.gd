@@ -15,11 +15,16 @@ func on_launch_cooldown_timer_timeout():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	launch_cooling_down = true
 	launch_cooldown_timer.connect("timeout", self, "on_launch_cooldown_timer_timeout")
+	launch_cooldown_timer.wait_time = 3
 	add_child(launch_cooldown_timer)
+	game_control.new_destroyable_line(0 + 1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	var copy_live_destroyables = game_control.live_destroyables.duplicate()
 	
 	if !game_control.game_over:
 		if !launch_cooling_down && game_control.live_balls.size() != game_control.ammo:

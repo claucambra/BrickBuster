@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+signal brick_killed(brick)
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -46,6 +47,7 @@ func _process(_delta):
 		if self.modulate.a > 0:
 			self.modulate.a -= 0.05
 		else:
+			emit_signal("brick_killed", self)
 			self.queue_free()
 	else:
 		if self.modulate.a < 1:

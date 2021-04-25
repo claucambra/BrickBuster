@@ -1,6 +1,7 @@
 extends Area2D
 
 signal special_area_entered(special)
+signal special_killed(special)
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -43,6 +44,7 @@ func _on_Special_body_entered(body):
 			$CollisionShape2D.set_deferred("disabled", true)
 			$Light2D.enabled = false
 			self.modulate.a = 0
+			# We don't kill the object here because it will cut off our audio
 		if mode == "bounce":
 			body.sleeping = true
 			rng.randomize()
@@ -52,4 +54,5 @@ func _on_Special_body_entered(body):
 
 
 func _on_AddBallAudio_finished():
+	emit_signal("special_killed", self)
 	self.queue_free()
