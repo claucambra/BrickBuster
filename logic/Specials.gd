@@ -20,6 +20,10 @@ var column_num = null
 var column_vert_point = null
 var rng = RandomNumberGenerator.new()
 
+func kill():
+	emit_signal("special_killed", self)
+	self.queue_free()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Light2D.color = colors[mode]
@@ -54,5 +58,4 @@ func _on_Special_body_entered(body):
 
 
 func _on_AddBallAudio_finished():
-	emit_signal("special_killed", self)
-	self.queue_free()
+	self.kill()

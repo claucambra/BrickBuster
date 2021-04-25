@@ -361,6 +361,8 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	
 	var things_at_point = get_world_2d().direct_space_state.intersect_point(columns[3].get_point_position(line_point), 32, [], 1, true, true)
 	
+	print(things_at_point)
+	
 	if line_point < 8 && things_at_point.empty():
 		new_destroyable(line_point, columns[3], "BounceSpecial_NC")
 

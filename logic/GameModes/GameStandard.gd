@@ -6,10 +6,10 @@ onready var game_control = get_tree().get_root().get_node("MainGame")
 
 func round_over_checks():
 	for live_destroyable in game_control.live_destroyables:
+		print(live_destroyable)
 		live_destroyable.column_vert_point += 1
 		if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
-			live_destroyable.queue_free()
-			game_control.live_destroyables.erase(live_destroyable)
+			live_destroyable.kill()
 		if "Brick" in live_destroyable.name:
 			# Game over once blocks reach bottom of screen
 			if live_destroyable.column_vert_point == 8:
