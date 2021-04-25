@@ -228,8 +228,6 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 			next_destroyable.laserbeam_direction = laserbeam_direction
 		elif "BounceSpecial" in type && special_mode == null:
 			next_destroyable.mode = "bounce"
-			if type == "BounceSpecial_NC":
-				next_destroyable.hit = true
 		else:
 			next_destroyable.mode = special_mode
 		next_destroyable.laserbeam_direction = laserbeam_direction
@@ -243,9 +241,9 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 	next_destroyable.set_position(column.get_point_position(vert_point))
 	# Add exception for bounce specials introduced in middle of round
 	if type != "BounceSpecial_NC":
-		# Set opacity to 0
-		next_destroyable.modulate.a = 0
 		next_destroyable.column_vert_point += 1
+	else:
+		next_destroyable.hit = true
 	live_destroyables.append(next_destroyable)
 
 func new_destroyable_line(health, vert_point = 0):
@@ -366,10 +364,11 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	if line_point < 8 && things_at_point.empty():
 		new_destroyable(line_point, columns[3], "BounceSpecial_NC")
 
-func on_ball_died(ball_position):
+func on_ball_died(ball):
 	# Set round_first_dead_ball_position to move our launch position ball there
 	if round_first_dead_ball_position == null:
-		round_first_dead_ball_position = ball_position
+		round_first_dead_ball_position = ball.position
+	live_balls.erase(ball)
 
 func _on_ControlArea_mouse_entered():
 	mouse_in_controlarea = true
@@ -412,9 +411,7 @@ func _process(delta):
 	if game_over:
 		var all_transparent = true
 		for live_destroyable in live_destroyables:
-			if !is_instance_valid(live_destroyable):
-				live_destroyables.erase(live_destroyable)
-			elif "Brick" in live_destroyable.name:
+			if "Brick" in live_destroyable.name:
 				live_destroyable.health = 0
 				# Setting health to 0 makes bricks queue_free themselves
 			elif live_destroyable.modulate.a > 0:
@@ -470,10 +467,6 @@ func _process(delta):
 			elif all_balls_launched:
 				var reposition_velocity = reposition * 6 * delta
 				ball.position.x -= reposition_velocity.x
-		
-		for live_ball in live_balls:
-			if !is_instance_valid(live_ball):
-				live_balls.erase(live_ball)
 
 func _draw():
 	if drag_enabled && draw_touch_marker:

@@ -5,17 +5,17 @@ var repositioning_bricks = false
 onready var game_control = get_tree().get_root().get_node("MainGame")
 
 func round_over_checks():
-	for live_destroyable in game_control.live_destroyables:
-		print(live_destroyable)
-		live_destroyable.column_vert_point += 1
-		if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
-			live_destroyable.kill()
-		if "Brick" in live_destroyable.name:
-			# Game over once blocks reach bottom of screen
-			if live_destroyable.column_vert_point == 8:
-				game_control.game_over = true
-			else:
-				live_destroyable.max_possible_health += 1
+	for live_destroyable in game_control.get_children():
+		if "Brick" in live_destroyable.name or "Special" in live_destroyable.name:
+			live_destroyable.column_vert_point += 1
+			if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
+				live_destroyable.kill()
+			if "Brick" in live_destroyable.name:
+				# Game over once blocks reach bottom of screen
+				if live_destroyable.column_vert_point == 8:
+					game_control.game_over = true
+				else:
+					live_destroyable.max_possible_health += 1
 
 func destroyable_correct_position_check(destroyable):
 	var destination = game_control.columns[destroyable.column_num].get_point_position(destroyable.column_vert_point)
@@ -44,12 +44,13 @@ func destroyable_position_check_and_move(destroyable, delta):
 func smoothly_reposition_destroyables(delta):
 	# Here we deal with the smooth opacity change and repositioning of blocks
 	var num_incorrect_brick_position = 0
-	for live_destroyable in game_control.live_destroyables:
+	for live_destroyable in game_control.get_children():
 		# If destroyable not fully opaque
-		if live_destroyable.modulate.a < 1:
-			live_destroyable.modulate.a += 0.05
-		# If destroyable not at point it's supposed to be
-		num_incorrect_brick_position += destroyable_position_check_and_move(live_destroyable, delta)
+		if "Brick" in live_destroyable.name or "Special" in live_destroyable.name:
+			if live_destroyable.modulate.a < 1:
+				live_destroyable.modulate.a += 0.05
+			# If destroyable not at point it's supposed to be
+			num_incorrect_brick_position += destroyable_position_check_and_move(live_destroyable, delta)
 	if num_incorrect_brick_position == 0:
 		game_control.save()
 		repositioning_bricks = false

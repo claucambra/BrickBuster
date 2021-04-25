@@ -47,8 +47,8 @@ func _process(_delta):
 		if self.modulate.a > 0:
 			self.modulate.a -= 0.05
 		else:
-			emit_signal("brick_killed", self)
 			self.queue_free()
+			emit_signal("brick_killed", self)
 	else:
 		if self.modulate.a < 1:
 			self.modulate.a += 0.05
