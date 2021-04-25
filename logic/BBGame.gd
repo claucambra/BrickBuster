@@ -330,8 +330,8 @@ func on_pause_menu_toggled(popup_open):
 func on_restart_button_clicked():
 	reset()
 
-func on_destroyable_killed(brick):
-	live_destroyables.erase(brick)
+func on_destroyable_killed(destroyable):
+	live_destroyables.erase(destroyable)
 
 func on_special_area_entered(special):
 	if special.mode == "add-ball":

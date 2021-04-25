@@ -24,8 +24,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	var copy_live_destroyables = game_control.live_destroyables.duplicate()
-	
 	if !game_control.game_over:
 		if !launch_cooling_down && game_control.live_balls.size() != game_control.ammo:
 			game_control.drag_enabled = true
