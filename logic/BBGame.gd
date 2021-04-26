@@ -34,6 +34,7 @@ var config = ConfigFile.new()
 var err = config.load("user://settings.cfg")
 
 var game_over = false
+var resetting = false
 # These variables are used to keep track of what stage of the round we are in
 # This is used to decide input state and acceptance
 var drag_enabled = false
@@ -312,6 +313,7 @@ func update_score_labels():
 		high_score_label.text = String(past_scores.max())
 
 func reset():
+	resetting = true
 	emit_signal("reset_triggered")
 	for live_element in get_children():
 		if "Brick" in live_element.name or "Special" in live_element.name:
@@ -321,6 +323,7 @@ func reset():
 	live_balls.clear()
 	live_destroyables.clear()
 	launched = false
+	all_balls_launched = false
 	round_in_progress = false
 	score = 0
 	ammo = 1
@@ -329,7 +332,9 @@ func reset():
 	update_score_labels()
 	new_destroyable_line(score + 1)
 	game_over = false
+	resetting = false
 	save()
+	get_tree().reload_current_scene()
 
 
 
