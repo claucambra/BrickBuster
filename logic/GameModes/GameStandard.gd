@@ -1,6 +1,8 @@
 extends Node2D
 
 var repositioning_bricks = false
+var ball_repositioned_this_round = false
+var round_first_dead_ball_position = null
 
 onready var game_control = get_tree().get_root().get_node("MainGame")
 
@@ -57,9 +59,22 @@ func smoothly_reposition_destroyables(delta):
 	else:
 		repositioning_bricks = true
 
+
+func on_ball_died(dead_ball):
+	# Set round_first_dead_ball_position to move our launch position ball there
+	if round_first_dead_ball_position == null && !ball_repositioned_this_round:
+		round_first_dead_ball_position = dead_ball.position
+
+func on_reset_triggered():
+	ball_repositioned_this_round = false
+	round_first_dead_ball_position = null
+
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	game_control.connect("reset_triggered", self, "on_reset_triggered")
+	game_control.connect("ball_died", self, "on_ball_died")
+	
 	var save_game = File.new()
 	if not save_game.file_exists("user://savegame.save"):
 		game_control.rng.randomize()
@@ -78,6 +93,11 @@ func _process(delta):
 		# Before allowing any input we need to make sure everything on the board
 		# is prepped.
 		# <---------------------- ROUND PROGRESS CHECKS ---------------------->
+		if round_first_dead_ball_position != null && game_control.all_balls_launched:
+			game_control.smoothly_reposition_ball(delta, game_control.ball, round_first_dead_ball_position)
+			if game_control.ball.position.x == round_first_dead_ball_position.x:
+				round_first_dead_ball_position = null
+				ball_repositioned_this_round = true
 		if !game_control.live_balls.empty():
 			game_control.round_in_progress = true
 		# <--------------------- END OF ROUND PROCESSING --------------------->
@@ -85,6 +105,7 @@ func _process(delta):
 			# Here we deal with the end-of-round process
 			game_control.launched = false
 			game_control.round_in_progress = false
+			ball_repositioned_this_round = false
 			round_over_checks()
 			if !game_control.game_over:
 				game_control.score += 1

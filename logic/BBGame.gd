@@ -26,6 +26,8 @@
 extends Node2D
 
 signal game_prepped
+signal reset_triggered
+signal ball_died(dead_ball)
 
 # <---------------------------- MEMBER VARIABLES ---------------------------->
 var config = ConfigFile.new()
@@ -53,7 +55,6 @@ var repositioning_ball = false
 var live_destroyables = []
 # live_balls is used for labels. Again, don't touch it.
 var live_balls = []
-var round_first_dead_ball_position = null
 var score = 0
 var past_scores = []
 var ammo = 1
@@ -288,6 +289,20 @@ func new_destroyable_line(health, vert_point = 0):
 		else:
 			new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
 
+func smoothly_reposition_ball(delta, ball_to_reposition, destination):
+	# <---- SMOOTHLY REPOSITION INDICATOR BALL AFTER FIRST BALL RETURN ---->
+	repositioning_ball = true
+	var reposition = ball_to_reposition.position - destination
+	# Snap ball into position when they are imperceptibly close
+	# Otherwise they will never reach the intended position
+	# We also don't want to go to the Y position of the dead ball, only the X
+	if destination.distance_to(Vector2(ball_to_reposition.position.x, destination.y)) < 0.5:
+		ball_to_reposition.position.x = destination.x
+		repositioning_ball = false
+	else:
+		var reposition_velocity = reposition * 6 * delta
+		ball_to_reposition.position.x -= reposition_velocity.x
+
 func update_score_labels():
 	ammo_label.text = "x" + String(ammo)
 	current_score_label.text = String(score)
@@ -297,6 +312,7 @@ func update_score_labels():
 		high_score_label.text = String(past_scores.max())
 
 func reset():
+	emit_signal("reset_triggered")
 	for live_element in get_children():
 		if "Brick" in live_element.name or "Special" in live_element.name:
 			live_element.queue_free()
@@ -306,7 +322,6 @@ func reset():
 	live_destroyables.clear()
 	launched = false
 	round_in_progress = false
-	round_first_dead_ball_position = null
 	score = 0
 	ammo = 1
 	ball.position = Vector2(360, 1072)
@@ -367,11 +382,9 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	if line_point < 8 && things_at_point.empty():
 		new_destroyable(line_point, columns[3], "BounceSpecial_NC")
 
-func on_ball_died(ball):
-	# Set round_first_dead_ball_position to move our launch position ball there
-	if round_first_dead_ball_position == null:
-		round_first_dead_ball_position = ball.position
-	live_balls.erase(ball)
+func on_ball_died(dead_ball):
+	emit_signal("ball_died", dead_ball)
+	live_balls.erase(dead_ball)
 
 func _on_ControlArea_mouse_entered():
 	mouse_in_controlarea = true
@@ -454,22 +467,6 @@ func _process(delta):
 			launch_line.modulate.a -= 0.1
 		
 		update() # Updates _draw func
-		
-		# <---- SMOOTHLY REPOSITION INDICATOR BALL AFTER FIRST BALL RETURN ---->
-		if round_first_dead_ball_position != null && ball.position.x != round_first_dead_ball_position.x:
-			repositioning_ball = true
-			var reposition = ball.position - round_first_dead_ball_position
-			# Snap ball into position when they are imperceptibly close
-			# Otherwise they will never reach the intended position
-			# We also don't want to go to the Y position of the dead ball, only the X
-			if round_first_dead_ball_position.distance_to(Vector2(ball.position.x, round_first_dead_ball_position.y)) < 0.5:
-				ball.position.x = round_first_dead_ball_position.x
-				# So our ball doesn't reposition again if it has reached its position but the round is still on
-				round_first_dead_ball_position = null
-				repositioning_ball = false
-			elif all_balls_launched:
-				var reposition_velocity = reposition * 6 * delta
-				ball.position.x -= reposition_velocity.x
 
 func _draw():
 	if drag_enabled && draw_touch_marker:
