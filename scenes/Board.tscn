@@ -25,6 +25,8 @@ script = ExtResource( 4 )
 
 [node name="MetaArea" parent="Board/CanvasLayer" instance=ExtResource( 2 )]
 light_mask = 4
+margin_top = -2.24493
+margin_bottom = 187.755
 
 [node name="LaunchLine" type="Line2D" parent="Board/CanvasLayer"]
 light_mask = 0
