@@ -11,6 +11,8 @@ var launch_cooldown_timer = Timer.new()
 var countdown_label = Label.new()
 var launch_cooling_down = false
 var blocks_moving = false
+var top_row_area = Area2D.new()
+var top_row_area_collision_shape = CollisionShape2D.new()
 
 func on_launch_cooldown_timer_timeout():
 	launch_cooling_down = false
@@ -27,17 +29,30 @@ func _ready():
 	add_child(countdown_label)
 	countdown_label.anchor_left = 50
 	countdown_label.anchor_top = 50
+	top_row_area.monitoring = true
+	top_row_area.add_child(top_row_area_collision_shape)
+	top_row_area_collision_shape.shape = RectangleShape2D.new()
+	var tracs_extents = (game_control.columns[6].get_point_position(1) - game_control.columns[0].get_point_position(0)) / 2
+	top_row_area_collision_shape.shape.set_extents(Vector2(tracs_extents.x, tracs_extents.y))
+	add_child(top_row_area)
+	top_row_area.position =  game_control.columns[0].get_point_position(0)
 	game_control.new_destroyable_line(0 + 1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+
 	if !game_control.game_over:
 		if blocks_moving:
 			for live_destroyable in game_control.get_children():
 				if "Brick" in live_destroyable.name or "Special" in live_destroyable.name:
 					live_destroyable.position.y += 1
-		var last_destroyable = game_control.live_destroyables[game_control.live_destroyables.size() - 1]
-		if last_destroyable.position.y >= $Column0.get_point_position(1).y:
+		
+		var row_0_free = true
+		for thing in top_row_area.get_overlapping_bodies():
+			if "Brick" in thing.name || "Special" in thing.name:
+				row_0_free = false
+		
+		if row_0_free:
 			game_control.new_destroyable_line(0 + 1)
 		
 		if !launch_cooling_down && game_control.live_balls.size() != game_control.ammo:

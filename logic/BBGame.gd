@@ -28,6 +28,7 @@ extends Node2D
 signal game_prepped
 signal reset_triggered
 signal ball_died(dead_ball)
+signal ball_no_contact(ball_position, ball_linear_velocity)
 
 # <---------------------------- MEMBER VARIABLES ---------------------------->
 var config = ConfigFile.new()
@@ -368,24 +369,7 @@ func on_special_area_entered(special):
 
 
 func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
-	# Create bounce special near live balls when taking too long to move vertically
-	var midcolumn_points = Array(columns[3].get_points())
-	var distance_to_midcolumn_points = []
-	for point in midcolumn_points:
-		distance_to_midcolumn_points.append(point.distance_to(ball_position))
-	var line_point = distance_to_midcolumn_points.find(distance_to_midcolumn_points.min())
-	
-	if ball_linear_velocity.y < 0 && distance_to_midcolumn_points.min() < 0:
-		line_point -= 1 # Line points go top to bottom
-	elif ball_linear_velocity.y > 0 && distance_to_midcolumn_points.min() > 0:
-		line_point += 1
-	
-	var things_at_point = get_world_2d().direct_space_state.intersect_point(columns[3].get_point_position(line_point), 32, [], 1, true, true)
-	
-	print(things_at_point)
-	
-	if line_point < 8 && things_at_point.empty():
-		new_destroyable(line_point, columns[3], "BounceSpecial_NC")
+	emit_signal("ball_no_contact", ball_position, ball_linear_velocity)
 
 func on_ball_died(dead_ball):
 	emit_signal("ball_died", dead_ball)
