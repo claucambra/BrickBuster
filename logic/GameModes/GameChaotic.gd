@@ -14,6 +14,45 @@ var blocks_moving = false
 var top_row_area = Area2D.new()
 var top_row_area_collision_shape = CollisionShape2D.new()
 
+func new_destroyable_line(health, vert_point = 0):
+	var rng = game_control.rng
+	var free_columns = game_control.columns.duplicate()
+	var mega = false
+	rng.randomize()
+	if rng.randi_range(0,9) == 9:
+		mega = true
+	for column in game_control.columns:
+		rng.randomize()
+		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
+			free_columns.erase(column)
+			if rng.randi_range(0,3) == 3:
+				game_control.new_destroyable(vert_point, column, "SlantedBrick", health, mega)
+			else:
+				game_control.new_destroyable(vert_point, column, "Brick", health, mega)
+	
+	rng.randomize()
+	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
+	var add_ball_special_column = free_columns[random_free_column]
+	game_control.new_destroyable(vert_point, add_ball_special_column, "AddBallSpecial")
+	free_columns.erase(add_ball_special_column)
+	
+	rng.randomize()
+	if !free_columns.empty() && rng.randi_range(0, 4) == 4:
+		random_free_column = rng.randi_range(0, (free_columns.size() - 1))
+		var bounce_special_column = free_columns[random_free_column]
+		free_columns.erase(bounce_special_column)
+		rng.randomize()
+		var decider = rng.randi_range(0, 1)
+		if decider == 1:
+			rng.randomize()
+			if rng.randi_range(0,1) == 1:
+				# new_destroyable checks if rotation is not null to create vertical laser
+				game_control.new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "vertical")
+			else:
+				game_control.new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "horizontal")
+		else:
+			game_control.new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
+
 func on_launch_cooldown_timer_timeout():
 	launch_cooling_down = false
 	blocks_moving = true
@@ -36,7 +75,7 @@ func _ready():
 	top_row_area_collision_shape.shape.set_extents(Vector2(tracs_extents.x, tracs_extents.y))
 	add_child(top_row_area)
 	top_row_area.position =  game_control.columns[0].get_point_position(0)
-	game_control.new_destroyable_line(0 + 1)
+	new_destroyable_line(0 + 1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -53,7 +92,7 @@ func _process(delta):
 				row_0_free = false
 		
 		if row_0_free:
-			game_control.new_destroyable_line(0 + 1)
+			new_destroyable_line(0 + 1)
 		
 		if !launch_cooling_down && game_control.live_balls.size() != game_control.ammo:
 			game_control.drag_enabled = true

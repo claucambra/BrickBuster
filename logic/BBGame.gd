@@ -253,44 +253,6 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 		next_destroyable.hit = true
 	live_destroyables.append(next_destroyable)
 
-func new_destroyable_line(health, vert_point = 0):
-	var free_columns = columns.duplicate()
-	var mega = false
-	rng.randomize()
-	if rng.randi_range(0,9) == 9:
-		mega = true
-	for column in columns:
-		rng.randomize()
-		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
-			free_columns.erase(column)
-			if rng.randi_range(0,3) == 3:
-				new_destroyable(vert_point, column, "SlantedBrick", health, mega)
-			else:
-				new_destroyable(vert_point, column, "Brick", health, mega)
-	
-	rng.randomize()
-	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
-	var add_ball_special_column = free_columns[random_free_column]
-	new_destroyable(vert_point, add_ball_special_column, "AddBallSpecial")
-	free_columns.erase(add_ball_special_column)
-	
-	rng.randomize()
-	if !free_columns.empty() && rng.randi_range(0, 4) == 4:
-		random_free_column = rng.randi_range(0, (free_columns.size() - 1))
-		var bounce_special_column = free_columns[random_free_column]
-		free_columns.erase(bounce_special_column)
-		rng.randomize()
-		var decider = rng.randi_range(0, 1)
-		if decider == 1:
-			rng.randomize()
-			if rng.randi_range(0,1) == 1:
-				# new_destroyable checks if rotation is not null to create vertical laser
-				new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "vertical")
-			else:
-				new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "horizontal")
-		else:
-			new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
-
 func smoothly_reposition_ball(delta, ball_to_reposition, destination):
 	# <---- SMOOTHLY REPOSITION INDICATOR BALL AFTER FIRST BALL RETURN ---->
 	repositioning_ball = true
@@ -331,7 +293,6 @@ func reset():
 	ball.position = Vector2(360, 1072)
 	repositioning_ball = false
 	update_score_labels()
-	new_destroyable_line(score + 1)
 	game_over = false
 	resetting = false
 	save()
