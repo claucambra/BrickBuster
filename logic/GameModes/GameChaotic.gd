@@ -36,13 +36,14 @@ func _process(delta):
 			for live_destroyable in game_control.get_children():
 				if "Brick" in live_destroyable.name or "Special" in live_destroyable.name:
 					live_destroyable.position.y += 1
+		var last_destroyable = game_control.live_destroyables[game_control.live_destroyables.size() - 1]
+		if last_destroyable.position.y >= $Column0.get_point_position(1).y:
+			game_control.new_destroyable_line(0 + 1)
 		
 		if !launch_cooling_down && game_control.live_balls.size() != game_control.ammo:
 			game_control.drag_enabled = true
 			countdown_label.visible = false
 			if Input.is_action_just_released("click") && game_control.reasonable_angle:
-				launch_cooling_down = true
-				launch_cooldown_timer.start()
 				game_control.launch_balls(game_control.line_direction.normalized(), game_control.ammo - game_control.live_balls.size())
 		else:
 			game_control.drag_enabled = false
