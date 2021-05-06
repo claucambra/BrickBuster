@@ -28,7 +28,7 @@ extends Node2D
 signal game_prepped
 signal reset_triggered
 signal ball_died(dead_ball)
-signal ball_no_contact(ball_position, ball_linear_velocity)
+signal ball_no_contact_timeout(ball_position, ball_linear_velocity)
 
 # <---------------------------- MEMBER VARIABLES ---------------------------->
 var config = ConfigFile.new()
@@ -330,7 +330,7 @@ func on_special_area_entered(special):
 
 
 func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
-	emit_signal("ball_no_contact", ball_position, ball_linear_velocity)
+	emit_signal("ball_no_contact_timeout", ball_position, ball_linear_velocity)
 
 func on_ball_died(dead_ball):
 	emit_signal("ball_died", dead_ball)

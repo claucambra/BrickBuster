@@ -130,6 +130,7 @@ func on_reset_triggered():
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	game_control.connect("ball_no_contact_timeout", self, "on_ball_no_contact_timeout")
 	game_control.connect("reset_triggered", self, "on_reset_triggered")
 	game_control.connect("ball_died", self, "on_ball_died")
 	
