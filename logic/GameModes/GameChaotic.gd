@@ -65,21 +65,27 @@ func on_launch_cooldown_timer_timeout():
 func on_score_increase_timer_timeout():
 	add_ball_enabled = true
 	game_control.score += 1
+	game_control.update_score_labels()
 	score_increase_timer.start()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	game_control.ball.get_node("CollisionThing2D").disabled = true
+	
 	launch_cooldown_timer.connect("timeout", self, "on_launch_cooldown_timer_timeout")
 	launch_cooldown_timer.wait_time = 3
 	launch_cooldown_timer.autostart = true
 	launch_cooldown_timer.one_shot = true
 	add_child(launch_cooldown_timer)
+	
 	score_increase_timer.connect("timeout", self, "on_score_increase_timer_timeout")
 	score_increase_timer.wait_time = 5
 	add_child(score_increase_timer)
+	
 	add_child(countdown_label)
 	countdown_label.anchor_left = 50
 	countdown_label.anchor_top = 50
+	
 	top_row_area.monitoring = true
 	top_row_area.add_child(top_row_area_collision_shape)
 	top_row_area_collision_shape.shape = RectangleShape2D.new()
@@ -87,7 +93,9 @@ func _ready():
 	top_row_area_collision_shape.shape.set_extents(Vector2(tracs_extents.x, tracs_extents.y))
 	add_child(top_row_area)
 	top_row_area.position =  game_control.columns[0].get_point_position(0)
+	
 	new_destroyable_line(game_control.score + 1)
+	game_control.update_score_labels()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -96,7 +104,7 @@ func _process(delta):
 		if blocks_moving:
 			for live_destroyable in game_control.get_children():
 				if "Brick" in live_destroyable.name or "Special" in live_destroyable.name:
-					if live_destroyable.position >= game_control.columns[6].get_point_position(7):
+					if live_destroyable.position.y >= game_control.columns[6].get_point_position(7).y && "Brick" in live_destroyable.name:
 						game_control.game_over = true
 					else: 
 						live_destroyable.position.y += 1
