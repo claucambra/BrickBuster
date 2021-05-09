@@ -82,9 +82,11 @@ func _ready():
 	score_increase_timer.wait_time = 5
 	add_child(score_increase_timer)
 	
-	add_child(countdown_label)
-	countdown_label.anchor_left = 50
-	countdown_label.anchor_top = 50
+	countdown_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	countdown_label.grow_vertical = Control.GROW_DIRECTION_BOTH
+	countdown_label.anchor_left = 0.5
+	countdown_label.anchor_top = 0.5
+	$ControlArea.add_child(countdown_label)
 	
 	top_row_area.monitoring = true
 	top_row_area.add_child(top_row_area_collision_shape)
@@ -104,8 +106,11 @@ func _process(delta):
 		if blocks_moving:
 			for live_destroyable in game_control.get_children():
 				if "Brick" in live_destroyable.name or "Special" in live_destroyable.name:
-					if live_destroyable.position.y >= game_control.columns[6].get_point_position(7).y && "Brick" in live_destroyable.name:
-						game_control.game_over = true
+					if live_destroyable.position.y >= game_control.columns[6].get_point_position(7).y:
+						if "Brick" in live_destroyable.name:
+							game_control.game_over = true
+						else:
+							live_destroyable.kill()
 					else: 
 						live_destroyable.position.y += 1
 		
@@ -125,7 +130,7 @@ func _process(delta):
 		else:
 			game_control.drag_enabled = false
 			if launch_cooldown_timer.time_left > 0:
-				game_control.high_score_label.text = String(launch_cooldown_timer.time_left)
+				countdown_label.text = String(launch_cooldown_timer.time_left)
 				countdown_label.visible = true
 			else:
 				countdown_label.visible = false
