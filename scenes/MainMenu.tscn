@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://logic/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=2]
@@ -6,10 +6,7 @@
 [ext_resource path="res://logic/Brick.gd" type="Script" id=4]
 [ext_resource path="res://sprites/light.png" type="Texture" id=5]
 [ext_resource path="res://fonts/NotoSans_Bold.tres" type="DynamicFont" id=6]
-[ext_resource path="res://scenes/GameModeMenu.gd" type="Script" id=7]
-[ext_resource path="res://scenes/SubMenus/OptionsMenu.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/SubMenus/ScoreMenu.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/SubMenus/BallMenu.tscn" type="PackedScene" id=10]
+[ext_resource path="res://logic/GameModeMenu.gd" type="Script" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 160, 160 )
@@ -152,9 +149,6 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Scores"
 
-[node name="ScoresMenu" parent="CanvasLayer/MainMenu/VBoxContainer/ScoresButton" instance=ExtResource( 9 )]
-visible = false
-
 [node name="BallsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 642.0
 margin_right = 300.0
@@ -163,8 +157,6 @@ rect_min_size = Vector2( 300, 0 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Balls"
-
-[node name="BallsMenu" parent="CanvasLayer/MainMenu/VBoxContainer/BallsButton" instance=ExtResource( 10 )]
 
 [node name="OptionsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 856.0
@@ -175,8 +167,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Options"
-
-[node name="OptionsMenu" parent="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" instance=ExtResource( 8 )]
 
 [node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 1070.0

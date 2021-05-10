@@ -176,8 +176,6 @@ func _process(delta):
 				game_control.score += 1
 				game_control.update_score_labels()
 				new_destroyable_line(game_control.score + 1)
-			else:
-				game_control.past_scores.append(game_control.score)
 		else:
 			smoothly_reposition_destroyables(delta)
 		

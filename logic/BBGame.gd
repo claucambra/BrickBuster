@@ -276,12 +276,13 @@ func smoothly_reposition_ball(delta, ball_to_reposition, destination):
 		ball_to_reposition.position.x -= reposition_velocity.x
 
 func update_score_labels():
+	var game_mode = $GameModeSelector.selected_game_mode
 	ammo_label.text = "x" + String(ammo)
 	current_score_label.text = String(score)
-	if past_scores.empty() || score > past_scores.max():
+	if !past_scores.has(game_mode) || past_scores[game_mode].empty() || score > past_scores[game_mode].max():
 		high_score_label.text = String(score)
 	else:
-		high_score_label.text = String(past_scores.max())
+		high_score_label.text = String(past_scores[game_mode].max())
 
 func reset():
 	resetting = true
@@ -396,6 +397,10 @@ func _process(delta):
 				live_destroyables.erase(live_destroyable)
 		
 		if all_transparent:
+			if past_scores.has($GameModeSelector.selected_game_mode):
+				past_scores[$GameModeSelector.selected_game_mode].append(score)
+			else:
+				past_scores[$GameModeSelector.selected_game_mode] = [score]
 			reset()
 	
 	else:

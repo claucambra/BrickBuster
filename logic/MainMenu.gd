@@ -10,21 +10,42 @@ var rng = RandomNumberGenerator.new()
 var config = ConfigFile.new()
 var err = config.load("user://settings.cfg")
 
+# We want to take care of these in the right order in our ready func
 var ball = null
+var popup_game_mode_menu = null
+var popup_balls_menu = null
+var popup_options_menu = null
+var popup_score_menu = null
+var popups = []
 
 onready var new_game_button = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton
-onready var popup_game_mode_menu = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu
 onready var scores_button = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton
-onready var popup_score_menu = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/ScoresMenu
 onready var balls_button = $CanvasLayer/MainMenu/VBoxContainer/BallsButton
-onready var popup_balls_menu = $CanvasLayer/MainMenu/VBoxContainer/BallsButton/BallsMenu
 onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
-onready var popup_options_menu = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton/OptionsMenu
-onready var popups = [popup_game_mode_menu, popup_score_menu, popup_balls_menu, popup_options_menu]
+
 
 func close_popups():
 	for popup in popups:
 		popup.visible = false
+
+func convert_past_scores(past_scores):
+	var new_type_scores = {"standard": past_scores}
+	save_game.open("user://savegame.save", File.READ)
+	var node_data = parse_json(save_game.get_line())
+	
+	var save_dict = {
+		"game_mode": node_data["game_mode"],
+		"score": node_data["score"],
+		"ammo": node_data["ammo"],
+		"launch_ball_position_x": node_data["launch_ball_position_x"],
+		"launch_ball_position_y": node_data["launch_ball_position_y"],
+		"destroyables" : node_data["destroyables"],
+		"past_scores": new_type_scores
+	}
+	
+	save_game.open("user://savegame.save", File.WRITE)
+	save_game.store_line(to_json(save_dict))
+	save_game.close()
 
 func write_save_file(game_mode = "standard", first_save = false):
 	var save_dict = {
@@ -37,7 +58,7 @@ func write_save_file(game_mode = "standard", first_save = false):
 	}
 	
 	if first_save:
-		save_dict["past_scores"] = []
+		save_dict["past_scores"] = {"standard": []}
 	else:
 		save_game.open("user://savegame.save", File.READ)
 		var node_data = parse_json(save_game.get_line())
@@ -56,6 +77,8 @@ func _ready():
 			var past_scores = node_data["past_scores"]
 			if past_scores.empty():
 				scores_button.disabled = true
+			elif typeof(past_scores) == TYPE_ARRAY: # Convert old type score store
+				convert_past_scores(past_scores)
 	else:
 		$CanvasLayer/MainMenu/VBoxContainer/ContinueButton.visible = false
 		$CanvasLayer/MainMenu/VBoxContainer/ScoresButton.disabled = true
@@ -88,6 +111,16 @@ func _ready():
 	ball.get_node("Light2D").energy = 1
 	ball.get_node("Light2D").enabled = config.get_value("lighting", "enabled")
 	ball.set_color(config.get_value("ball", "color"))
+	
+	popup_game_mode_menu = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu
+	new_game_button.add_child(popup_game_mode_menu)
+	popup_balls_menu = load("res://scenes/SubMenus/BallMenu.tscn").instance()
+	balls_button.add_child(popup_balls_menu)
+	popup_options_menu = load("res://scenes/SubMenus/OptionsMenu.tscn").instance()
+	options_button.add_child(popup_options_menu)
+	popup_score_menu = load("res://scenes/SubMenus/ScoreMenu.tscn").instance()
+	scores_button.add_child(popup_score_menu)
+	popups = [popup_game_mode_menu, popup_balls_menu, popup_options_menu, popup_score_menu]
 	
 	popup_game_mode_menu.connect("game_mode_selected", self, "on_game_mode_selected")
 	popup_balls_menu.connect("color_changed", self, "on_color_changed")
