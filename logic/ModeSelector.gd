@@ -25,8 +25,7 @@ func on_game_prepped():
 		var game_mode = null
 		if "game_mode" in node_data:
 			selected_game_mode = node_data["game_mode"]
-		
-		if game_mode == null:
+		elif game_mode == null:
 			selected_game_mode = "standard"
 		
 		var script = load("res://logic/GameModes/" + game_modes[selected_game_mode])

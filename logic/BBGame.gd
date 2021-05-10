@@ -259,7 +259,6 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 	
 	if game_mode != "standard":
 		next_destroyable.position = specific_position
-	print(game_mode)
 	live_destroyables.append(next_destroyable)
 
 func smoothly_reposition_ball(delta, ball_to_reposition, destination):

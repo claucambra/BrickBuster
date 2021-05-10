@@ -12,17 +12,23 @@ var err = config.load("user://settings.cfg")
 
 var ball = null
 
+onready var new_game_button = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton
+onready var popup_game_mode_menu = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu
 onready var scores_button = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton
 onready var popup_score_menu = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton/ScoresMenu
 onready var balls_button = $CanvasLayer/MainMenu/VBoxContainer/BallsButton
 onready var popup_balls_menu = $CanvasLayer/MainMenu/VBoxContainer/BallsButton/BallsMenu
 onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
 onready var popup_options_menu = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton/OptionsMenu
-onready var popups = [popup_score_menu, popup_balls_menu, popup_options_menu]
+onready var popups = [popup_game_mode_menu, popup_score_menu, popup_balls_menu, popup_options_menu]
 
-func write_save_file(first_save = false):
+func close_popups():
+	for popup in popups:
+		popup.visible = false
+
+func write_save_file(game_mode = "standard", first_save = false):
 	var save_dict = {
-		"game_mode": "standard",
+		"game_mode": game_mode,
 		"score": 0,
 		"ammo": 1,
 		"launch_ball_position_x": 360,
@@ -83,6 +89,7 @@ func _ready():
 	ball.get_node("Light2D").enabled = config.get_value("lighting", "enabled")
 	ball.set_color(config.get_value("ball", "color"))
 	
+	popup_game_mode_menu.connect("game_mode_selected", self, "on_game_mode_selected")
 	popup_balls_menu.connect("color_changed", self, "on_color_changed")
 	popup_balls_menu.connect("ball_changed", self, "on_ball_changed")
 	popup_options_menu.connect("options_changed", self, "on_options_changed")
@@ -95,28 +102,27 @@ func _on_ContinueButton_pressed():
 	get_tree().change_scene("res://scenes/Board.tscn")
 	
 func _on_NewGameButton_pressed():
-	write_save_file()
-	
-	get_tree().change_scene("res://scenes/Board.tscn")
+	close_popups()
+	popup_game_mode_menu.visible = !popup_game_mode_menu.visible
 
 func _on_QuitButton_pressed():
 	get_tree().quit()
 
 func _on_ScoresButton_pressed():
-	popup_options_menu.visible = false
-	popup_balls_menu.visible = false
+	close_popups()
 	popup_score_menu.visible = !popup_score_menu.visible
 
 func _on_OptionsButton_pressed():
-	popup_score_menu.visible = false
-	popup_balls_menu.visible = false
+	close_popups()
 	popup_options_menu.visible = !popup_options_menu.visible
 
 func _on_BallsButton_pressed():
-	popup_score_menu.visible = false
-	popup_options_menu.visible = false
+	close_popups()
 	popup_balls_menu.visible = !popup_balls_menu.visible
 
+func on_game_mode_selected(game_mode_name):
+	write_save_file(game_mode_name)
+	get_tree().change_scene("res://scenes/Board.tscn")
 
 func on_color_changed():
 	config.load("user://settings.cfg")

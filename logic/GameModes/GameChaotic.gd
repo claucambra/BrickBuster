@@ -7,6 +7,12 @@ onready var game_control = get_tree().get_root().get_node("MainGame")
 # var a = 2
 # var b = "text"
 
+var game_mode_details = {
+	"name": "chaotic",
+	"display_name": "Chaotic",
+	"description": "Fight off the endless march of the bricks for as long as you can!"
+}
+
 var launch_cooldown_timer = Timer.new()
 var launch_cooling_down = true
 var score_increase_timer = Timer.new()

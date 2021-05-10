@@ -67,7 +67,6 @@ func _on_SortOptionButton_item_selected(index):
 	
 	scores.sort_custom(Sorter, "sort_score_descending")
 	var top_score = scores[0][0]
-	print(top_score)
 	
 	match index:
 		0:

@@ -1,5 +1,11 @@
 extends Node2D
 
+var game_mode_details = {
+	"name": "standard",
+	"display_name": "Standard",
+	"description": "Destroy the bricks in a round-based race to the high score!"
+}
+
 var repositioning_bricks = false
 var ball_repositioned_this_round = false
 var round_first_dead_ball_position = null
