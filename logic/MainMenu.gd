@@ -18,9 +18,11 @@ onready var balls_button = $CanvasLayer/MainMenu/VBoxContainer/BallsButton
 onready var popup_balls_menu = $CanvasLayer/MainMenu/VBoxContainer/BallsButton/BallsMenu
 onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
 onready var popup_options_menu = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton/OptionsMenu
+onready var popups = [popup_score_menu, popup_balls_menu, popup_options_menu]
 
 func write_save_file(first_save = false):
 	var save_dict = {
+		"game_mode": "standard",
 		"score": 0,
 		"ammo": 1,
 		"launch_ball_position_x": 360,

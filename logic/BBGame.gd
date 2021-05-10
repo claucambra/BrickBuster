@@ -108,8 +108,10 @@ func save():
 	for destroyable in live_destroyables:
 		var save_destroyable = {
 			"name": destroyable.name,
-			"column_num" : destroyable.column_num,
-			"column_vert_point" : destroyable.column_vert_point,
+			"column_num": destroyable.column_num,
+			"column_vert_point": destroyable.column_vert_point,
+			"position_x": destroyable.position.x,
+			"position_y": destroyable.position.y,
 			"health": null,
 			"mega": null,
 			"special_mode": null,
@@ -143,6 +145,7 @@ func load_game():
 		# Get the saved dictionary from the next line in the save file
 		var node_data = parse_json(save_game.get_line())
 		
+		var game_mode = node_data["game_mode"]
 		score = node_data["score"]
 		past_scores = node_data["past_scores"]
 		ammo = node_data["ammo"]
@@ -157,7 +160,9 @@ func load_game():
 				destroyable["special_mode"],
 				destroyable["rotation"],
 				destroyable["laserbeam_direction"],
-				true)
+				Vector2(destroyable["position_x"], destroyable["position_y"]),
+				true,
+				game_mode)
 	
 	save_game.close()
 
@@ -204,7 +209,7 @@ func launch_balls(direction = line_direction.normalized(), amount = ammo):
 
 # It is important that you pay attention to the string you feed in for the type.
 # A wrong string can trip up the whole game.
-func new_destroyable(vert_point, column, type, health = null, mega = null, special_mode = null, rotation = null, laserbeam_direction = null, from_save = false):
+func new_destroyable(vert_point, column, type, health = null, mega = null, special_mode = null, rotation = null, laserbeam_direction = null, specific_position = null, from_save = false, game_mode = "standard"):
 	var next_destroyable
 	if "Brick" in type:
 		if "SlantedBrick" in type:
@@ -251,6 +256,10 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 		next_destroyable.column_vert_point += 1
 	else:
 		next_destroyable.hit = true
+	
+	if game_mode != "standard":
+		next_destroyable.position = specific_position
+	print(game_mode)
 	live_destroyables.append(next_destroyable)
 
 func smoothly_reposition_ball(delta, ball_to_reposition, destination):

@@ -68,6 +68,10 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "New Game"
 
+[node name="GameModeMenu" type="PopupMenu" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton"]
+margin_right = 20.0
+margin_bottom = 20.0
+
 [node name="ScoresButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 428.0
 margin_right = 300.0
