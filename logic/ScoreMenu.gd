@@ -8,6 +8,7 @@ extends Popup
 var save_game = File.new()
 
 var item_lists = [] # Used for quick rewriting with sorted lists
+var noto_font = load("res://fonts/NotoSans.tres")
 
 onready var tab_container = $MarginContainer/VBoxContainer/TabContainer
 onready var sort_options_button = $MarginContainer/VBoxContainer/HBoxContainer/SortOptionButton
@@ -34,6 +35,7 @@ func _ready():
 					item_list.size_flags_horizontal = 3
 					item_list.size_flags_vertical = 3
 					item_list.auto_height = true
+					item_list.set("custom_fonts/font", noto_font)
 					
 					var item_index = 0
 					var top_score = past_scores[key].max()
@@ -50,6 +52,8 @@ func _ready():
 		sort_options_button.add_item("By attainment (desc)", 1)
 		sort_options_button.add_item("By score (asc)", 2)
 		sort_options_button.add_item("By score (desc)", 3)
+		sort_options_button.theme = Theme.new()
+		sort_options_button.theme.default_font = noto_font
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
