@@ -96,6 +96,8 @@ func _ready():
 	countdown_label.grow_vertical = Control.GROW_DIRECTION_BOTH
 	countdown_label.anchor_left = 0.5
 	countdown_label.anchor_top = 0.5
+	var notobold_font = load("res://fonts/NotoSans_Bold.tres")
+	countdown_label.set("custom_fonts/font", notobold_font)
 	$ControlArea.add_child(countdown_label)
 	
 	top_row_area.monitoring = true
@@ -130,7 +132,7 @@ func _process(delta):
 						else:
 							live_destroyable.kill()
 					else: 
-						live_destroyable.position.y += 1
+						live_destroyable.position.y += 0.75
 		
 		var row_0_free = true
 		for thing in top_row_area.get_overlapping_bodies():
