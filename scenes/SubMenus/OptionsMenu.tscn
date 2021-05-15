@@ -88,6 +88,7 @@ margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "OK"
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/SettingsSwitchesContainer/AudioSwitch" to="." method="_on_AudioSwitch_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/ApplyButton" to="." method="_on_ApplyButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OkButton" to="." method="_on_OkButton_pressed"]

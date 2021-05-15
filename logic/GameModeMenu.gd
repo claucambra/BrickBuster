@@ -6,30 +6,16 @@ signal game_mode_selected(game_mode_name)
 # var a = 2
 # var b = "text"
 
+onready var global = get_node("/root/Global")
 onready var game_mode_list = $GameModeList
 onready var go_button = $HBoxContainer/GoButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var game_modes_dir = Directory.new()
-	var path = "res://logic/GameModes/"
-	game_modes_dir.open(path)
-	game_modes_dir.list_dir_begin()
-
 	var iterator = 0
-	while true:
-		var file_name = game_modes_dir.get_next()
-		if file_name == "":
-			break
-		elif not file_name.begins_with("."):
-			var game_mode_file = load(path + file_name)
-			var holder_node = Node2D.new()
-			holder_node.set_script(game_mode_file)
-			var game_mode_details = holder_node.get("game_mode_details")
-			game_mode_list.add_item(game_mode_details.display_name)
-			game_mode_list.set_item_metadata(iterator, game_mode_details)
-			iterator += 1
-	game_modes_dir.list_dir_end()
+	for game_mode in global.game_modes:
+		game_mode_list.add_item(global.game_modes[game_mode].display_name)
+		iterator += 1
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
