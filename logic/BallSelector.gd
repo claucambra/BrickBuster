@@ -60,6 +60,7 @@ func _on_ApplyButton_pressed():
 			ball_list.unselect_all()
 		
 		global.config.save("user://settings.cfg")
+		global.reload_selected_ball()
 		emit_signal("color_changed")
 		emit_signal("ball_changed")
 

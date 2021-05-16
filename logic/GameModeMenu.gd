@@ -15,6 +15,7 @@ func _ready():
 	var iterator = 0
 	for game_mode in global.game_modes:
 		game_mode_list.add_item(global.game_modes[game_mode].display_name)
+		game_mode_list.set_item_metadata(iterator, global.game_modes[game_mode])
 		iterator += 1
 
 

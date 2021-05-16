@@ -1,5 +1,6 @@
 extends Node2D
 
+onready var global = get_node("/root/Global")
 onready var game_control = get_tree().get_root().get_node("MainGame")
 
 
@@ -23,7 +24,7 @@ var top_row_area = Area2D.new()
 var top_row_area_collision_shape = CollisionShape2D.new()
 
 func new_destroyable_line(health, vert_point = 0):
-	var rng = game_control.rng
+	var rng = global.rng
 	var free_columns = game_control.columns.duplicate()
 	var mega = false
 	rng.randomize()
@@ -108,8 +109,7 @@ func _ready():
 	add_child(top_row_area)
 	top_row_area.position =  game_control.columns[0].get_point_position(0)
 	
-	var save_game = File.new()
-	if not save_game.file_exists("user://savegame.save"):
+	if !global.save_game_data:
 		game_control.rng.randomize()
 		game_control.new_destroyable_line(game_control.score + 1)
 	else:

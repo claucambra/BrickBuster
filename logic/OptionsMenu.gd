@@ -6,20 +6,17 @@ signal options_changed
 # var a = 2
 # var b = "text"
 
-var config = ConfigFile.new()
-var err = config.load("user://settings.cfg")
-
+onready var global = get_node("/root/Global")
 onready var light_switch = $MarginContainer/VBoxContainer/SettingsSwitchesContainer/LightSwitch
 onready var audio_switch = $MarginContainer/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
 onready var volume_slider = $MarginContainer/VBoxContainer/SettingsSwitchesContainer/VolumeSlider
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(config.get_value("audio", "volume"))
-	if err == OK:
-		light_switch.pressed = config.get_value("lighting", "enabled")
-		volume_slider.value = config.get_value("audio", "volume")
-		if config.get_value("audio", "volume") == 0:
+	if global.err == OK:
+		light_switch.pressed = global.config.get_value("lighting", "enabled")
+		volume_slider.value = global.config.get_value("audio", "volume")
+		if global.config.get_value("audio", "volume") == 0:
 			audio_switch.pressed = false
 	
 	volume_slider.visible = audio_switch.pressed
@@ -29,10 +26,10 @@ func _ready():
 #	pass
 
 func _on_ApplyButton_pressed():
-	if err == OK || err == ERR_FILE_NOT_FOUND:
-		config.set_value("lighting", "enabled", light_switch.pressed)
-		config.set_value("audio", "volume", volume_slider.value)
-		config.save("user://settings.cfg")
+	if global.err == OK || global.err == ERR_FILE_NOT_FOUND:
+		global.config.set_value("lighting", "enabled", light_switch.pressed)
+		global.config.set_value("audio", "volume", volume_slider.value)
+		global.config.save("user://settings.cfg")
 	
 	emit_signal("options_changed")
 

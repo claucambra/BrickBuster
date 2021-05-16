@@ -5,8 +5,6 @@ extends Popup
 # var a = 2
 # var b = "text"
 
-var save_game = File.new()
-
 var item_lists = [] # Used for quick rewriting with sorted lists
 
 onready var global = get_node("/root/Global")

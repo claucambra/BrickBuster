@@ -16,6 +16,10 @@ var game_modes = {}
 func reload_save_data():
 	save_game.open("user://savegame.save", File.READ)
 	save_game_data = parse_json(save_game.get_line())
+	save_game.close()
+
+func reload_selected_ball():
+	selected_ball_scene = load("res://scenes/Balls/" + config.get_value("ball", "ball_file_name"))
 
 func convert_past_scores(past_scores):
 	var new_type_scores = {"standard": past_scores}
@@ -89,6 +93,7 @@ func fetch_game_modes():
 			var game_mode_details = holder_node.get("game_mode_details")
 			game_modes[game_mode_details.name] = {}
 			game_modes[game_mode_details.name]["path"] = path + file_name
+			game_modes[game_mode_details.name]["name"] = game_mode_details.name
 			game_modes[game_mode_details.name]["display_name"] = game_mode_details.display_name
 			game_modes[game_mode_details.name]["description"] = game_mode_details.description
 	game_modes_dir.list_dir_end()
@@ -118,5 +123,5 @@ func _ready():
 	
 	fetch_game_modes()
 	fetch_balls()
-	selected_ball_scene = load("res://scenes/Balls/" + config.get_value("ball", "ball_file_name"))
+	reload_selected_ball()
 

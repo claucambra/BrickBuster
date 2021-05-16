@@ -31,9 +31,6 @@ signal ball_died(dead_ball)
 signal ball_no_contact_timeout(ball_position, ball_linear_velocity)
 
 # <---------------------------- MEMBER VARIABLES ---------------------------->
-var config = ConfigFile.new()
-var err = config.load("user://settings.cfg")
-
 var game_over = false
 var resetting = false
 # These variables are used to keep track of what stage of the round we are in
@@ -58,15 +55,13 @@ var live_destroyables = []
 # live_balls is used for labels. Again, don't touch it.
 var live_balls = []
 var score = 0
-var past_scores = []
 var ammo = 1
-var rng = RandomNumberGenerator.new()
 var lighting_enabled = true
 var ball_color = "#ffffff"
 
-var ball_scene = null
 var ball = null
 
+onready var global = get_node("/root/Global")
 onready var meta_area = $Board/CanvasLayer/MetaArea
 onready var current_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/CurrentScoreLabel
 onready var high_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
@@ -98,7 +93,7 @@ func save():
 	var save_dict = {
 		"game_mode": $GameModeSelector.selected_game_mode,
 		"score": score,
-		"past_scores": past_scores,
+		"past_scores": global.save_game_data["past_scores"],
 		"ammo": ammo,
 		"launch_ball_position_x": ball.position.x,
 		"launch_ball_position_y": ball.position.y,
@@ -127,44 +122,33 @@ func save():
 				save_destroyable.laserbeam_direction = destroyable.laserbeam_direction
 		save_dict.destroyables.append(save_destroyable)
 	
-	var save_game = File.new()
 	# 'user://' data path varies by OS
-	save_game.open("user://savegame.save", File.WRITE)
+	global.save_game.open("user://savegame.save", File.WRITE)
 	
 	# Store the save dictionary as a new line in the save file.
-	save_game.store_line(to_json(save_dict))
-	save_game.close()
+	global.save_game.store_line(to_json(save_dict))
+	global.save_game.close()
+	global.reload_save_data()
 
 func load_game():
-	var save_game = File.new()
-
-	# Load the file line by line and process that dictionary 
-	# to restore the object it represents.
-	save_game.open("user://savegame.save", File.READ)
-	while save_game.get_position() < save_game.get_len():
-		# Get the saved dictionary from the next line in the save file
-		var node_data = parse_json(save_game.get_line())
-		
-		var game_mode = node_data["game_mode"]
-		score = node_data["score"]
-		past_scores = node_data["past_scores"]
-		ammo = node_data["ammo"]
-		ball.position = Vector2(node_data["launch_ball_position_x"], node_data["launch_ball_position_y"])
-		
-		for destroyable in node_data["destroyables"]:
-			new_destroyable(destroyable["column_vert_point"] - 1,
-				columns[destroyable["column_num"]],
-				destroyable["name"],
-				destroyable["health"],
-				destroyable["mega"],
-				destroyable["special_mode"],
-				destroyable["rotation"],
-				destroyable["laserbeam_direction"],
-				Vector2(destroyable["position_x"], destroyable["position_y"]),
-				true,
-				game_mode)
+	global.reload_save_data()
+	var game_mode = global.save_game_data["game_mode"]
+	score = global.save_game_data["score"]
+	ammo = global.save_game_data["ammo"]
+	ball.position = Vector2(global.save_game_data["launch_ball_position_x"], global.save_game_data["launch_ball_position_y"])
 	
-	save_game.close()
+	for destroyable in global.save_game_data["destroyables"]:
+		new_destroyable(destroyable["column_vert_point"] - 1,
+			columns[destroyable["column_num"]],
+			destroyable["name"],
+			destroyable["health"],
+			destroyable["mega"],
+			destroyable["special_mode"],
+			destroyable["rotation"],
+			destroyable["laserbeam_direction"],
+			Vector2(destroyable["position_x"], destroyable["position_y"]),
+			true,
+			game_mode)
 
 
 
@@ -194,7 +178,7 @@ func setup_line():
 func launch_balls(direction = line_direction.normalized(), amount = ammo):
 	all_balls_launched = false
 	for i in amount:
-		var next_ball = ball_scene.instance()
+		var next_ball = global.selected_ball_scene.instance()
 		next_ball.get_node("Light2D").enabled = lighting_enabled
 		next_ball.set_color(ball_color)
 		add_child(next_ball)
@@ -215,8 +199,8 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 		if "SlantedBrick" in type:
 			next_destroyable = slanted_brick_scene.instance()
 			if rotation == null:
-				rng.randomize()
-				next_destroyable.rotation_degrees = rng.randi_range(0,3) * 90
+				global.rng.randomize()
+				next_destroyable.rotation_degrees = global.rng.randi_range(0,3) * 90
 			else:
 				next_destroyable.rotation = rotation
 		else:
@@ -279,6 +263,7 @@ func update_score_labels():
 	var game_mode = $GameModeSelector.selected_game_mode
 	ammo_label.text = "x" + String(ammo)
 	current_score_label.text = String(score)
+	var past_scores = global.save_game_data.past_scores
 	if !past_scores.has(game_mode) || past_scores[game_mode].empty() || score > past_scores[game_mode].max():
 		high_score_label.text = String(score)
 	else:
@@ -360,12 +345,11 @@ func _on_ControlArea_mouse_exited():
 
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
 func _ready():
-	if err == OK:
-		ball_scene = load("res://scenes/Balls/" + config.get_value("ball", "ball_file_name"))
-		ball = ball_scene.instance()
+	if global.err == OK:
+		ball = global.selected_ball_scene.instance()
 		ball.marker_ball = true
-		lighting_enabled = config.get_value("lighting", "enabled")
-		ball_color = config.get_value("ball", "color")
+		lighting_enabled = global.config.get_value("lighting", "enabled")
+		ball_color = global.config.get_value("ball", "color")
 	
 	meta_area.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
 	meta_area.pause_mode = Node.PAUSE_MODE_PROCESS
@@ -397,10 +381,10 @@ func _process(delta):
 				live_destroyables.erase(live_destroyable)
 		
 		if all_transparent:
-			if past_scores.has($GameModeSelector.selected_game_mode):
-				past_scores[$GameModeSelector.selected_game_mode].append(score)
+			if global.save_game_data.past_scores.has($GameModeSelector.selected_game_mode):
+				global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
 			else:
-				past_scores[$GameModeSelector.selected_game_mode] = [score]
+				global.save_game_data.past_scores[$GameModeSelector.selected_game_mode] = [score]
 			reset()
 	
 	else:

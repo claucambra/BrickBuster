@@ -10,10 +10,11 @@ var repositioning_bricks = false
 var ball_repositioned_this_round = false
 var round_first_dead_ball_position = null
 
+onready var global = get_node("/root/Global")
 onready var game_control = get_tree().get_root().get_node("MainGame")
 
 func new_destroyable_line(health, vert_point = 0):
-	var rng = game_control.rng
+	var rng = global.rng
 	var free_columns = game_control.columns.duplicate()
 	var mega = false
 	rng.randomize()
@@ -140,8 +141,7 @@ func _ready():
 	game_control.connect("reset_triggered", self, "on_reset_triggered")
 	game_control.connect("ball_died", self, "on_ball_died")
 	
-	var save_game = File.new()
-	if not save_game.file_exists("user://savegame.save"):
+	if !global.save_game_data:
 		game_control.rng.randomize()
 		game_control.new_destroyable_line(game_control.score + 1)
 	else:
