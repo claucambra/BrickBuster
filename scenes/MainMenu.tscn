@@ -130,14 +130,14 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 text = "Go!"
 
-[node name="CancelButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu/HBoxContainer"]
+[node name="CloseButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu/HBoxContainer"]
 margin_left = 202.0
 margin_right = 400.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
-text = "Cancel"
+text = "Close"
 
 [node name="ScoresButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 428.0
@@ -259,7 +259,7 @@ polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ContinueButton" to="." method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton" to="." method="_on_NewGameButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu/HBoxContainer/GoButton" to="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu" method="_on_GoButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu/HBoxContainer/CancelButton" to="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu" method="_on_CancelButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu/HBoxContainer/CloseButton" to="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu" method="_on_CloseButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton" to="." method="_on_ScoresButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton" to="." method="_on_BallsButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]

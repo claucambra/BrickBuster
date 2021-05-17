@@ -29,5 +29,5 @@ func _on_GoButton_pressed():
 	var mode_details = game_mode_list.get_item_metadata(selected_item)
 	emit_signal("game_mode_selected", mode_details.name)
 
-func _on_CancelButton_pressed():
+func _on_CloseButton_pressed():
 	visible = false

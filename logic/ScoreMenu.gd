@@ -104,5 +104,5 @@ func _on_SortOptionButton_item_selected(index):
 				list.set_item_custom_bg_color(item_index,ColorN("red", 1))
 			item_index += 1
 
-func _on_OkButton_pressed():
+func _on_CloseButton_pressed():
 	hide()

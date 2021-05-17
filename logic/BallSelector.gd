@@ -64,5 +64,5 @@ func _on_ApplyButton_pressed():
 		emit_signal("color_changed")
 		emit_signal("ball_changed")
 
-func _on_OkButton_pressed():
+func _on_CloseButton_pressed():
 	hide()

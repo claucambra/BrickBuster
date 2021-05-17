@@ -33,7 +33,7 @@ func _on_ApplyButton_pressed():
 	
 	emit_signal("options_changed")
 
-func _on_OkButton_pressed():
+func _on_CloseButton_pressed():
 	hide()
 
 func _on_AudioSwitch_pressed():

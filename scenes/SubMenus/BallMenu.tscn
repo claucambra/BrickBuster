@@ -64,13 +64,13 @@ size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Apply"
 
-[node name="OkButton" type="Button" parent="TabContainer/BallPicker/HBoxContainer"]
+[node name="CloseButton" type="Button" parent="TabContainer/BallPicker/HBoxContainer"]
 margin_left = 198.0
 margin_right = 392.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
-text = "Ok"
+text = "Close"
 
 [node name="ColourMenu" type="MarginContainer" parent="TabContainer"]
 visible = false
@@ -88,10 +88,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColorPicker" type="ColorPicker" parent="TabContainer/ColourMenu/VBoxContainer"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 408.0
-margin_bottom = 706.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 412.0
+margin_bottom = 710.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -107,15 +107,15 @@ size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Apply"
 
-[node name="OkButton" type="Button" parent="TabContainer/ColourMenu/VBoxContainer/HBoxContainer"]
+[node name="CloseButton" type="Button" parent="TabContainer/ColourMenu/VBoxContainer/HBoxContainer"]
 margin_left = 198.0
 margin_right = 392.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
-text = "Ok"
+text = "Close"
 
 [connection signal="pressed" from="TabContainer/BallPicker/HBoxContainer/ApplyButton" to="." method="_on_ApplyButton_pressed"]
-[connection signal="pressed" from="TabContainer/BallPicker/HBoxContainer/OkButton" to="." method="_on_OkButton_pressed"]
+[connection signal="pressed" from="TabContainer/BallPicker/HBoxContainer/CloseButton" to="." method="_on_CloseButton_pressed"]
 [connection signal="pressed" from="TabContainer/ColourMenu/VBoxContainer/HBoxContainer/ApplyButton" to="." method="_on_ApplyButton_pressed"]
-[connection signal="pressed" from="TabContainer/ColourMenu/VBoxContainer/HBoxContainer/OkButton" to="." method="_on_OkButton_pressed"]
+[connection signal="pressed" from="TabContainer/ColourMenu/VBoxContainer/HBoxContainer/CloseButton" to="." method="_on_CloseButton_pressed"]
