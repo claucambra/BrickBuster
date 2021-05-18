@@ -388,7 +388,7 @@ func _process(delta):
 				live_destroyable.queue_free()
 				live_destroyables.erase(live_destroyable)
 		
-		if all_transparent:
+		if all_transparent && game_over_label.modulate.a >= 1:
 			if global.save_game_data.past_scores.has($GameModeSelector.selected_game_mode):
 				global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
 			else:

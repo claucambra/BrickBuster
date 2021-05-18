@@ -99,7 +99,7 @@ func _ready():
 	countdown_label.anchor_top = 0.5
 	var notobold_font = load("res://fonts/NotoSans_Bold.tres")
 	countdown_label.set("custom_fonts/font", notobold_font)
-	$ControlArea.add_child(countdown_label)
+	$CanvasLayer.add_child(countdown_label)
 	
 	top_row_area.monitoring = true
 	top_row_area.add_child(top_row_area_collision_shape)

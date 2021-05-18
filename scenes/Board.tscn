@@ -23,6 +23,7 @@ script = ExtResource( 4 )
 ]]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Board"]
+layer = 3
 
 [node name="MetaArea" parent="Board/CanvasLayer" instance=ExtResource( 2 )]
 light_mask = 4
