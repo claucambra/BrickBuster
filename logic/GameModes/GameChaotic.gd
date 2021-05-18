@@ -121,8 +121,12 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-
-	if !game_control.game_over:
+	if game_control.game_over:
+		score_increase_timer.stop()
+	else:
+		if score_increase_timer.is_stopped():
+			score_increase_timer.start()
+		
 		if blocks_moving:
 			for live_destroyable in game_control.get_children():
 				if "Brick" in live_destroyable.name or "Special" in live_destroyable.name:

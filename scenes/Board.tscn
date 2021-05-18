@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://logic/BBGame.gd" type="Script" id=1]
 [ext_resource path="res://scenes/MetaArea.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=3]
 [ext_resource path="res://logic/ModeSelector.gd" type="Script" id=4]
+[ext_resource path="res://fonts/NotoSans_Bold_Title.tres" type="DynamicFont" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 359.589, 8.62341 )
@@ -67,6 +68,24 @@ margin_right = 20.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 3 )
 
+[node name="GameOverLabel" type="Label" parent="Board/CanvasLayer"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -7.0
+margin_right = 20.0
+margin_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = ExtResource( 5 )
+text = "Game Over"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TopWall" type="StaticBody2D" parent="Board" groups=[
 "PlayBoardElements",
 ]]
@@ -121,8 +140,11 @@ __meta__ = {
 [node name="LaunchRayCast2D" type="RayCast2D" parent="Board"]
 enabled = true
 
-[node name="LaunchTimer" type="Timer" parent="Board"]
+[node name="LaunchCadenceTimer" type="Timer" parent="Board"]
 wait_time = 0.1
+
+[node name="GameOverTimer" type="Timer" parent="Board"]
+wait_time = 2.0
 
 [node name="Column0" type="Line2D" parent="Board" groups=[
 "PlayBoardElements",

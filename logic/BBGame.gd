@@ -66,6 +66,7 @@ onready var meta_area = $Board/CanvasLayer/MetaArea
 onready var current_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/CurrentScoreLabel
 onready var high_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
 onready var ammo_label = $Board/CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
+onready var game_over_label = $Board/CanvasLayer/GameOverLabel
 onready var brick_scene = load("res://scenes/Brick.tscn")
 onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
 onready var specials_scene = load("res://scenes/Specials.tscn")
@@ -75,7 +76,8 @@ onready var laserbeam_scene = load("res://scenes/LaserBeam.tscn")
 # moving position to where the last ball of the last round fell.
 onready var launch_line = $Board/CanvasLayer/LaunchLine
 onready var launch_line_raycast = $Board/LaunchRayCast2D
-onready var wait = $Board/LaunchTimer
+onready var launch_cadence_wait = $Board/LaunchCadenceTimer
+onready var game_over_timer = $Board/GameOverTimer
 onready var columns = [
 	$Board/Column0,
 	$Board/Column1,
@@ -187,8 +189,8 @@ func launch_balls(direction = line_direction.normalized(), amount = ammo):
 		next_ball.position = ball.position
 		next_ball.launch(direction)
 		live_balls.append(next_ball)
-		wait.start()
-		yield(wait, "timeout")
+		launch_cadence_wait.start()
+		yield(launch_cadence_wait, "timeout")
 	all_balls_launched = true
 
 # It is important that you pay attention to the string you feed in for the type.
@@ -362,12 +364,18 @@ func _ready():
 	ball.set_color(ball_color)
 	add_child(ball)
 	
-	wait.wait_time = 0.1
+	launch_cadence_wait.wait_time = 0.1
+	launch_cadence_wait.one_shot = true
+	game_over_timer.wait_time = 2
+	game_over_timer.one_shot = true
 	
 	emit_signal("game_prepped")
 
 func _process(delta):
 	if game_over:
+		if game_over_label.modulate.a < 1:
+				game_over_label.modulate.a += 0.05
+		
 		var all_transparent = true
 		for live_destroyable in live_destroyables:
 			if "Brick" in live_destroyable.name:
@@ -385,11 +393,17 @@ func _process(delta):
 				global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
 			else:
 				global.save_game_data.past_scores[$GameModeSelector.selected_game_mode] = [score]
+			
+			if game_over_timer.is_stopped():
+				game_over_timer.start()
+			yield(game_over_timer, "timeout")
 			reset()
 	
 	else:
 		# <------------- UPDATE AMMO LABEL AS BALLS TOUCH BOTTOM ------------->
 		ammo_label.text = "x" + String(ammo - live_balls.size())
+		if game_over_label.modulate.a > 0:
+				game_over_label.modulate.a -= 0.05
 		
 		# <-------------- CALCULATE LAUNCH LINE AND BALL ANGLES -------------->
 		launch_line_calc()
