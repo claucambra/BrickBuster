@@ -84,7 +84,7 @@ func _ready():
 	game_control.ball.get_node("CollisionThing2D").disabled = true
 	
 	launch_cooldown_timer.connect("timeout", self, "on_launch_cooldown_timer_timeout")
-	launch_cooldown_timer.wait_time = 3
+	launch_cooldown_timer.wait_time = 3.4 # When rounded still says 3
 	launch_cooldown_timer.autostart = true
 	launch_cooldown_timer.one_shot = true
 	add_child(launch_cooldown_timer)
@@ -97,8 +97,8 @@ func _ready():
 	countdown_label.grow_vertical = Control.GROW_DIRECTION_BOTH
 	countdown_label.anchor_left = 0.5
 	countdown_label.anchor_top = 0.5
-	var notobold_font = load("res://fonts/NotoSans_Bold.tres")
-	countdown_label.set("custom_fonts/font", notobold_font)
+	var notoboldtitle_font = load("res://fonts/NotoSans_Bold_Title.tres")
+	countdown_label.set("custom_fonts/font", notoboldtitle_font)
 	$CanvasLayer.add_child(countdown_label)
 	
 	top_row_area.monitoring = true
@@ -148,13 +148,15 @@ func _process(delta):
 		
 		if !launch_cooling_down && game_control.live_balls.size() != game_control.ammo:
 			game_control.drag_enabled = true
-			countdown_label.visible = false
 			if Input.is_action_just_released("click") && game_control.reasonable_angle:
 				game_control.launch_balls(game_control.line_direction.normalized(), game_control.ammo - game_control.live_balls.size())
 		else:
 			game_control.drag_enabled = false
-			if launch_cooldown_timer.time_left > 0:
-				countdown_label.text = String(launch_cooldown_timer.time_left)
+			if launch_cooldown_timer.time_left >= 0.4: # Checking at 0 creates problems...
+				countdown_label.text = String(round(launch_cooldown_timer.time_left))
+				countdown_label.modulate.a = 1
 				countdown_label.visible = true
+			elif countdown_label.modulate.a > 0:
+				countdown_label.modulate.a -= 0.05
 			else:
 				countdown_label.visible = false
