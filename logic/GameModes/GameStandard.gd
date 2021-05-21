@@ -18,8 +18,12 @@ func new_destroyable_line(health, vert_point = 0):
 	var free_columns = game_control.columns.duplicate()
 	var mega = false
 	rng.randomize()
-	if rng.randi_range(0,9) == 9:
+	
+	if int(game_control.score) % 10 == 0 && game_control.score != 0:
 		mega = true
+	else:
+		mega = false
+		
 	for column in game_control.columns:
 		rng.randomize()
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 

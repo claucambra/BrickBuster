@@ -23,13 +23,22 @@ var blocks_moving = false
 var top_row_area = Area2D.new()
 var top_row_area_collision_shape = CollisionShape2D.new()
 
+var mega_added_this_score = false
+
 func new_destroyable_line(health, vert_point = 0):
 	var rng = global.rng
 	var free_columns = game_control.columns.duplicate()
 	var mega = false
 	rng.randomize()
-	if rng.randi_range(0,7) == 7:
+	
+	# Make sure only one mega row each time score is a multiple of 5
+	if int(game_control.score) % 5 == 0 && !mega_added_this_score && game_control.score != 0:
 		mega = true
+		mega_added_this_score = true
+	else:
+		mega = false
+		mega_added_this_score = false
+	
 	for column in game_control.columns:
 		rng.randomize()
 		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
