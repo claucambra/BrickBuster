@@ -54,6 +54,7 @@ rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 0
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Continue Game"
 
 [node name="NewGameButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
@@ -64,6 +65,7 @@ rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "New Game"
 
 [node name="GameModeMenu" type="Popup" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton"]
@@ -147,6 +149,7 @@ rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Scores"
 
 [node name="BallsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
@@ -156,6 +159,7 @@ margin_bottom = 852.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Balls"
 
 [node name="OptionsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
@@ -166,6 +170,7 @@ rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Options"
 
 [node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
@@ -176,6 +181,7 @@ rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Quit Game"
 
 [node name="TitleBrick" type="KinematicBody2D" parent="."]

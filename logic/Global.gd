@@ -13,6 +13,11 @@ var ball_scenes = []
 var past_scores = {}
 var game_modes = {}
 
+var top_health_colour = Color("#ff3300")
+var bottom_health_colour = Color("#ffe600")
+var top_megahealth_colour = Color("#5500ff")
+var bottom_megahealth_colour = Color("#00e1ff")
+
 func reload_save_data():
 	save_game.open("user://savegame.save", File.READ)
 	save_game_data = parse_json(save_game.get_line())

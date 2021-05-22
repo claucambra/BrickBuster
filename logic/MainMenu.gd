@@ -14,6 +14,7 @@ var popup_score_menu = null
 var popups = []
 
 onready var global = get_node("/root/Global")
+onready var buttons_container = $CanvasLayer/MainMenu/VBoxContainer
 onready var new_game_button = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton
 onready var continue_button = $CanvasLayer/MainMenu/VBoxContainer/ContinueButton
 onready var scores_button = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton
@@ -64,6 +65,30 @@ func _ready():
 	popup_balls_menu.connect("color_changed", self, "on_color_changed")
 	popup_balls_menu.connect("ball_changed", self, "on_ball_changed")
 	popup_options_menu.connect("options_changed", self, "on_options_changed")
+	
+	var gradient = Gradient.new()
+	gradient.set_color(1, global.top_health_colour)
+	gradient.set_color(0, global.bottom_health_colour)
+	
+	var iterator = 1
+	for button in buttons_container.get_children():
+		var new_style_normal = StyleBoxFlat.new()
+		var new_style_hover = StyleBoxFlat.new()
+		var new_style_pressed = StyleBoxFlat.new()
+		
+		var normal_color = gradient.interpolate(float(iterator)/float(buttons_container.get_child_count()))
+		var hover_color = Color(normal_color.r, normal_color.g, normal_color.b, 0.8)
+		var pressed_color = Color(normal_color.r, normal_color.g, normal_color.b, 0.5)
+		
+		new_style_normal.set_bg_color(normal_color)
+		new_style_hover.set_bg_color(hover_color)
+		new_style_pressed.set_bg_color(pressed_color)
+		
+		button.set('custom_styles/normal', new_style_normal)
+		button.set('custom_styles/hover', new_style_hover)
+		button.set('custom_styles/pressed', new_style_pressed)
+		
+		iterator += 1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

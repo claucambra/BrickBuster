@@ -13,12 +13,9 @@ var hit = false
 var column_num = null
 var column_vert_point = null
 
-var top_health_colour = Color("#ff3300")
-var bottom_health_colour = Color("#ffe600")
-var top_megahealth_colour = Color("#5500ff")
-var bottom_megahealth_colour = Color("#00e1ff")
 var gradient = Gradient.new()
 
+onready var global = get_node("/root/Global")
 onready var brick_shape = $BrickShape
 onready var label = $HealthLabel
 onready var timer = $Timer
@@ -27,13 +24,13 @@ onready var timer = $Timer
 func _ready():
 	timer.wait_time = 0.3
 	if mega:
-		gradient.set_color(1, top_megahealth_colour)
-		gradient.set_color(0, bottom_megahealth_colour)
+		gradient.set_color(1, global.top_megahealth_colour)
+		gradient.set_color(0, global.bottom_megahealth_colour)
 		health *= 2
 		max_possible_health *= 2
 	else:
-		gradient.set_color(1, top_health_colour)
-		gradient.set_color(0, bottom_health_colour)
+		gradient.set_color(1, global.top_health_colour)
+		gradient.set_color(0, global.bottom_health_colour)
 	self.modulate.a = 1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
