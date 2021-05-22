@@ -23,6 +23,26 @@ var colour_themes = {
 		"display_name": "Supernova",
 		"top_health": Color("#5500ff"),
 		"bottom_health": Color("#00e1ff")
+	},
+	"aurora": {
+		"display_name": "Aurora",
+		"top_health": Color("#1f4037"),
+		"bottom_health": Color("#99f2c8")
+	},
+	"nebula": {
+		"display_name": "Nebula",
+		"top_health": Color("#FC466B"),
+		"bottom_health": Color("#3F5EFB")
+	},
+	"pulsar": {
+		"display_name": "Pulsar",
+		"top_health": Color("#16A085"),
+		"bottom_health": Color("#F56217")
+	},
+	"quasar": {
+		"display_name": "Quasar",
+		"top_health": Color("#F4D03F"),
+		"bottom_health": Color("#0B486B")
 	}
 }
 
