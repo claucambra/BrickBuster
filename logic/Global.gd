@@ -13,10 +13,21 @@ var ball_scenes = []
 var past_scores = {}
 var game_modes = {}
 
-var top_health_colour = Color("#ff3300")
-var bottom_health_colour = Color("#ffe600")
-var top_megahealth_colour = Color("#5500ff")
-var bottom_megahealth_colour = Color("#00e1ff")
+var colour_themes = {
+	"sunburst": {
+		"display_name": "Sunburst",
+		"top_health": Color("#ff3300"),
+		"bottom_health": Color("#ffe600")
+	},
+	"supernova": {
+		"display_name": "Supernova",
+		"top_health": Color("#5500ff"),
+		"bottom_health": Color("#00e1ff")
+	}
+}
+
+var selected_standard_theme = "sunburst"
+var selected_mega_theme = "supernova"
 
 func reload_save_data():
 	save_game.open("user://savegame.save", File.READ)
@@ -103,6 +114,10 @@ func fetch_game_modes():
 			game_modes[game_mode_details.name]["description"] = game_mode_details.description
 	game_modes_dir.list_dir_end()
 
+func set_theme():
+	selected_standard_theme = config.get_value("theme", "standard_bricks")
+	selected_mega_theme = config.get_value("theme", "mega_bricks")
+
 func _ready():
 	if save_game.file_exists("user://savegame.save"):
 		reload_save_data()
@@ -115,18 +130,16 @@ func _ready():
 		config.set_value("audio", "volume", 10)
 		config.set_value("ball", "color", "#ffffff")
 		config.set_value("ball", "ball_file_name", "Ball.tscn")
+		config.set_value("theme", "standard_bricks", "sunburst")
+		config.set_value("theme", "mega_bricks", "supernova")
 		config.save("user://settings.cfg")
 		config.load("user://settings.cfg")
 	
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume") == 0)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume"))
 	
-	if config.get_value("ball", "ball_file_name") == null:
-		config.set_value("ball", "ball_file_name", "Ball.tscn")
-		config.save("user://settings.cfg")
-		config.load("user://settings.cfg")
-	
 	fetch_game_modes()
 	fetch_balls()
 	reload_selected_ball()
+	set_theme()
 

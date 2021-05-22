@@ -14,6 +14,7 @@ var popup_score_menu = null
 var popups = []
 
 onready var global = get_node("/root/Global")
+onready var title_brick = $TitleBrick
 onready var buttons_container = $CanvasLayer/MainMenu/VBoxContainer
 onready var new_game_button = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton
 onready var continue_button = $CanvasLayer/MainMenu/VBoxContainer/ContinueButton
@@ -26,7 +27,32 @@ func close_popups():
 	for popup in popups:
 		popup.visible = false
 
-
+func set_menu_colours():
+	var gradient = Gradient.new()
+	gradient.set_color(1, global.colour_themes[global.selected_standard_theme].top_health)
+	gradient.set_color(0, global.colour_themes[global.selected_standard_theme].bottom_health)
+	title_brick.gradient.set_color(1, global.colour_themes[global.selected_mega_theme].top_health)
+	title_brick.gradient.set_color(0, global.colour_themes[global.selected_mega_theme].bottom_health)
+	
+	var iterator = 1
+	for button in buttons_container.get_children():
+		var new_style_normal = StyleBoxFlat.new()
+		var new_style_hover = StyleBoxFlat.new()
+		var new_style_pressed = StyleBoxFlat.new()
+		
+		var normal_color = gradient.interpolate(float(iterator)/float(buttons_container.get_child_count()))
+		var hover_color = Color(normal_color.r, normal_color.g, normal_color.b, 0.8)
+		var pressed_color = Color(normal_color.r, normal_color.g, normal_color.b, 0.5)
+		
+		new_style_normal.set_bg_color(normal_color)
+		new_style_hover.set_bg_color(hover_color)
+		new_style_pressed.set_bg_color(pressed_color)
+		
+		button.set('custom_styles/normal', new_style_normal)
+		button.set('custom_styles/hover', new_style_hover)
+		button.set('custom_styles/pressed', new_style_pressed)
+		
+		iterator += 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -43,8 +69,9 @@ func _ready():
 	add_child(ball)
 	
 	global.rng.randomize()
-	$TitleBrick.health = 90000
-	$TitleBrick.max_possible_health = 100000
+	title_brick.mega = true
+	title_brick.health = 90000
+	title_brick.max_possible_health = 100000
 	ball.position = Vector2(512, 1216)
 	ball.launch(Vector2(global.rng.randf_range(1, -1), global.rng.randf_range(-0, -1)))
 	ball.get_node("Light2D").energy = 1
@@ -66,29 +93,7 @@ func _ready():
 	popup_balls_menu.connect("ball_changed", self, "on_ball_changed")
 	popup_options_menu.connect("options_changed", self, "on_options_changed")
 	
-	var gradient = Gradient.new()
-	gradient.set_color(1, global.top_health_colour)
-	gradient.set_color(0, global.bottom_health_colour)
-	
-	var iterator = 1
-	for button in buttons_container.get_children():
-		var new_style_normal = StyleBoxFlat.new()
-		var new_style_hover = StyleBoxFlat.new()
-		var new_style_pressed = StyleBoxFlat.new()
-		
-		var normal_color = gradient.interpolate(float(iterator)/float(buttons_container.get_child_count()))
-		var hover_color = Color(normal_color.r, normal_color.g, normal_color.b, 0.8)
-		var pressed_color = Color(normal_color.r, normal_color.g, normal_color.b, 0.5)
-		
-		new_style_normal.set_bg_color(normal_color)
-		new_style_hover.set_bg_color(hover_color)
-		new_style_pressed.set_bg_color(pressed_color)
-		
-		button.set('custom_styles/normal', new_style_normal)
-		button.set('custom_styles/hover', new_style_hover)
-		button.set('custom_styles/pressed', new_style_pressed)
-		
-		iterator += 1
+	set_menu_colours()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -145,3 +150,4 @@ func on_options_changed():
 	ball.get_node("Light2D").enabled = global.config.get_value("lighting", "enabled")
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), global.config.get_value("audio", "volume") == 0)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), global.config.get_value("audio", "volume"))
+	set_menu_colours()

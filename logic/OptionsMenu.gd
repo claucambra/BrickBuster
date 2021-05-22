@@ -7,9 +7,11 @@ signal options_changed
 # var b = "text"
 
 onready var global = get_node("/root/Global")
-onready var light_switch = $MarginContainer/VBoxContainer/SettingsSwitchesContainer/LightSwitch
-onready var audio_switch = $MarginContainer/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
-onready var volume_slider = $MarginContainer/VBoxContainer/SettingsSwitchesContainer/VolumeSlider
+onready var light_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/LightSwitch
+onready var audio_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
+onready var volume_slider = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/VolumeSlider
+onready var standard_themes_list = $TabContainer/Themes/StandardBrick/ItemList
+onready var mega_themes_list = $TabContainer/Themes/MegaBrick/ItemList
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,18 +22,53 @@ func _ready():
 			audio_switch.pressed = false
 	
 	volume_slider.visible = audio_switch.pressed
+	
+	var iterator = 0
+	var gradient = Gradient.new()
+	for brick_theme in global.colour_themes:
+		gradient.set_color(1, global.colour_themes[brick_theme].top_health)
+		gradient.set_color(0, global.colour_themes[brick_theme].bottom_health)
+		
+		standard_themes_list.add_item(global.colour_themes[brick_theme].display_name)
+		standard_themes_list.set_item_metadata(iterator, brick_theme)
+		standard_themes_list.set_item_custom_bg_color(iterator, gradient.interpolate(1))
+		standard_themes_list.set_item_custom_fg_color(iterator, gradient.interpolate(0))
+		
+		mega_themes_list.add_item(global.colour_themes[brick_theme].display_name)
+		mega_themes_list.set_item_metadata(iterator, brick_theme)
+		mega_themes_list.set_item_custom_bg_color(iterator, gradient.interpolate(1))
+		mega_themes_list.set_item_custom_fg_color(iterator, gradient.interpolate(0))
+		
+		iterator += 1 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
 func _on_ApplyButton_pressed():
+	var settings_changed = false
+	
 	if global.err == OK || global.err == ERR_FILE_NOT_FOUND:
 		global.config.set_value("lighting", "enabled", light_switch.pressed)
 		global.config.set_value("audio", "volume", volume_slider.value)
-		global.config.save("user://settings.cfg")
+		settings_changed = true
 	
-	emit_signal("options_changed")
+	if standard_themes_list.is_anything_selected():
+		var selected_item_idx = standard_themes_list.get_selected_items()[0]
+		var selected_item_string = standard_themes_list.get_item_metadata(selected_item_idx)
+		global.config.set_value("theme", "standard_bricks", selected_item_string)
+		settings_changed = true
+	
+	if mega_themes_list.is_anything_selected():
+		var selected_item_idx = mega_themes_list.get_selected_items()[0]
+		var selected_item_string = mega_themes_list.get_item_metadata(selected_item_idx)
+		global.config.set_value("theme", "mega_bricks", selected_item_string)
+		settings_changed = true
+	
+	if settings_changed:
+		global.config.save("user://settings.cfg")
+		global.set_theme()
+		emit_signal("options_changed")
 
 func _on_CloseButton_pressed():
 	hide()

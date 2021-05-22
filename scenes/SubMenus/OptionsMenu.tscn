@@ -8,11 +8,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = -300.0
+margin_top = -400.0
+margin_right = 300.0
+margin_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
-rect_min_size = Vector2( 400, 800 )
+rect_min_size = Vector2( 600, 800 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
@@ -20,48 +22,58 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-anchor_top = 0.5
+[node name="TabContainer" type="TabContainer" parent="."]
 anchor_right = 1.0
-anchor_bottom = 0.5
-margin_top = -83.5
-margin_bottom = 83.5
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="MarginContainer"]
-margin_right = 400.0
-margin_bottom = 167.0
+[node name="General" type="MarginContainer" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 57.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="TabContainer/General"]
+margin_right = 592.0
+margin_bottom = 739.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-margin_right = 400.0
-margin_bottom = 167.0
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/General"]
+margin_right = 592.0
+margin_bottom = 739.0
 
-[node name="SettingsSwitchesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_right = 400.0
-margin_bottom = 118.0
+[node name="SettingsSwitchesContainer" type="VBoxContainer" parent="TabContainer/General/VBoxContainer"]
+margin_right = 592.0
+margin_bottom = 739.0
+size_flags_vertical = 3
 
-[node name="LightSwitch" type="CheckButton" parent="MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
-margin_right = 400.0
+[node name="LightSwitch" type="CheckButton" parent="TabContainer/General/VBoxContainer/SettingsSwitchesContainer"]
+margin_right = 592.0
 margin_bottom = 47.0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 1 )
 text = "Light effects"
 
-[node name="AudioSwitch" type="CheckButton" parent="MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
+[node name="AudioSwitch" type="CheckButton" parent="TabContainer/General/VBoxContainer/SettingsSwitchesContainer"]
 margin_top = 51.0
-margin_right = 400.0
+margin_right = 592.0
 margin_bottom = 98.0
 custom_fonts/font = ExtResource( 1 )
 pressed = true
 text = "Audio"
 
-[node name="VolumeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/SettingsSwitchesContainer"]
+[node name="VolumeSlider" type="HSlider" parent="TabContainer/General/VBoxContainer/SettingsSwitchesContainer"]
 margin_top = 102.0
-margin_right = 400.0
+margin_right = 592.0
 margin_bottom = 118.0
 max_value = 10.0
 value = 10.0
@@ -69,26 +81,74 @@ rounded = true
 tick_count = 5
 ticks_on_borders = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 122.0
-margin_right = 400.0
-margin_bottom = 167.0
+[node name="Themes" type="TabContainer" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 57.0
+margin_right = -4.0
+margin_bottom = -4.0
+custom_fonts/font = ExtResource( 1 )
 
-[node name="ApplyButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 198.0
+[node name="StandardBrick" type="ScrollContainer" parent="TabContainer/Themes"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 57.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="ItemList" type="ItemList" parent="TabContainer/Themes/StandardBrick"]
+margin_right = 584.0
+margin_bottom = 678.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+auto_height = true
+
+[node name="MegaBrick" type="ScrollContainer" parent="TabContainer/Themes"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 57.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="ItemList" type="ItemList" parent="TabContainer/Themes/MegaBrick"]
+margin_right = 584.0
+margin_bottom = 678.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+auto_height = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -45.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ApplyButton" type="Button" parent="HBoxContainer"]
+margin_right = 298.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Apply"
 
-[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 202.0
-margin_right = 400.0
+[node name="CloseButton" type="Button" parent="HBoxContainer"]
+margin_left = 302.0
+margin_right = 600.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Close"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/SettingsSwitchesContainer/AudioSwitch" to="." method="_on_AudioSwitch_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/ApplyButton" to="." method="_on_ApplyButton_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CloseButton" to="." method="_on_CloseButton_pressed"]
+[connection signal="pressed" from="TabContainer/General/VBoxContainer/SettingsSwitchesContainer/AudioSwitch" to="." method="_on_AudioSwitch_pressed"]
+[connection signal="pressed" from="HBoxContainer/ApplyButton" to="." method="_on_ApplyButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/CloseButton" to="." method="_on_CloseButton_pressed"]

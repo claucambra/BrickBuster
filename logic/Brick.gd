@@ -24,13 +24,13 @@ onready var timer = $Timer
 func _ready():
 	timer.wait_time = 0.3
 	if mega:
-		gradient.set_color(1, global.top_megahealth_colour)
-		gradient.set_color(0, global.bottom_megahealth_colour)
+		gradient.set_color(1, global.colour_themes[global.selected_mega_theme].top_health)
+		gradient.set_color(0, global.colour_themes[global.selected_mega_theme].bottom_health)
 		health *= 2
 		max_possible_health *= 2
 	else:
-		gradient.set_color(1, global.top_health_colour)
-		gradient.set_color(0, global.bottom_health_colour)
+		gradient.set_color(1, global.colour_themes[global.selected_standard_theme].top_health)
+		gradient.set_color(0, global.colour_themes[global.selected_standard_theme].bottom_health)
 	self.modulate.a = 1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
