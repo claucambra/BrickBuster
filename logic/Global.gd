@@ -135,6 +135,17 @@ func _ready():
 		config.save("user://settings.cfg")
 		config.load("user://settings.cfg")
 	
+	if config.get_value("ball", "ball_file_name") == null:
+		config.set_value("ball", "ball_file_name", "Ball.tscn")
+		config.save("user://settings.cfg")
+		config.load("user://settings.cfg")
+	
+	if config.get_value("theme", "standard_bricks") == null:
+		config.set_value("theme", "standard_bricks", "sunburst")
+		config.set_value("theme", "mega_bricks", "supernova")
+		config.save("user://settings.cfg")
+		config.load("user://settings.cfg")
+	
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume") == 0)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), config.get_value("audio", "volume"))
 	
