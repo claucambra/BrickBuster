@@ -125,6 +125,7 @@ func _ready():
 		if typeof(past_scores) == TYPE_ARRAY: # Convert old type score store
 			past_scores = convert_past_scores(past_scores)
 	
+	var need_to_save_config = false
 	if err == ERR_FILE_NOT_FOUND:
 		config.set_value("lighting", "enabled", true)
 		config.set_value("audio", "volume", 10)
@@ -135,14 +136,28 @@ func _ready():
 		config.save("user://settings.cfg")
 		config.load("user://settings.cfg")
 	
+	if config.get_value("lighting", "enabled") == null:
+		config.set_value("lighting", "enabled", true)
+		need_to_save_config = true
+	
+	if config.get_value("audio", "volume") == null:
+		config.set_value("audio", "volume", 10)
+		need_to_save_config = true
+	
+	if config.get_value("ball", "color") == null:
+		config.set_value("ball", "color", "#ffffff")
+		need_to_save_config = true
+	
 	if config.get_value("ball", "ball_file_name") == null:
 		config.set_value("ball", "ball_file_name", "Ball.tscn")
-		config.save("user://settings.cfg")
-		config.load("user://settings.cfg")
+		need_to_save_config = true
 	
 	if config.get_value("theme", "standard_bricks") == null:
 		config.set_value("theme", "standard_bricks", "sunburst")
 		config.set_value("theme", "mega_bricks", "supernova")
+		need_to_save_config = true
+	
+	if need_to_save_config:
 		config.save("user://settings.cfg")
 		config.load("user://settings.cfg")
 	
