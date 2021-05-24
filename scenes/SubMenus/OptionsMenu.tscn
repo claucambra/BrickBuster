@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://styling/fonts/NotoSans.tres" type="DynamicFont" id=1]
 [ext_resource path="res://logic/OptionsMenu.gd" type="Script" id=2]
 [ext_resource path="res://styling/button_style/CloseButton_pressed.stylebox" type="StyleBox" id=3]
 [ext_resource path="res://styling/button_style/CloseButton_hover.stylebox" type="StyleBox" id=4]
 [ext_resource path="res://styling/button_style/CloseButton_normal.stylebox" type="StyleBox" id=5]
+[ext_resource path="res://styling/button_style/ApplyButton_hover.stylebox" type="StyleBox" id=6]
+[ext_resource path="res://styling/button_style/ApplyButton_pressed.stylebox" type="StyleBox" id=7]
+[ext_resource path="res://styling/button_style/ApplyButton_normal.stylebox" type="StyleBox" id=8]
 
 [node name="PopupMenu" type="Popup"]
 anchor_left = 0.5
@@ -141,6 +144,9 @@ __meta__ = {
 margin_right = 298.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/normal = ExtResource( 8 )
 custom_fonts/font = ExtResource( 1 )
 text = "Apply"
 

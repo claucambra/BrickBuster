@@ -7,6 +7,7 @@ var config = ConfigFile.new()
 var err = config.load("user://settings.cfg")
 var noto_font = load("res://styling/fonts/NotoSans.tres")
 var noto_font_bold = load("res://styling/fonts/NotoSans_Bold.tres")
+var noto_font_bold_title = load("res://styling/fonts/NotoSans_Bold_Title.tres")
 
 var selected_ball_scene = null
 var ball_scenes = []

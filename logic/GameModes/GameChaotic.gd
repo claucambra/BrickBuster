@@ -106,8 +106,7 @@ func _ready():
 	countdown_label.grow_vertical = Control.GROW_DIRECTION_BOTH
 	countdown_label.anchor_left = 0.5
 	countdown_label.anchor_top = 0.5
-	var notoboldtitle_font = load("res://fonts/NotoSans_Bold_Title.tres")
-	countdown_label.set("custom_fonts/font", notoboldtitle_font)
+	countdown_label.set("custom_fonts/font", global.noto_font_bold_title)
 	$CanvasLayer.add_child(countdown_label)
 	
 	top_row_area.monitoring = true

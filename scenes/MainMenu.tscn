@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://logic/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://styling/fonts/NotoSans_Bold.tres" type="DynamicFont" id=2]
@@ -10,6 +10,9 @@
 [ext_resource path="res://styling/button_style/CloseButton_normal.stylebox" type="StyleBox" id=8]
 [ext_resource path="res://styling/button_style/CloseButton_hover.stylebox" type="StyleBox" id=9]
 [ext_resource path="res://styling/button_style/CloseButton_pressed.stylebox" type="StyleBox" id=10]
+[ext_resource path="res://styling/button_style/ApplyButton_hover.stylebox" type="StyleBox" id=11]
+[ext_resource path="res://styling/button_style/ApplyButton_pressed.stylebox" type="StyleBox" id=12]
+[ext_resource path="res://styling/button_style/ApplyButton_normal.stylebox" type="StyleBox" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 160, 160 )
@@ -132,6 +135,9 @@ margin_right = 198.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_styles/hover = ExtResource( 11 )
+custom_styles/pressed = ExtResource( 12 )
+custom_styles/normal = ExtResource( 13 )
 custom_fonts/font = ExtResource( 6 )
 text = "Go!"
 
