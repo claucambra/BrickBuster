@@ -2,9 +2,9 @@
 
 [ext_resource path="res://logic/BBGame.gd" type="Script" id=1]
 [ext_resource path="res://scenes/MetaArea.tscn" type="PackedScene" id=2]
-[ext_resource path="res://fonts/NotoSans.tres" type="DynamicFont" id=3]
+[ext_resource path="res://styling/fonts/NotoSans.tres" type="DynamicFont" id=3]
 [ext_resource path="res://logic/ModeSelector.gd" type="Script" id=4]
-[ext_resource path="res://fonts/NotoSans_Bold_Title.tres" type="DynamicFont" id=5]
+[ext_resource path="res://styling/fonts/NotoSans_Bold_Title.tres" type="DynamicFont" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 359.589, 8.62341 )
@@ -65,8 +65,9 @@ __meta__ = {
 
 [node name="AmmoLabel" type="Label" parent="Board/CanvasLayer/BottomPanel/CenterContainer"]
 margin_left = 20.0
+margin_top = 19.0
 margin_right = 20.0
-margin_bottom = 39.0
+margin_bottom = 21.0
 custom_fonts/font = ExtResource( 3 )
 
 [node name="GameOverLabel" type="Label" parent="Board/CanvasLayer"]

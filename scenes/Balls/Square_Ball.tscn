@@ -51,5 +51,6 @@ polygon = PoolVector2Array( -8, 8, 8, 8, 8, -8, -8, -8 )
 
 [node name="MetaNode" type="Node" parent="."]
 script = ExtResource( 6 )
+
 [connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pause.png-6ad65202fd0748df480c68c2d5099a2b.stex"
+path="res://.import/pause.png-52d9e82975dde127836c860d5dd32928.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://icons/pause.png"
-dest_files=[ "res://.import/pause.png-6ad65202fd0748df480c68c2d5099a2b.stex" ]
+source_file="res://styling/icons/pause.png"
+dest_files=[ "res://.import/pause.png-52d9e82975dde127836c860d5dd32928.stex" ]
 
 [params]
 

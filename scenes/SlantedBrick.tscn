@@ -2,7 +2,7 @@
 
 [ext_resource path="res://sprites/light.png" type="Texture" id=1]
 [ext_resource path="res://logic/Brick.gd" type="Script" id=2]
-[ext_resource path="res://fonts/NotoSans_Bold.tres" type="DynamicFont" id=3]
+[ext_resource path="res://styling/fonts/NotoSans_Bold.tres" type="DynamicFont" id=3]
 
 [sub_resource type="OccluderPolygon2D" id=1]
 polygon = PoolVector2Array( -46.8594, -46.8828, 46.2891, 46.2969, -46.8438, 46.3047 )

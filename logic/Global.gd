@@ -5,8 +5,8 @@ var save_game_data = null
 var rng = RandomNumberGenerator.new()
 var config = ConfigFile.new()
 var err = config.load("user://settings.cfg")
-var noto_font = load("res://fonts/NotoSans.tres")
-var noto_font_bold = load("res://fonts/NotoSans_Bold.tres")
+var noto_font = load("res://styling/fonts/NotoSans.tres")
+var noto_font_bold = load("res://styling/fonts/NotoSans_Bold.tres")
 
 var selected_ball_scene = null
 var ball_scenes = []

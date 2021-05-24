@@ -22,4 +22,5 @@ shape = SubResource( 1 )
 
 [node name="LaserBeamAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 2 )
+
 [connection signal="body_entered" from="LaserArea2D" to="." method="_on_LaserArea2D_body_entered"]
