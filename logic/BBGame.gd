@@ -32,6 +32,8 @@ signal ball_no_contact_timeout(ball_position, ball_linear_velocity)
 
 # <---------------------------- MEMBER VARIABLES ---------------------------->
 var game_over = false
+var game_over_on_screen = false
+var game_over_fadeout = false
 var resetting = false
 # These variables are used to keep track of what stage of the round we are in
 # This is used to decide input state and acceptance
@@ -271,6 +273,28 @@ func update_score_labels():
 	else:
 		high_score_label.text = String(past_scores[game_mode].max())
 
+func game_over_title_fadein_and_fadeout_init():
+	if game_over_label.modulate.a < 1:
+		game_over_label.modulate.a += 0.05
+	
+	elif !game_over_on_screen:
+		game_over_on_screen = true
+		game_over_timer.start()
+		yield(game_over_timer, "timeout")
+		game_over_fadeout = true
+		
+func game_over_title_fadeout_and_reset():
+	if game_over_label.modulate.a > 0:
+		game_over_label.modulate.a -= 0.05
+	else:
+		reset()
+
+func end_game():
+	if !game_over_on_screen:
+		game_over_title_fadein_and_fadeout_init()
+	if game_over_fadeout:
+		game_over_title_fadeout_and_reset()
+
 func reset():
 	resetting = true
 	emit_signal("reset_triggered")
@@ -373,8 +397,6 @@ func _ready():
 
 func _process(delta):
 	if game_over:
-		if game_over_label.modulate.a < 1:
-				game_over_label.modulate.a += 0.05
 		
 		var all_transparent = true
 		for live_destroyable in live_destroyables:
@@ -388,22 +410,17 @@ func _process(delta):
 				live_destroyable.queue_free()
 				live_destroyables.erase(live_destroyable)
 		
-		if all_transparent && game_over_label.modulate.a >= 1:
+		if all_transparent:
 			if global.save_game_data.past_scores.has($GameModeSelector.selected_game_mode):
 				global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
 			else:
 				global.save_game_data.past_scores[$GameModeSelector.selected_game_mode] = [score]
 			
-			if game_over_timer.is_stopped():
-				game_over_timer.start()
-			yield(game_over_timer, "timeout")
-			reset()
+			end_game()
 	
 	else:
 		# <------------- UPDATE AMMO LABEL AS BALLS TOUCH BOTTOM ------------->
 		ammo_label.text = "x" + String(ammo - live_balls.size())
-		if game_over_label.modulate.a > 0:
-				game_over_label.modulate.a -= 0.05
 		
 		# <-------------- CALCULATE LAUNCH LINE AND BALL ANGLES -------------->
 		launch_line_calc()
