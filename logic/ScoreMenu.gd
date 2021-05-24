@@ -13,7 +13,7 @@ onready var sort_options_button = $MarginContainer/VBoxContainer/HBoxContainer/S
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if global.save_game_data:
+	if global.save_game_data && global.save_game_data.has("past_scores"):
 		var past_scores = global.save_game_data["past_scores"]
 		if !past_scores.empty():
 			

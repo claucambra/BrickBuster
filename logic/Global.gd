@@ -87,9 +87,9 @@ func write_save_file(game_mode = "standard", first_save = false):
 		"destroyables" : []
 	}
 	
-	if first_save:
+	if first_save || !save_game_data || !save_game_data.has("past_scores"):
 		save_dict["past_scores"] = {"standard": []}
-	else:
+	elif save_game_data:
 		save_dict["past_scores"] = save_game_data["past_scores"]
 	
 	save_game.open("user://savegame.save", File.WRITE)
@@ -142,9 +142,10 @@ func set_theme():
 func _ready():
 	if save_game.file_exists("user://savegame.save"):
 		reload_save_data()
-		past_scores = save_game_data["past_scores"]
-		if typeof(past_scores) == TYPE_ARRAY: # Convert old type score store
-			past_scores = convert_past_scores(past_scores)
+		if save_game_data && save_game_data.has("past_scores"):
+			past_scores = save_game_data["past_scores"]
+			if typeof(past_scores) == TYPE_ARRAY: # Convert old type score store
+				past_scores = convert_past_scores(past_scores)
 	
 	var need_to_save_config = false
 	if err == ERR_FILE_NOT_FOUND:

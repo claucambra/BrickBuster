@@ -24,7 +24,7 @@ func _ready():
 		ball_list.set_item_metadata(iterator, ball_filename)
 		
 		# Make balls selectable if high score is high enough
-		if ball_meta.get("min_score") && global.save_game_data:
+		if ball_meta.get("min_score") && global.save_game_data && global.save_game_data.has("past_scores"):
 			var past_scores = global.save_game_data["past_scores"]
 			if past_scores.standard.max():
 				for score in past_scores:
