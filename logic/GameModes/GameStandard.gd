@@ -33,16 +33,22 @@ func new_destroyable_line(health, vert_point = 0):
 			else:
 				game_control.new_destroyable(vert_point, column, "Brick", health, mega)
 	
+	if free_columns.size() == 7: # In case, by chance, no bricks have been added
+		var random_free_column_index = rng.randi_range(0, (free_columns.size() - 1))
+		var column = free_columns[random_free_column_index]
+		free_columns.erase(column)
+		game_control.new_destroyable(vert_point, column, "SlantedBrick", health, mega)
+	
 	rng.randomize()
-	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
-	var add_ball_special_column = free_columns[random_free_column]
+	var random_free_column_index = rng.randi_range(0, (free_columns.size() - 1))
+	var add_ball_special_column = free_columns[random_free_column_index]
 	game_control.new_destroyable(vert_point, add_ball_special_column, "AddBallSpecial")
 	free_columns.erase(add_ball_special_column)
 	
 	rng.randomize()
 	if !free_columns.empty() && rng.randi_range(0, 4) == 4:
-		random_free_column = rng.randi_range(0, (free_columns.size() - 1))
-		var bounce_special_column = free_columns[random_free_column]
+		random_free_column_index = rng.randi_range(0, (free_columns.size() - 1))
+		var bounce_special_column = free_columns[random_free_column_index]
 		free_columns.erase(bounce_special_column)
 		rng.randomize()
 		var decider = rng.randi_range(0, 1)
