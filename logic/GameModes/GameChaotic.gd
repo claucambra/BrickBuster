@@ -112,10 +112,13 @@ func _ready():
 	top_row_area.monitoring = true
 	top_row_area.add_child(top_row_area_collision_shape)
 	top_row_area_collision_shape.shape = RectangleShape2D.new()
+	# Collision areas are special snowflakes and take sizing from the center point.
+	# This includes positioning. Why, I have no clue.
 	var tracs_extents = (game_control.columns[6].get_point_position(1) - game_control.columns[0].get_point_position(0)) / 2
+	var tracs_position = Vector2(game_control.columns[3].get_point_position(0).x, game_control.columns[0].get_point_position(0).y)
 	top_row_area_collision_shape.shape.set_extents(Vector2(tracs_extents.x, tracs_extents.y))
 	add_child(top_row_area)
-	top_row_area.position =  game_control.columns[0].get_point_position(0)
+	top_row_area.position = tracs_position
 	
 	if !global.save_game_data:
 		game_control.rng.randomize()
