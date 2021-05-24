@@ -57,9 +57,10 @@ func set_menu_colours():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var no_scores = true
-	for score_array in global.save_game_data["past_scores"]:
-		if !global.save_game_data["past_scores"][score_array].empty():
-			no_scores = false
+	if global.save_game_data:
+		for score_array in global.save_game_data["past_scores"]:
+			if !global.save_game_data["past_scores"][score_array].empty():
+				no_scores = false
 	
 	if !global.save_game_data || no_scores:
 		continue_button.visible = false

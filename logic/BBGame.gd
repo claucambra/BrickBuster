@@ -397,6 +397,8 @@ func _ready():
 
 func _process(delta):
 	if game_over:
+		drag_enabled = false
+		launch_line.modulate.a -= 0.1
 		
 		var all_transparent = true
 		for live_destroyable in live_destroyables:
