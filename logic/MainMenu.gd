@@ -13,8 +13,11 @@ var popup_options_menu = null
 var popup_score_menu = null
 var popups = []
 
+var go_to_board = false
+
 onready var global = get_node("/root/Global")
 onready var title_brick = $TitleBrick
+onready var main_menu = $CanvasLayer/MainMenu
 onready var buttons_container = $CanvasLayer/MainMenu/VBoxContainer
 onready var new_game_button = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton
 onready var continue_button = $CanvasLayer/MainMenu/VBoxContainer/ContinueButton
@@ -95,13 +98,37 @@ func _ready():
 	popup_options_menu.connect("options_changed", self, "on_options_changed")
 	
 	set_menu_colours()
+	
+	modulate.r = 0
+	modulate.g = 0
+	modulate.b = 0
+	main_menu.modulate.r = 0
+	main_menu.modulate.g = 0
+	main_menu.modulate.b = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	if modulate.b < 1 && !go_to_board:
+		main_menu.modulate.r += 0.05
+		main_menu.modulate.g += 0.05
+		main_menu.modulate.b += 0.05
+		modulate.r += 0.05
+		modulate.g += 0.05
+		modulate.b += 0.05
+	
+	if go_to_board && main_menu.modulate.b <= 0 && modulate.b <= 0:
+		get_tree().change_scene("res://scenes/Board.tscn")
+	elif go_to_board:
+		# There must be a cleaner way of doing this.
+		main_menu.modulate.r -= 0.05
+		main_menu.modulate.g -= 0.05
+		main_menu.modulate.b -= 0.05
+		modulate.r -= 0.05
+		modulate.g -= 0.05
+		modulate.b -= 0.05
 
 func _on_ContinueButton_pressed():
-	get_tree().change_scene("res://scenes/Board.tscn")
+	go_to_board = true
 	
 func _on_NewGameButton_pressed():
 	close_popups()
@@ -124,7 +151,7 @@ func _on_BallsButton_pressed():
 
 func on_game_mode_selected(game_mode_name):
 	global.write_save_file(game_mode_name)
-	get_tree().change_scene("res://scenes/Board.tscn")
+	go_to_board = true
 
 func on_color_changed():
 	global.config.load("user://settings.cfg")

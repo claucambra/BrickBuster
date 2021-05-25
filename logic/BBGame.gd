@@ -65,6 +65,7 @@ var ball = null
 
 onready var global = get_node("/root/Global")
 onready var meta_area = $Board/CanvasLayer/MetaArea
+onready var bottom_panel = $Board/CanvasLayer/BottomPanel
 onready var current_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/CurrentScoreLabel
 onready var high_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
 onready var ammo_label = $Board/CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
@@ -429,9 +430,30 @@ func _ready():
 	game_over_timer.wait_time = 2
 	game_over_timer.one_shot = true
 	
+	modulate.r = 0
+	modulate.g = 0
+	modulate.b = 0
+	meta_area.modulate.r = 0
+	meta_area.modulate.g = 0
+	meta_area.modulate.b = 0
+	bottom_panel.modulate.r = 0
+	bottom_panel.modulate.g = 0
+	bottom_panel.modulate.b = 0
+	
 	emit_signal("game_prepped")
 
 func _process(delta):
+	if modulate.b < 1:
+		meta_area.modulate.r += 0.05
+		meta_area.modulate.g += 0.05
+		meta_area.modulate.b += 0.05
+		bottom_panel.modulate.r += 0.05
+		bottom_panel.modulate.g += 0.05
+		bottom_panel.modulate.b += 0.05
+		modulate.r += 0.05
+		modulate.g += 0.05
+		modulate.b += 0.05
+	
 	if game_over:
 		drag_enabled = false
 		launch_line.modulate.a -= 0.1
