@@ -63,7 +63,8 @@ func on_score_increase_timer_timeout():
 	game_control.score += 1
 	game_control.update_score_labels()
 	score_increase_timer.start()
-	game_control.save()
+	if !game_control.game_over:
+		game_control.save()
 	for live_destroyable in game_control.get_children():
 		if "Brick" in live_destroyable.name:
 			live_destroyable.max_possible_health = game_control.score + 1

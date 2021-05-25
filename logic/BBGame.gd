@@ -328,6 +328,10 @@ func end_game():
 		game_over_title_fadeout_and_reset()
 
 func reset():
+	if global.save_game_data.past_scores.has($GameModeSelector.selected_game_mode):
+		global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
+	else:
+		global.save_game_data.past_scores[$GameModeSelector.selected_game_mode] = [score]
 	resetting = true
 	emit_signal("reset_triggered")
 	for live_element in get_children():
@@ -445,11 +449,6 @@ func _process(delta):
 				live_destroyables.erase(live_destroyable)
 		
 		if all_transparent:
-			if global.save_game_data.past_scores.has($GameModeSelector.selected_game_mode):
-				global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
-			else:
-				global.save_game_data.past_scores[$GameModeSelector.selected_game_mode] = [score]
-			
 			end_game()
 	
 	else:
