@@ -24,20 +24,7 @@ func new_destroyable_line(health, vert_point = 0):
 	else:
 		mega = false
 		
-	for column in game_control.columns:
-		rng.randomize()
-		if rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
-			free_columns.erase(column)
-			if rng.randi_range(0,3) == 3:
-				game_control.new_destroyable(vert_point, column, "SlantedBrick", health, mega)
-			else:
-				game_control.new_destroyable(vert_point, column, "Brick", health, mega)
-	
-	if free_columns.size() == 7: # In case, by chance, no bricks have been added
-		var random_free_column_index = rng.randi_range(0, (free_columns.size() - 1))
-		var column = free_columns[random_free_column_index]
-		free_columns.erase(column)
-		game_control.new_destroyable(vert_point, column, "SlantedBrick", health, mega)
+	game_control.add_bricks_on_line(free_columns, health, vert_point, mega)
 	
 	rng.randomize()
 	var random_free_column_index = rng.randi_range(0, (free_columns.size() - 1))
@@ -47,20 +34,7 @@ func new_destroyable_line(health, vert_point = 0):
 	
 	rng.randomize()
 	if !free_columns.empty() && rng.randi_range(0, 4) == 4:
-		random_free_column_index = rng.randi_range(0, (free_columns.size() - 1))
-		var bounce_special_column = free_columns[random_free_column_index]
-		free_columns.erase(bounce_special_column)
-		rng.randomize()
-		var decider = rng.randi_range(0, 1)
-		if decider == 1:
-			rng.randomize()
-			if rng.randi_range(0,1) == 1:
-				# new_destroyable checks if rotation is not null to create vertical laser
-				game_control.new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "vertical")
-			else:
-				game_control.new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "horizontal")
-		else:
-			game_control.new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
+		game_control.add_special_on_line(free_columns, vert_point)
 
 func round_over_checks():
 	for live_destroyable in game_control.get_children():

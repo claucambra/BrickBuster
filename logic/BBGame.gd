@@ -249,6 +249,38 @@ func new_destroyable(vert_point, column, type, health = null, mega = null, speci
 		next_destroyable.position = specific_position
 	live_destroyables.append(next_destroyable)
 
+func add_bricks_on_line(free_columns, health, vert_point, mega):
+	for column in columns:
+		global.rng.randomize()
+		if global.rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
+			free_columns.erase(column)
+			if global.rng.randi_range(0,3) == 3:
+				new_destroyable(vert_point, column, "SlantedBrick", health, mega)
+			else:
+				new_destroyable(vert_point, column, "Brick", health, mega)
+	
+	if free_columns.size() == 7: # In case, by chance, no bricks have been added
+		var random_free_column_index = global.rng.randi_range(0, (free_columns.size() - 1))
+		var column = free_columns[random_free_column_index]
+		free_columns.erase(column)
+		new_destroyable(vert_point, column, "SlantedBrick", health, mega)
+
+func add_special_on_line(free_columns, vert_point):
+	var random_free_column_index = global.rng.randi_range(0, (free_columns.size() - 1))
+	var bounce_special_column = free_columns[random_free_column_index]
+	free_columns.erase(bounce_special_column)
+	global.rng.randomize()
+	var decider = global.rng.randi_range(0, 1)
+	if decider == 1:
+		global.rng.randomize()
+		if global.rng.randi_range(0,1) == 1:
+			# new_destroyable checks if rotation is not null to create vertical laser
+			new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "vertical")
+		else:
+			new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "horizontal")
+	else:
+		new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
+
 func smoothly_reposition_ball(delta, ball_to_reposition, destination):
 	# <---- SMOOTHLY REPOSITION INDICATOR BALL AFTER FIRST BALL RETURN ---->
 	repositioning_ball = true
