@@ -11,6 +11,7 @@ var popup_game_mode_menu = null
 var popup_balls_menu = null
 var popup_options_menu = null
 var popup_score_menu = null
+var popup_donate_menu = null
 var popups = []
 
 var go_to_board = false
@@ -24,6 +25,7 @@ onready var continue_button = $CanvasLayer/MainMenu/VBoxContainer/ContinueButton
 onready var scores_button = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton
 onready var balls_button = $CanvasLayer/MainMenu/VBoxContainer/BallsButton
 onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
+onready var donate_button = $CanvasLayer/MainMenu/VBoxContainer/DonateButton
 
 
 func close_popups():
@@ -90,7 +92,8 @@ func _ready():
 	options_button.add_child(popup_options_menu)
 	popup_score_menu = load("res://scenes/SubMenus/ScoreMenu.tscn").instance()
 	scores_button.add_child(popup_score_menu)
-	popups = [popup_game_mode_menu, popup_balls_menu, popup_options_menu, popup_score_menu]
+	popup_donate_menu = $CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu
+	popups = [popup_game_mode_menu, popup_balls_menu, popup_options_menu, popup_score_menu, popup_donate_menu]
 	
 	popup_game_mode_menu.connect("game_mode_selected", self, "on_game_mode_selected")
 	popup_balls_menu.connect("color_changed", self, "on_color_changed")
@@ -149,6 +152,10 @@ func _on_BallsButton_pressed():
 	close_popups()
 	popup_balls_menu.visible = !popup_balls_menu.visible
 
+func _on_DonateButton_pressed():
+	close_popups()
+	popup_donate_menu.visible = !popup_donate_menu.visible
+
 func on_game_mode_selected(game_mode_name):
 	global.write_save_file(game_mode_name)
 	go_to_board = true
@@ -179,3 +186,4 @@ func on_options_changed():
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), global.config.get_value("audio", "volume") == 0)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), global.config.get_value("audio", "volume"))
 	set_menu_colours()
+

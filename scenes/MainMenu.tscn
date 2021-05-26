@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://logic/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://styling/fonts/NotoSans_Bold.tres" type="DynamicFont" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://styling/button_style/ApplyButton_hover.stylebox" type="StyleBox" id=11]
 [ext_resource path="res://styling/button_style/ApplyButton_pressed.stylebox" type="StyleBox" id=12]
 [ext_resource path="res://styling/button_style/ApplyButton_normal.stylebox" type="StyleBox" id=13]
+[ext_resource path="res://logic/DonateMenu.gd" type="Script" id=14]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 160, 160 )
@@ -56,7 +57,7 @@ __meta__ = {
 
 [node name="ContinueButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_right = 300.0
-margin_bottom = 210.0
+margin_bottom = 179.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 0
 size_flags_vertical = 3
@@ -65,9 +66,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Continue Game"
 
 [node name="NewGameButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 214.0
+margin_top = 183.0
 margin_right = 300.0
-margin_bottom = 424.0
+margin_bottom = 362.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -155,9 +156,9 @@ custom_fonts/font = ExtResource( 6 )
 text = "Close"
 
 [node name="ScoresButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 428.0
+margin_top = 366.0
 margin_right = 300.0
-margin_bottom = 638.0
+margin_bottom = 546.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -166,9 +167,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Scores"
 
 [node name="BallsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 642.0
+margin_top = 550.0
 margin_right = 300.0
-margin_bottom = 852.0
+margin_bottom = 729.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 6 )
@@ -176,9 +177,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Balls"
 
 [node name="OptionsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 856.0
+margin_top = 733.0
 margin_right = 300.0
-margin_bottom = 1066.0
+margin_bottom = 913.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -186,8 +187,202 @@ custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Options"
 
+[node name="DonateButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
+margin_top = 917.0
+margin_right = 300.0
+margin_bottom = 1096.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Donate"
+
+[node name="DonateMenu" type="Popup" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton"]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -300.0
+margin_top = -300.0
+margin_right = 300.0
+margin_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 400, 0 )
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 581.0
+margin_bottom = 540.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer"]
+margin_right = 561.0
+margin_bottom = 520.0
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer"]
+margin_right = 561.0
+margin_bottom = 124.0
+
+[node name="MenuTitle" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+margin_right = 561.0
+margin_bottom = 39.0
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 2 )
+text = "Donation"
+align = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainer"]
+margin_top = 43.0
+margin_right = 561.0
+margin_bottom = 124.0
+custom_fonts/font = ExtResource( 6 )
+text = "Thank you for being a generous brickbuster!"
+align = 1
+autowrap = true
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer"]
+margin_top = 144.0
+margin_right = 561.0
+margin_bottom = 418.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 20
+custom_constants/hseparation = 20
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MeTitle" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 21.0
+margin_right = 180.0
+margin_bottom = 102.0
+custom_fonts/font = ExtResource( 2 )
+text = "Me,
+Clau Cambra"
+
+[node name="MeDesc" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 200.0
+margin_right = 561.0
+margin_bottom = 123.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 6 )
+text = "The guy that created this game. I hope you've been enjoying it!"
+autowrap = true
+
+[node name="GodotTitle" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/GridContainer"]
+margin_top = 164.0
+margin_right = 180.0
+margin_bottom = 203.0
+custom_fonts/font = ExtResource( 2 )
+text = "Godot"
+
+[node name="GodotDesc" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/GridContainer"]
+margin_left = 200.0
+margin_top = 143.0
+margin_right = 561.0
+margin_bottom = 224.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 6 )
+text = "The awesome engine that makes this game possible."
+autowrap = true
+
+[node name="ButtonsGridContainer" type="GridContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer"]
+margin_top = 438.0
+margin_right = 561.0
+margin_bottom = 520.0
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LearnMeButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer"]
+margin_right = 278.0
+margin_bottom = 39.0
+custom_styles/hover = ExtResource( 11 )
+custom_styles/pressed = ExtResource( 12 )
+custom_styles/normal = ExtResource( 13 )
+custom_fonts/font = ExtResource( 6 )
+text = "View my projects"
+
+[node name="LearnGodotButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer"]
+margin_left = 282.0
+margin_right = 560.0
+margin_bottom = 39.0
+custom_styles/hover = ExtResource( 11 )
+custom_styles/pressed = ExtResource( 12 )
+custom_styles/normal = ExtResource( 13 )
+custom_fonts/font = ExtResource( 6 )
+text = "Learn about Godot"
+
+[node name="MeDonateButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer"]
+margin_top = 43.0
+margin_right = 278.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+custom_styles/hover = ExtResource( 11 )
+custom_styles/pressed = ExtResource( 12 )
+custom_styles/normal = ExtResource( 13 )
+custom_fonts/font = ExtResource( 2 )
+text = "Donate to me"
+
+[node name="GodotDonateButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer"]
+margin_left = 282.0
+margin_top = 43.0
+margin_right = 560.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+custom_styles/hover = ExtResource( 11 )
+custom_styles/pressed = ExtResource( 12 )
+custom_styles/normal = ExtResource( 13 )
+custom_fonts/font = ExtResource( 2 )
+text = "Donate to Godot"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -39.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CloseButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/HBoxContainer"]
+margin_right = 600.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 8 )
+custom_fonts/font = ExtResource( 6 )
+text = "Close"
+
 [node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 1070.0
+margin_top = 1100.0
 margin_right = 300.0
 margin_bottom = 1280.0
 rect_min_size = Vector2( 300, 0 )
@@ -269,11 +464,11 @@ position = Vector2( 280, 640 )
 shape = SubResource( 4 )
 
 [node name="Background" type="Polygon2D" parent="."]
-position = Vector2( 118.98, 0 )
+position = Vector2( 118.98, -1.68188 )
 scale = Vector2( 0.834751, 1 )
 z_index = -1
 color = Color( 0.0980392, 0.0980392, 0.0980392, 1 )
-polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
+polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280, 216, 933.352 )
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ContinueButton" to="." method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton" to="." method="_on_NewGameButton_pressed"]
@@ -282,4 +477,10 @@ polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton" to="." method="_on_ScoresButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton" to="." method="_on_BallsButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/DonateButton" to="." method="_on_DonateButton_pressed"]
+[connection signal="toggled" from="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer/LearnMeButton" to="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu" method="_on_LearnMeButton_toggled"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer/LearnGodotButton" to="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu" method="_on_LearnGodotButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer/MeDonateButton" to="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu" method="_on_MeDonateButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer/GodotDonateButton" to="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu" method="_on_GodotDonateButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/HBoxContainer/CloseButton" to="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu" method="_on_CloseButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
