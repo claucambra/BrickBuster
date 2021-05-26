@@ -25,6 +25,24 @@ script = ExtResource( 4 )
 [node name="CanvasLayer" type="CanvasLayer" parent="Board"]
 layer = 3
 
+[node name="GameOverLabel" type="Label" parent="Board/CanvasLayer"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -234.5
+margin_top = -57.5
+margin_right = 234.5
+margin_bottom = 57.5
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = ExtResource( 5 )
+text = "Game Over"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="MetaArea" parent="Board/CanvasLayer" instance=ExtResource( 2 )]
 light_mask = 4
 margin_top = -2.24493
@@ -68,24 +86,6 @@ margin_left = 20.0
 margin_right = 20.0
 margin_bottom = 39.0
 custom_fonts/font = ExtResource( 3 )
-
-[node name="GameOverLabel" type="Label" parent="Board/CanvasLayer"]
-modulate = Color( 1, 1, 1, 0 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -7.0
-margin_right = 20.0
-margin_bottom = 7.0
-grow_horizontal = 2
-grow_vertical = 2
-custom_fonts/font = ExtResource( 5 )
-text = "Game Over"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TopWall" type="StaticBody2D" parent="Board" groups=[
 "PlayBoardElements",

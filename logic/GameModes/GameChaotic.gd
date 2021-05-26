@@ -89,6 +89,7 @@ func _ready():
 	countdown_label.anchor_top = 0.5
 	countdown_label.set("custom_fonts/font", global.noto_font_bold_title)
 	$CanvasLayer.add_child(countdown_label)
+	$CanvasLayer.move_child(countdown_label, 0)
 	
 	top_row_area.monitoring = true
 	top_row_area.add_child(top_row_area_collision_shape)

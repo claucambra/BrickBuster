@@ -275,8 +275,6 @@ z_index = -1
 color = Color( 0.0980392, 0.0980392, 0.0980392, 1 )
 polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280 )
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ContinueButton" to="." method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton" to="." method="_on_NewGameButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu/HBoxContainer/GoButton" to="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu" method="_on_GoButton_pressed"]

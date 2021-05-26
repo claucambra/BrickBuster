@@ -2,8 +2,6 @@
 # universal to all of BrickBuster's gamemodes. This functionality includes:
 #
 # - Saving and loading the game
-# - Pause menu behaviour and function
-# - Configuration handling (i.e. lighting, ball colour settings, etc.)
 # - Launch line calculations and drawing
 # - Destroyable creation (and destroyable line creation) and behaviour
 # - Live ball and live destroyable storage
