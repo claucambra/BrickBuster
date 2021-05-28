@@ -49,6 +49,14 @@ func _ready():
 		sort_options_button.add_item("By score (desc)", 3)
 		sort_options_button.theme = Theme.new()
 		sort_options_button.theme.default_font = global.noto_font
+	
+	var animation = Animation.new()
+	var track_index = animation.add_track(Animation.TYPE_VALUE)
+	animation.track_set_path(track_index, String(self.get_path()) + ":modulate:a")
+	animation.track_insert_key(track_index, 0.0, 1.0)
+	animation.track_insert_key(track_index, 0.4, 0.0)
+	$AnimationPlayer.add_animation("fadeout", animation)
+	$AnimationPlayer.connect("animation_finished", self, "on_Fadeout_finished")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -105,4 +113,7 @@ func _on_SortOptionButton_item_selected(index):
 			item_index += 1
 
 func _on_CloseButton_pressed():
+	$AnimationPlayer.play("fadeout")
+
+func on_Fadeout_finished(_anim_name):
 	hide()

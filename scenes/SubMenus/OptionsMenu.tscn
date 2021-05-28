@@ -9,7 +9,8 @@
 [ext_resource path="res://styling/button_style/ApplyButton_pressed.stylebox" type="StyleBox" id=7]
 [ext_resource path="res://styling/button_style/ApplyButton_normal.stylebox" type="StyleBox" id=8]
 
-[node name="PopupMenu" type="Popup"]
+[node name="OptionsMenu" type="Popup"]
+modulate = Color( 1, 1, 1, 0 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -89,6 +90,7 @@ tick_count = 5
 ticks_on_borders = true
 
 [node name="Theming" type="TabContainer" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -179,6 +181,8 @@ custom_styles/pressed = ExtResource( 3 )
 custom_styles/normal = ExtResource( 5 )
 custom_fonts/font = ExtResource( 1 )
 text = "Close"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [connection signal="pressed" from="TabContainer/General/VBoxContainer/SettingsSwitchesContainer/AudioSwitch" to="." method="_on_AudioSwitch_pressed"]
 [connection signal="pressed" from="HBoxContainer/ApplyButton" to="." method="_on_ApplyButton_pressed"]

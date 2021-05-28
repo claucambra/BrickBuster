@@ -102,6 +102,15 @@ func _ready():
 	
 	set_menu_colours()
 	
+	for popup in popups:
+		var animation = Animation.new()
+		var track_index = animation.add_track(Animation.TYPE_VALUE)
+		animation.track_set_path(track_index, String(popup.get_path()) + ":modulate:a")
+		animation.track_insert_key(track_index, 0.0, 0.0)
+		animation.track_insert_key(track_index, 0.4, 1.0)
+		$AnimationPlayer.add_animation(popup.name + "_fadein", animation)
+	
+	# Modulate to black
 	modulate.r = 0
 	modulate.g = 0
 	modulate.b = 0
@@ -111,6 +120,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	# Fade in from black
 	if modulate.b < 1 && !go_to_board:
 		main_menu.modulate.r += 0.05
 		main_menu.modulate.g += 0.05
@@ -135,26 +146,31 @@ func _on_ContinueButton_pressed():
 	
 func _on_NewGameButton_pressed():
 	close_popups()
-	popup_game_mode_menu.visible = !popup_game_mode_menu.visible
+	popup_game_mode_menu.visible = true
+	$AnimationPlayer.play(popup_game_mode_menu.name + "_fadein")
 
 func _on_QuitButton_pressed():
 	get_tree().quit()
 
 func _on_ScoresButton_pressed():
 	close_popups()
-	popup_score_menu.visible = !popup_score_menu.visible
+	popup_score_menu.visible = true
+	$AnimationPlayer.play(popup_score_menu.name + "_fadein")
 
 func _on_OptionsButton_pressed():
 	close_popups()
-	popup_options_menu.visible = !popup_options_menu.visible
+	popup_options_menu.visible = true
+	$AnimationPlayer.play(popup_options_menu.name + "_fadein")
 
 func _on_BallsButton_pressed():
 	close_popups()
-	popup_balls_menu.visible = !popup_balls_menu.visible
+	popup_balls_menu.visible = true
+	$AnimationPlayer.play(popup_balls_menu.name + "_fadein")
 
 func _on_DonateButton_pressed():
 	close_popups()
-	popup_donate_menu.visible = !popup_donate_menu.visible
+	popup_donate_menu.visible = true
+	$AnimationPlayer.play(popup_donate_menu.name + "_fadein")
 
 func on_game_mode_selected(game_mode_name):
 	global.write_save_file(game_mode_name)

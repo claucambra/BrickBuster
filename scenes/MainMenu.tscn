@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://logic/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://styling/fonts/NotoSans_Bold.tres" type="DynamicFont" id=2]
@@ -26,6 +26,9 @@ extents = Vector2( 360, 10 )
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 16, 640 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "New Anim"
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -154,6 +157,8 @@ custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 8 )
 custom_fonts/font = ExtResource( 6 )
 text = "Close"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu"]
 
 [node name="ScoresButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 366.0
@@ -381,6 +386,8 @@ custom_styles/normal = ExtResource( 8 )
 custom_fonts/font = ExtResource( 6 )
 text = "Close"
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu"]
+
 [node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_top = 1100.0
 margin_right = 300.0
@@ -469,6 +476,9 @@ scale = Vector2( 0.834751, 1 )
 z_index = -1
 color = Color( 0.0980392, 0.0980392, 0.0980392, 1 )
 polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280, 216, 933.352 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+"anims/New Anim" = SubResource( 5 )
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ContinueButton" to="." method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton" to="." method="_on_NewGameButton_pressed"]

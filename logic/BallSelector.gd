@@ -40,6 +40,14 @@ func _ready():
 		iterator += 1
 	if global.config.get_value("ball", "ball_file_name") == null:
 		ball_list.set_item_custom_bg_color(0, ColorN("red", 1))
+	
+	var animation = Animation.new()
+	var track_index = animation.add_track(Animation.TYPE_VALUE)
+	animation.track_set_path(track_index, String(self.get_path()) + ":modulate:a")
+	animation.track_insert_key(track_index, 0.0, 1.0)
+	animation.track_insert_key(track_index, 0.4, 0.0)
+	$AnimationPlayer.add_animation("fadeout", animation)
+	$AnimationPlayer.connect("animation_finished", self, "on_Fadeout_finished")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -65,4 +73,7 @@ func _on_ApplyButton_pressed():
 		emit_signal("ball_changed")
 
 func _on_CloseButton_pressed():
+	$AnimationPlayer.play("fadeout")
+
+func on_Fadeout_finished(_anim_name):
 	hide()

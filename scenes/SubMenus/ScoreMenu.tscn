@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://styling/fonts/NotoSans.tres" type="DynamicFont" id=1]
 [ext_resource path="res://logic/ScoreMenu.gd" type="Script" id=2]
@@ -7,7 +7,24 @@
 [ext_resource path="res://styling/button_style/CloseButton_hover.stylebox" type="StyleBox" id=5]
 [ext_resource path="res://styling/button_style/CloseButton_normal.stylebox" type="StyleBox" id=6]
 
-[node name="PopupMenu" type="Popup"]
+[sub_resource type="Animation" id=1]
+resource_name = "fadeout"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+
+[node name="ScoreMenu" type="Popup"]
+modulate = Color( 1, 1, 1, 0 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -75,6 +92,9 @@ custom_styles/pressed = ExtResource( 4 )
 custom_styles/normal = ExtResource( 6 )
 custom_fonts/font = ExtResource( 1 )
 text = "Close"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/fadeout = SubResource( 1 )
 
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/SortOptionButton" to="." method="_on_SortOptionButton_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/CloseButton" to="." method="_on_CloseButton_pressed"]
