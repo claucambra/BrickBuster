@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/square_ball.png-25126b4293511472cb0ad2a185a9e0cc.stex"
+path="res://.import/ball.png-3c192cd2cc38e3f64d883b1fd3a31784.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://styling/icons/square_ball.png"
-dest_files=[ "res://.import/square_ball.png-25126b4293511472cb0ad2a185a9e0cc.stex" ]
+source_file="res://icons/ball.png"
+dest_files=[ "res://.import/ball.png-3c192cd2cc38e3f64d883b1fd3a31784.stex" ]
 
 [params]
 
