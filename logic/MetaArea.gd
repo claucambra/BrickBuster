@@ -20,6 +20,21 @@ func _ready():
 	popup.connect("id_pressed", self, "_on_MenuItem_pressed")
 	popup.popup_centered()
 	popup.hide()
+	
+	var animation = Animation.new()
+	var track_index = animation.add_track(Animation.TYPE_VALUE)
+	animation.track_set_path(track_index, String(popup.get_path()) + ":modulate:a")
+	animation.track_insert_key(track_index, 0.0, 0.0)
+	animation.track_insert_key(track_index, 0.3, 1.0)
+	$AnimationPlayer.add_animation("fadein", animation)
+	
+	animation = Animation.new()
+	track_index = animation.add_track(Animation.TYPE_VALUE)
+	animation.track_set_path(track_index, String(popup.get_path()) + ":modulate:a")
+	animation.track_insert_key(track_index, 0.0, 1.0)
+	animation.track_insert_key(track_index, 0.3, 0.0)
+	$AnimationPlayer.add_animation("fadeout", animation)
+	$AnimationPlayer.connect("animation_finished", self, "on_Fadeout_finished")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -50,3 +65,8 @@ func _on_Button_mouse_exited():
 func _on_Button_pressed():
 	popup.visible = !popup.visible
 	emit_signal("pause_menu_toggled", popup.visible)
+
+
+func _on_PopupMenu_visibility_changed():
+	if popup.visible:
+		$AnimationPlayer.play("fadein")

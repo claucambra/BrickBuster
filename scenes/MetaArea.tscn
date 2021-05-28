@@ -87,6 +87,9 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_exited"]
+[connection signal="visibility_changed" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_visibility_changed"]

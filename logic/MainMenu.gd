@@ -107,7 +107,7 @@ func _ready():
 		var track_index = animation.add_track(Animation.TYPE_VALUE)
 		animation.track_set_path(track_index, String(popup.get_path()) + ":modulate:a")
 		animation.track_insert_key(track_index, 0.0, 0.0)
-		animation.track_insert_key(track_index, 0.4, 1.0)
+		animation.track_insert_key(track_index, 0.3, 1.0)
 		$AnimationPlayer.add_animation(popup.name + "_fadein", animation)
 	
 	# Modulate to black
