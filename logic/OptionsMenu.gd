@@ -10,8 +10,9 @@ onready var global = get_node("/root/Global")
 onready var light_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/LightSwitch
 onready var audio_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
 onready var volume_slider = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/VolumeSlider
-onready var standard_themes_list = $TabContainer/Themes/StandardBrick/ItemList
-onready var mega_themes_list = $TabContainer/Themes/MegaBrick/ItemList
+onready var standard_themes_list = $TabContainer/Theming/StandardBrick/ItemList
+onready var mega_themes_list = $TabContainer/Theming/MegaBrick/ItemList
+onready var line_color_picker = $TabContainer/Theming/LaunchLine/ColorPicker
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,6 +41,8 @@ func _ready():
 		mega_themes_list.set_item_custom_fg_color(iterator, gradient.interpolate(0))
 		
 		iterator += 1 
+	
+	line_color_picker.color = Color(global.config.get_value("theme", "launch_line_color"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -63,6 +66,10 @@ func _on_ApplyButton_pressed():
 		var selected_item_idx = mega_themes_list.get_selected_items()[0]
 		var selected_item_string = mega_themes_list.get_item_metadata(selected_item_idx)
 		global.config.set_value("theme", "mega_bricks", selected_item_string)
+		settings_changed = true
+	
+	if line_color_picker.color.to_html() != global.config.get_value("theme", "launch_line_color"):
+		global.config.set_value("theme", "launch_line_color", line_color_picker.color.to_html())
 		settings_changed = true
 	
 	if settings_changed:

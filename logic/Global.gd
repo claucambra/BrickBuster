@@ -155,6 +155,7 @@ func _ready():
 		config.set_value("ball", "ball_file_name", "Ball.tscn")
 		config.set_value("theme", "standard_bricks", "sunburst")
 		config.set_value("theme", "mega_bricks", "supernova")
+		config.set_value("theme", "launch_line_color", "white")
 		config.save("user://settings.cfg")
 		config.load("user://settings.cfg")
 	
@@ -177,6 +178,10 @@ func _ready():
 	if config.get_value("theme", "standard_bricks") == null:
 		config.set_value("theme", "standard_bricks", "sunburst")
 		config.set_value("theme", "mega_bricks", "supernova")
+		need_to_save_config = true
+	
+	if config.get_value("theme", "launch_line_color") == null:
+		config.set_value("theme", "launch_line_color", "white")
 		need_to_save_config = true
 	
 	if need_to_save_config:

@@ -418,6 +418,7 @@ func _ready():
 	
 	launch_line.add_point(Vector2(0,0), 0)
 	launch_line.add_point(Vector2(0,0), 1)
+	launch_line.default_color = global.config.get_value("theme", "launch_line_color")
 	launch_line_raycast.add_exception(ball)
 	ball.get_node("Light2D").enabled = lighting_enabled
 	ball.set_color(ball_color)
