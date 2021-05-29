@@ -89,6 +89,8 @@ align = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
+[node name="CloseTimer" type="Timer" parent="."]
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_exited"]

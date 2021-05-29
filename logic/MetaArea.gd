@@ -9,6 +9,7 @@ signal restart_button_clicked
 
 onready var menu_button = $MarginContainer/HBoxContainer/Button
 onready var popup = $MarginContainer/HBoxContainer/Button/PopupMenu
+onready var close_timer = $CloseTimer
 var mouse_in_popup = false
 var mouse_on_button = false
 
@@ -20,6 +21,9 @@ func _ready():
 	popup.connect("id_pressed", self, "_on_MenuItem_pressed")
 	popup.popup_centered()
 	popup.hide()
+	
+	close_timer.one_shot = true
+	close_timer.wait_time = 0.25
 	
 	var animation = Animation.new()
 	var track_index = animation.add_track(Animation.TYPE_VALUE)
@@ -70,3 +74,5 @@ func _on_Button_pressed():
 func _on_PopupMenu_visibility_changed():
 	if popup.visible:
 		$AnimationPlayer.play("fadein")
+	else:
+		close_timer.start()

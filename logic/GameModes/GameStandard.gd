@@ -164,7 +164,8 @@ func _process(delta):
 			smoothly_reposition_destroyables(delta)
 		
 		# Launch handling
-		if !game_control.repositioning_ball && !repositioning_bricks && !game_control.round_in_progress:
+		# We check several things, including checking on a timer since pause menu close to avoid accidental launches on closing pause menu
+		if !game_control.repositioning_ball && !repositioning_bricks && !game_control.round_in_progress && game_control.meta_area.close_timer.is_stopped():
 			game_control.drag_enabled = true
 		else:
 			game_control.drag_enabled = false
