@@ -36,7 +36,7 @@ size_flags_vertical = 3
 alignment = 1
 
 [node name="Button" type="TextureButton" parent="MarginContainer/HBoxContainer"]
-margin_right = 224.0
+margin_right = 223.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 150, 150 )
 size_flags_horizontal = 3
@@ -50,8 +50,8 @@ margin_bottom = 20.0
 custom_fonts/font = ExtResource( 2 )
 
 [node name="CurrentScoreLabel" type="Label" parent="MarginContainer/HBoxContainer"]
-margin_left = 228.0
-margin_right = 452.0
+margin_left = 227.0
+margin_right = 450.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -60,7 +60,7 @@ align = 1
 valign = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-margin_left = 456.0
+margin_left = 454.0
 margin_right = 680.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
@@ -69,7 +69,7 @@ __meta__ = {
 }
 
 [node name="HighScoreTitleLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-margin_right = 224.0
+margin_right = 226.0
 margin_bottom = 73.0
 size_flags_horizontal = 7
 size_flags_vertical = 7
@@ -80,7 +80,7 @@ valign = 2
 
 [node name="HighScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 margin_top = 77.0
-margin_right = 224.0
+margin_right = 226.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 size_flags_vertical = 3

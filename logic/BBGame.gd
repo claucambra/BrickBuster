@@ -441,7 +441,7 @@ func _ready():
 	
 	emit_signal("game_prepped")
 
-func _process(delta):
+func _process(_delta):
 	if modulate.b < 1:
 		meta_area.modulate.r += 0.05
 		meta_area.modulate.g += 0.05

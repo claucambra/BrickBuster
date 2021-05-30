@@ -13,16 +13,18 @@
 default_font = ExtResource( 1 )
 
 [node name="BallMenu" type="Popup"]
-modulate = Color( 1, 1, 1, 0 )
+visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = -340.0
+margin_top = -400.0
+margin_right = 340.0
+margin_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
-rect_min_size = Vector2( 400, 800 )
+rect_min_size = Vector2( 400, 1000 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -31,7 +33,7 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 49.0
+margin_top = 103.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -39,7 +41,8 @@ __meta__ = {
 [node name="TabContainer" type="TabContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -52.0
+margin_top = -7.0
+margin_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -53,62 +56,59 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 57.0
+margin_top = 76.0
 margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/BallPicker"]
-margin_right = 392.0
-margin_bottom = 687.0
+margin_right = 672.0
+margin_bottom = 867.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="ItemList" type="ItemList" parent="TabContainer/BallPicker/ScrollContainer"]
-margin_right = 392.0
-margin_bottom = 687.0
+margin_right = 672.0
+margin_bottom = 867.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )
 fixed_icon_size = Vector2( 25, 25 )
 
 [node name="ColourMenu" type="MarginContainer" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 57.0
+margin_top = 76.0
 margin_right = -4.0
 margin_bottom = -4.0
 theme = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/ColourMenu"]
-margin_right = 404.0
-margin_bottom = 687.0
+margin_right = 672.0
+margin_bottom = 867.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColorPicker" type="ColorPicker" parent="TabContainer/ColourMenu/VBoxContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 408.0
-margin_bottom = 691.0
+margin_right = 672.0
+margin_bottom = 867.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 edit_alpha = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_left = 4.0
-margin_top = 751.0
-margin_right = 396.0
-margin_bottom = 796.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -58.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ApplyButton" type="Button" parent="HBoxContainer"]
-margin_right = 194.0
-margin_bottom = 45.0
+margin_right = 338.0
+margin_bottom = 58.0
 size_flags_horizontal = 3
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 7 )
@@ -117,9 +117,9 @@ custom_fonts/font = ExtResource( 1 )
 text = "Apply"
 
 [node name="CloseButton" type="Button" parent="HBoxContainer"]
-margin_left = 198.0
-margin_right = 392.0
-margin_bottom = 45.0
+margin_left = 342.0
+margin_right = 680.0
+margin_bottom = 58.0
 size_flags_horizontal = 3
 custom_styles/hover = ExtResource( 4 )
 custom_styles/pressed = ExtResource( 3 )

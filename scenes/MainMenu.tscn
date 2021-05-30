@@ -60,18 +60,18 @@ __meta__ = {
 
 [node name="ContinueButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_right = 300.0
-margin_bottom = 179.0
+margin_bottom = 210.0
 rect_min_size = Vector2( 300, 0 )
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Continue Game"
+text = "Continue"
 
 [node name="NewGameButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 183.0
+margin_top = 214.0
 margin_right = 300.0
-margin_bottom = 362.0
+margin_bottom = 424.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -80,6 +80,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "New Game"
 
 [node name="GameModeMenu" type="Popup" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton"]
+visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -90,7 +91,7 @@ margin_right = 200.0
 margin_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
-rect_min_size = Vector2( 400, 400 )
+rect_min_size = Vector2( 600, 600 )
 script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -99,13 +100,13 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -137.5
-margin_right = 137.5
-margin_bottom = 39.0
+anchor_right = 1.0
+margin_bottom = 58.0
 custom_fonts/font = ExtResource( 6 )
 text = "Select a gamemode"
 align = 1
@@ -118,8 +119,8 @@ __meta__ = {
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_top = -154.0
-margin_bottom = 197.0
+margin_top = -233.0
+margin_bottom = 299.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 6 )
@@ -136,8 +137,8 @@ __meta__ = {
 }
 
 [node name="GoButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu/HBoxContainer"]
-margin_right = 198.0
-margin_bottom = 45.0
+margin_right = 298.0
+margin_bottom = 58.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/hover = ExtResource( 11 )
@@ -147,9 +148,9 @@ custom_fonts/font = ExtResource( 6 )
 text = "Go!"
 
 [node name="CloseButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu/HBoxContainer"]
-margin_left = 202.0
-margin_right = 400.0
-margin_bottom = 45.0
+margin_left = 302.0
+margin_right = 600.0
+margin_bottom = 58.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/hover = ExtResource( 9 )
@@ -161,9 +162,9 @@ text = "Close"
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu"]
 
 [node name="ScoresButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 366.0
+margin_top = 428.0
 margin_right = 300.0
-margin_bottom = 546.0
+margin_bottom = 638.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -172,9 +173,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Scores"
 
 [node name="BallsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 550.0
+margin_top = 642.0
 margin_right = 300.0
-margin_bottom = 729.0
+margin_bottom = 852.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 6 )
@@ -182,9 +183,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Balls"
 
 [node name="OptionsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 733.0
+margin_top = 856.0
 margin_right = 300.0
-margin_bottom = 913.0
+margin_bottom = 1066.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -193,6 +194,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Options"
 
 [node name="DonateButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
+visible = false
 margin_top = 917.0
 margin_right = 300.0
 margin_bottom = 1096.0
@@ -208,10 +210,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -300.0
-margin_top = -300.0
-margin_right = 300.0
-margin_bottom = 300.0
+margin_left = -340.0
+margin_top = -400.0
+margin_right = 340.0
+margin_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 rect_min_size = Vector2( 400, 0 )
@@ -223,91 +225,96 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_bottom = 23.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 581.0
-margin_bottom = 540.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -50.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer"]
-margin_right = 561.0
-margin_bottom = 520.0
+margin_right = 660.0
+margin_bottom = 740.0
 custom_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer"]
-margin_right = 561.0
-margin_bottom = 124.0
+margin_right = 660.0
+margin_bottom = 181.0
 
 [node name="MenuTitle" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainer"]
-margin_right = 561.0
-margin_bottom = 39.0
+margin_right = 660.0
+margin_bottom = 58.0
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 2 )
 text = "Donation"
 align = 1
+autowrap = true
 
 [node name="Label" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainer"]
-margin_top = 43.0
-margin_right = 561.0
-margin_bottom = 124.0
+margin_top = 62.0
+margin_right = 660.0
+margin_bottom = 181.0
 custom_fonts/font = ExtResource( 6 )
 text = "Thank you for being a generous brickbuster!"
 align = 1
 autowrap = true
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer"]
-margin_top = 144.0
-margin_right = 561.0
-margin_bottom = 418.0
+[node name="VBoxContainerText" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer"]
+margin_top = 201.0
+margin_right = 660.0
+margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/vseparation = 20
-custom_constants/hseparation = 20
-columns = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
+custom_constants/separation = 10
 
-[node name="MeTitle" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/GridContainer"]
-margin_top = 21.0
-margin_right = 180.0
-margin_bottom = 102.0
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainerText"]
+margin_right = 660.0
+margin_bottom = 181.0
+
+[node name="MeTitle" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer"]
+margin_right = 660.0
+margin_bottom = 58.0
 custom_fonts/font = ExtResource( 2 )
-text = "Me,
-Clau Cambra"
+text = "Me, Clau Cambra"
+autowrap = true
 
-[node name="MeDesc" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/GridContainer"]
-margin_left = 200.0
-margin_right = 561.0
-margin_bottom = 123.0
+[node name="MeDesc" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer"]
+margin_top = 62.0
+margin_right = 660.0
+margin_bottom = 181.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 6 )
 text = "The guy that created this game. I hope you've been enjoying it!"
 autowrap = true
 
-[node name="GodotTitle" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/GridContainer"]
-margin_top = 164.0
-margin_right = 180.0
-margin_bottom = 203.0
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainerText"]
+margin_top = 191.0
+margin_right = 660.0
+margin_bottom = 372.0
+
+[node name="GodotTitle" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer2"]
+margin_right = 660.0
+margin_bottom = 58.0
 custom_fonts/font = ExtResource( 2 )
 text = "Godot"
 
-[node name="GodotDesc" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/GridContainer"]
-margin_left = 200.0
-margin_top = 143.0
-margin_right = 561.0
-margin_bottom = 224.0
+[node name="GodotDesc" type="Label" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer2"]
+margin_top = 62.0
+margin_right = 660.0
+margin_bottom = 181.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 6 )
@@ -315,37 +322,37 @@ text = "The awesome engine that makes this game possible."
 autowrap = true
 
 [node name="ButtonsGridContainer" type="GridContainer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer"]
-margin_top = 438.0
-margin_right = 561.0
-margin_bottom = 520.0
+margin_top = 620.0
+margin_right = 660.0
+margin_bottom = 740.0
 columns = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="LearnMeButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer"]
-margin_right = 278.0
-margin_bottom = 39.0
+margin_right = 310.0
+margin_bottom = 58.0
 custom_styles/hover = ExtResource( 11 )
 custom_styles/pressed = ExtResource( 12 )
 custom_styles/normal = ExtResource( 13 )
 custom_fonts/font = ExtResource( 6 )
-text = "View my projects"
+text = "My projects"
 
 [node name="LearnGodotButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer"]
-margin_left = 282.0
-margin_right = 560.0
-margin_bottom = 39.0
+margin_left = 314.0
+margin_right = 660.0
+margin_bottom = 58.0
 custom_styles/hover = ExtResource( 11 )
 custom_styles/pressed = ExtResource( 12 )
 custom_styles/normal = ExtResource( 13 )
 custom_fonts/font = ExtResource( 6 )
-text = "Learn about Godot"
+text = "About Godot"
 
 [node name="MeDonateButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer"]
-margin_top = 43.0
-margin_right = 278.0
-margin_bottom = 82.0
+margin_top = 62.0
+margin_right = 310.0
+margin_bottom = 120.0
 size_flags_horizontal = 3
 custom_styles/hover = ExtResource( 11 )
 custom_styles/pressed = ExtResource( 12 )
@@ -354,10 +361,10 @@ custom_fonts/font = ExtResource( 2 )
 text = "Donate to me"
 
 [node name="GodotDonateButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/MarginContainer/VBoxContainer/ButtonsGridContainer"]
-margin_left = 282.0
-margin_top = 43.0
-margin_right = 560.0
-margin_bottom = 82.0
+margin_left = 314.0
+margin_top = 62.0
+margin_right = 660.0
+margin_bottom = 120.0
 size_flags_horizontal = 3
 custom_styles/hover = ExtResource( 11 )
 custom_styles/pressed = ExtResource( 12 )
@@ -376,8 +383,8 @@ __meta__ = {
 }
 
 [node name="CloseButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu/HBoxContainer"]
-margin_right = 600.0
-margin_bottom = 39.0
+margin_right = 680.0
+margin_bottom = 58.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/hover = ExtResource( 9 )
@@ -389,7 +396,7 @@ text = "Close"
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu"]
 
 [node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 1100.0
+margin_top = 1070.0
 margin_right = 300.0
 margin_bottom = 1280.0
 rect_min_size = Vector2( 300, 0 )

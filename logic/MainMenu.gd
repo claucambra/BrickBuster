@@ -85,7 +85,7 @@ func _ready():
 	ball.set_color(global.config.get_value("ball", "color"))
 	
 	popup_game_mode_menu = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu
-	new_game_button.add_child(popup_game_mode_menu)
+	# new_game_button.add_child(popup_game_mode_menu)
 	popup_balls_menu = load("res://scenes/SubMenus/BallMenu.tscn").instance()
 	balls_button.add_child(popup_balls_menu)
 	popup_options_menu = load("res://scenes/SubMenus/OptionsMenu.tscn").instance()
