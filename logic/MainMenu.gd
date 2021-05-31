@@ -110,39 +110,14 @@ func _ready():
 		animation.track_insert_key(track_index, 0.3, 1.0)
 		$AnimationPlayer.add_animation(popup.name + "_fadein", animation)
 	
-	# Modulate to black
-	modulate.r = 0
-	modulate.g = 0
-	modulate.b = 0
-	main_menu.modulate.r = 0
-	main_menu.modulate.g = 0
-	main_menu.modulate.b = 0
+	# Fade-in and fade-out animation for the whole main menu has been added through UI to AnimationPlayer node
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
-	# Fade in from black
-	if modulate.b < 1 && !go_to_board:
-		main_menu.modulate.r += 0.05
-		main_menu.modulate.g += 0.05
-		main_menu.modulate.b += 0.05
-		modulate.r += 0.05
-		modulate.g += 0.05
-		modulate.b += 0.05
-	
-	if go_to_board && main_menu.modulate.b <= 0 && modulate.b <= 0:
-		get_tree().change_scene("res://scenes/Board.tscn")
-	elif go_to_board:
-		# There must be a cleaner way of doing this.
-		main_menu.modulate.r -= 0.05
-		main_menu.modulate.g -= 0.05
-		main_menu.modulate.b -= 0.05
-		modulate.r -= 0.05
-		modulate.g -= 0.05
-		modulate.b -= 0.05
+	pass
 
 func _on_ContinueButton_pressed():
-	go_to_board = true
+	$AnimationPlayer.play("fadeout")
 	
 func _on_NewGameButton_pressed():
 	close_popups()
@@ -174,7 +149,7 @@ func _on_DonateButton_pressed():
 
 func on_game_mode_selected(game_mode_name):
 	global.write_save_file(game_mode_name)
-	go_to_board = true
+	$AnimationPlayer.play("fadeout")
 
 func on_color_changed():
 	global.config.load("user://settings.cfg")
@@ -203,3 +178,8 @@ func on_options_changed():
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), global.config.get_value("audio", "volume"))
 	set_menu_colours()
 
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "fadeout":
+		get_tree().change_scene("res://scenes/Board.tscn")
