@@ -429,30 +429,10 @@ func _ready():
 	game_over_timer.wait_time = 2
 	game_over_timer.one_shot = true
 	
-	modulate.r = 0
-	modulate.g = 0
-	modulate.b = 0
-	meta_area.modulate.r = 0
-	meta_area.modulate.g = 0
-	meta_area.modulate.b = 0
-	bottom_panel.modulate.r = 0
-	bottom_panel.modulate.g = 0
-	bottom_panel.modulate.b = 0
-	
 	emit_signal("game_prepped")
 
 func _process(_delta):
-	if modulate.b < 1:
-		meta_area.modulate.r += 0.05
-		meta_area.modulate.g += 0.05
-		meta_area.modulate.b += 0.05
-		bottom_panel.modulate.r += 0.05
-		bottom_panel.modulate.g += 0.05
-		bottom_panel.modulate.b += 0.05
-		modulate.r += 0.05
-		modulate.g += 0.05
-		modulate.b += 0.05
-	
+
 	if game_over:
 		drag_enabled = false
 		launch_line.modulate.a -= 0.1
