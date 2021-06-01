@@ -10,8 +10,8 @@ onready var global = get_node("/root/Global")
 onready var light_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/LightSwitch
 onready var audio_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
 onready var volume_slider = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/VolumeSlider
-onready var standard_themes_list = $TabContainer/Theming/StandardBrick/ItemList
-onready var mega_themes_list = $TabContainer/Theming/MegaBrick/ItemList
+onready var standard_themes_list = $TabContainer/Theming/Bricks/StandardBrick/ItemList
+onready var mega_themes_list = $TabContainer/Theming/Bricks/MegaBrick/ItemList
 onready var line_color_picker = $TabContainer/Theming/LaunchLine/ColorPicker
 
 # Called when the node enters the scene tree for the first time.

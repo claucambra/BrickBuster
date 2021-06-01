@@ -41,6 +41,7 @@ func _ready():
 					item_list.set_item_metadata(item_index, item_index)
 					if score == top_score:
 						item_list.set_item_custom_bg_color(item_index,ColorN("red", 1))
+						item_list.set_item_custom_fg_color(item_index,ColorN("white", 1))
 					item_index += 1
 		
 		sort_options_button.add_item("By attainment (asc)", 0)

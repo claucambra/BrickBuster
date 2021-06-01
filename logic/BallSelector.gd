@@ -37,9 +37,11 @@ func _ready():
 		# Highlight the selected ball
 		if ball_filename == global.config.get_value("ball", "ball_file_name"):
 			ball_list.set_item_custom_bg_color(iterator, ColorN("red", 1))
+			ball_list.set_item_custom_fg_color(iterator, ColorN("white", 1))
 		iterator += 1
 	if global.config.get_value("ball", "ball_file_name") == null:
 		ball_list.set_item_custom_bg_color(0, ColorN("red", 1))
+		ball_list.set_item_custom_fg_color(0, ColorN("white", 1))
 	
 	var animation = Animation.new()
 	var track_index = animation.add_track(Animation.TYPE_VALUE)
