@@ -6,6 +6,9 @@ signal options_changed
 # var a = 2
 # var b = "text"
 
+var standard_selected_theme_item_idx = null
+var mega_selected_theme_item_idx = null
+
 onready var global = get_node("/root/Global")
 onready var light_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/LightSwitch
 onready var audio_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
@@ -30,12 +33,20 @@ func _ready():
 		gradient.set_color(1, global.colour_themes[brick_theme].top_health)
 		gradient.set_color(0, global.colour_themes[brick_theme].bottom_health)
 		
-		standard_themes_list.add_item(global.colour_themes[brick_theme].display_name)
+		if brick_theme == global.config.get_value("theme", "standard_bricks"):
+			standard_themes_list.add_item(global.colour_themes[brick_theme].display_name + " (Selected)")
+			standard_selected_theme_item_idx = iterator
+		else:
+			standard_themes_list.add_item(global.colour_themes[brick_theme].display_name)
 		standard_themes_list.set_item_metadata(iterator, brick_theme)
 		standard_themes_list.set_item_custom_bg_color(iterator, gradient.interpolate(1))
 		standard_themes_list.set_item_custom_fg_color(iterator, gradient.interpolate(0))
 		
-		mega_themes_list.add_item(global.colour_themes[brick_theme].display_name)
+		if brick_theme == global.config.get_value("theme", "mega_bricks"):
+			mega_themes_list.add_item(global.colour_themes[brick_theme].display_name + " (Selected)")
+			mega_selected_theme_item_idx = iterator
+		else:
+			mega_themes_list.add_item(global.colour_themes[brick_theme].display_name)
 		mega_themes_list.set_item_metadata(iterator, brick_theme)
 		mega_themes_list.set_item_custom_bg_color(iterator, gradient.interpolate(1))
 		mega_themes_list.set_item_custom_fg_color(iterator, gradient.interpolate(0))
@@ -58,6 +69,10 @@ func _ready():
 
 func _on_ApplyButton_pressed():
 	var settings_changed = false
+	var standard_theme_changed = false
+	var mega_theme_changed = false
+	var new_standard_theme_item_idx = null
+	var new_mega_theme_item_idx = null
 	
 	if global.err == OK || global.err == ERR_FILE_NOT_FOUND:
 		global.config.set_value("lighting", "enabled", light_switch.pressed)
@@ -65,16 +80,18 @@ func _on_ApplyButton_pressed():
 		settings_changed = true
 	
 	if standard_themes_list.is_anything_selected():
-		var selected_item_idx = standard_themes_list.get_selected_items()[0]
-		var selected_item_string = standard_themes_list.get_item_metadata(selected_item_idx)
+		new_standard_theme_item_idx = standard_themes_list.get_selected_items()[0]
+		var selected_item_string = standard_themes_list.get_item_metadata(new_standard_theme_item_idx)
 		global.config.set_value("theme", "standard_bricks", selected_item_string)
 		settings_changed = true
+		standard_theme_changed = true
 	
 	if mega_themes_list.is_anything_selected():
-		var selected_item_idx = mega_themes_list.get_selected_items()[0]
-		var selected_item_string = mega_themes_list.get_item_metadata(selected_item_idx)
+		new_mega_theme_item_idx = mega_themes_list.get_selected_items()[0]
+		var selected_item_string = mega_themes_list.get_item_metadata(new_mega_theme_item_idx)
 		global.config.set_value("theme", "mega_bricks", selected_item_string)
 		settings_changed = true
+		mega_theme_changed = true
 	
 	if line_color_picker.color.to_html() != global.config.get_value("theme", "launch_line_color"):
 		global.config.set_value("theme", "launch_line_color", line_color_picker.color.to_html())
@@ -84,6 +101,20 @@ func _on_ApplyButton_pressed():
 		global.config.save("user://settings.cfg")
 		global.set_theme()
 		emit_signal("options_changed")
+
+		if standard_theme_changed:
+			var prev_std_selected_item_text = standard_themes_list.get_item_text(standard_selected_theme_item_idx).replace(" (Selected)", "")
+			standard_themes_list.set_item_text(standard_selected_theme_item_idx, prev_std_selected_item_text)
+			var new_std_selected_item_text = standard_themes_list.get_item_text(new_standard_theme_item_idx) + " (Selected)"
+			standard_themes_list.set_item_text(new_standard_theme_item_idx, new_std_selected_item_text)
+			standard_selected_theme_item_idx = new_standard_theme_item_idx
+		
+		if mega_theme_changed:
+			var prev_mega_selected_item_text = mega_themes_list.get_item_text(mega_selected_theme_item_idx).replace(" (Selected)", "")
+			mega_themes_list.set_item_text(mega_selected_theme_item_idx, prev_mega_selected_item_text)
+			var new_mega_selected_item_text = mega_themes_list.get_item_text(new_mega_theme_item_idx) + " (Selected)"
+			mega_themes_list.set_item_text(new_mega_theme_item_idx, new_mega_selected_item_text)
+			mega_selected_theme_item_idx = new_mega_theme_item_idx
 
 func _on_CloseButton_pressed():
 	$AnimationPlayer.play("fadeout")
