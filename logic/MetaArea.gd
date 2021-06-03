@@ -2,6 +2,7 @@ extends Panel
 
 signal pause_menu_toggled(popup_open)
 signal restart_button_clicked
+signal quit_to_menu_button_clicked
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -38,7 +39,6 @@ func _ready():
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
 	$AnimationPlayer.add_animation("fadeout", animation)
-	$AnimationPlayer.connect("animation_finished", self, "on_Fadeout_finished")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -47,12 +47,16 @@ func _process(_delta):
 		emit_signal("pause_menu_toggled", popup.visible)
 
 func _on_MenuItem_pressed(id):
-	emit_signal("pause_menu_toggled", false)
+	$AnimationPlayer.play("fadeout")
 	match id:
 		1:
+			close_timer.start() # Stops ball being shot on accident
+			emit_signal("pause_menu_toggled", false)
 			emit_signal("restart_button_clicked")
 		2:
-			get_tree().change_scene("res://scenes/MainMenu.tscn")
+			close_timer.start()
+			emit_signal("pause_menu_toggled", false)
+			emit_signal("quit_to_menu_button_clicked")
 
 func _on_PopupMenu_mouse_entered():
 	mouse_in_popup = true
@@ -67,12 +71,14 @@ func _on_Button_mouse_exited():
 	mouse_on_button = false
 
 func _on_Button_pressed():
-	popup.visible = !popup.visible
-	emit_signal("pause_menu_toggled", popup.visible)
-
-
-func _on_PopupMenu_visibility_changed():
-	if popup.visible:
+	if !popup.visible:
+		popup.visible = true
 		$AnimationPlayer.play("fadein")
+		emit_signal("pause_menu_toggled", popup.visible)
 	else:
-		close_timer.start()
+		$AnimationPlayer.play("fadeout")
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "fadeout":
+		popup.visible = false
+		emit_signal("pause_menu_toggled", popup.visible)

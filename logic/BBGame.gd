@@ -366,7 +366,14 @@ func on_pause_menu_toggled(popup_open):
 	get_tree().paused = popup_open
 
 func on_restart_button_clicked():
+	$AnimationPlayer.play("fadeout")
+	yield($AnimationPlayer, "animation_finished")
 	reset()
+
+func on_quit_to_menu_button_clicked():
+	$AnimationPlayer.play("fadeout")
+	yield($AnimationPlayer, "animation_finished")
+	get_tree().change_scene("res://scenes/MainMenu.tscn")
 
 func on_destroyable_killed(destroyable):
 	live_destroyables.erase(destroyable)
@@ -412,9 +419,10 @@ func _ready():
 		lighting_enabled = global.config.get_value("lighting", "enabled")
 		ball_color = global.config.get_value("ball", "color")
 	
-	meta_area.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
 	meta_area.pause_mode = Node.PAUSE_MODE_PROCESS
+	meta_area.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
 	meta_area.connect("restart_button_clicked", self, "on_restart_button_clicked")
+	meta_area.connect("quit_to_menu_button_clicked", self, "on_quit_to_menu_button_clicked")
 	
 	launch_line.add_point(Vector2(0,0), 0)
 	launch_line.add_point(Vector2(0,0), 1)

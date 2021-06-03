@@ -48,6 +48,8 @@ stretch_mode = 5
 margin_right = 20.0
 margin_bottom = 20.0
 custom_fonts/font = ExtResource( 2 )
+hide_on_item_selection = false
+hide_on_checkable_item_selection = false
 
 [node name="CurrentScoreLabel" type="Label" parent="MarginContainer/HBoxContainer"]
 margin_left = 227.0
@@ -94,4 +96,4 @@ align = 1
 [connection signal="pressed" from="MarginContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_mouse_exited"]
-[connection signal="visibility_changed" from="MarginContainer/HBoxContainer/Button/PopupMenu" to="." method="_on_PopupMenu_visibility_changed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
