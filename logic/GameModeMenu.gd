@@ -33,6 +33,7 @@ func _process(delta):
 
 
 func _on_GoButton_pressed():
+	$AnimationPlayer.play("fadeout")
 	var selected_item = game_mode_list.get_selected_items()[0]
 	var mode_details = game_mode_list.get_item_metadata(selected_item)
 	emit_signal("game_mode_selected", mode_details.name)
@@ -42,3 +43,6 @@ func _on_CloseButton_pressed():
 
 func on_Fadeout_finished(_anim_name):
 	hide()
+
+func _on_GameModeList_item_selected(index):
+	$AnimationPlayer.play("fadeout")

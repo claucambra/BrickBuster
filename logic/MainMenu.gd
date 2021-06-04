@@ -84,15 +84,16 @@ func _ready():
 	ball.get_node("Light2D").enabled = global.config.get_value("lighting", "enabled")
 	ball.set_color(global.config.get_value("ball", "color"))
 	
-	popup_game_mode_menu = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton/GameModeMenu
-	# new_game_button.add_child(popup_game_mode_menu)
+	popup_game_mode_menu = load("res://scenes/SubMenus/GameModeMenu.tscn").instance()
+	new_game_button.add_child(popup_game_mode_menu)
 	popup_balls_menu = load("res://scenes/SubMenus/BallMenu.tscn").instance()
 	balls_button.add_child(popup_balls_menu)
 	popup_options_menu = load("res://scenes/SubMenus/OptionsMenu.tscn").instance()
 	options_button.add_child(popup_options_menu)
 	popup_score_menu = load("res://scenes/SubMenus/ScoreMenu.tscn").instance()
 	scores_button.add_child(popup_score_menu)
-	popup_donate_menu = $CanvasLayer/MainMenu/VBoxContainer/DonateButton/DonateMenu
+	popup_donate_menu = load("res://scenes/SubMenus/DonateMenu.tscn").instance()
+	donate_button.add_child(popup_donate_menu)
 	popups = [popup_game_mode_menu, popup_balls_menu, popup_options_menu, popup_score_menu, popup_donate_menu]
 	
 	popup_game_mode_menu.connect("game_mode_selected", self, "on_game_mode_selected")

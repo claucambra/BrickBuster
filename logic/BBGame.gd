@@ -327,6 +327,8 @@ func end_game():
 		game_over_title_fadeout_and_reset()
 
 func reset():
+	$AnimationPlayer.play("fadeout")
+	yield($AnimationPlayer, "animation_finished")
 	if global.save_game_data.past_scores.has($GameModeSelector.selected_game_mode):
 		global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
 	else:
@@ -366,8 +368,6 @@ func on_pause_menu_toggled(popup_open):
 	get_tree().paused = popup_open
 
 func on_restart_button_clicked():
-	$AnimationPlayer.play("fadeout")
-	yield($AnimationPlayer, "animation_finished")
 	reset()
 
 func on_quit_to_menu_button_clicked():
