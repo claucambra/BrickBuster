@@ -9,11 +9,14 @@ var noto_font = load("res://styling/fonts/NotoSans.tres")
 var noto_font_bold = load("res://styling/fonts/NotoSans_Bold.tres")
 var noto_font_bold_title = load("res://styling/fonts/NotoSans_Bold_Title.tres")
 
+# The selected ball is read from the config file.
 var selected_ball_scene = null
+# These next variables are dynamically set depending on available files.
 var ball_scenes = []
 var past_scores = {}
 var game_modes = {}
 
+# These colour themes are for bricks
 var colour_themes = {
 	"sunburst": {
 		"display_name": "Sunburst",
@@ -47,6 +50,8 @@ var colour_themes = {
 	}
 }
 
+# We set these to defaults in case there is nothing set in the config file.
+# This should be caught by the ready() function, however. 
 var selected_standard_theme = "sunburst"
 var selected_mega_theme = "supernova"
 
@@ -58,6 +63,9 @@ func reload_save_data():
 func reload_selected_ball():
 	selected_ball_scene = load("res://scenes/Balls/" + config.get_value("ball", "ball_file_name"))
 
+# This function converts the past score data from old versions of the game into
+# the data structure used in the current version, which supports more than one
+# game mode.
 func convert_past_scores(past_scores):
 	var new_type_scores = {"standard": past_scores}
 	
@@ -77,6 +85,9 @@ func convert_past_scores(past_scores):
 	reload_save_data()
 	return new_type_scores
 
+# This function writes the save game file in a way that allows the user to start
+# a fresh game while conserving prior scores. (this is used, for example, in the
+# main menu's 'New Game' button.)
 func write_save_file(game_mode = "standard", first_save = false):
 	var save_dict = {
 		"game_mode": game_mode,
@@ -97,6 +108,7 @@ func write_save_file(game_mode = "standard", first_save = false):
 	save_game.close()
 	reload_save_data()
 
+# Gets the balls according to the files found in /scenes/Balls/. 
 func fetch_balls():
 	var ball_scenes_dir = Directory.new()
 	var path = "res://scenes/Balls/"
@@ -113,6 +125,7 @@ func fetch_balls():
 
 	ball_scenes_dir.list_dir_end()
 
+# Gets the gamemodes according to the files found in /logic/GameModes/. 
 func fetch_game_modes():
 	var game_modes_dir = Directory.new()
 	var path = "res://logic/GameModes/"
@@ -135,6 +148,8 @@ func fetch_game_modes():
 			game_modes[game_mode_details.name]["description"] = game_mode_details.description
 	game_modes_dir.list_dir_end()
 
+# Writes user-set theme for bricks from the config file to the global variables
+# read by the rest of the game.
 func set_theme():
 	selected_standard_theme = config.get_value("theme", "standard_bricks")
 	selected_mega_theme = config.get_value("theme", "mega_bricks")
@@ -147,6 +162,10 @@ func _ready():
 			if typeof(past_scores) == TYPE_ARRAY: # Convert old type score store
 				past_scores = convert_past_scores(past_scores)
 	
+	# Set up the configuration file.
+	# We have a bunch of ifs here to catch cases where users were using old
+	# versions of the game and ned to have these initial values set, though
+	# they might already have a config file set.
 	var need_to_save_config = false
 	if err == ERR_FILE_NOT_FOUND:
 		config.set_value("lighting", "enabled", true)
