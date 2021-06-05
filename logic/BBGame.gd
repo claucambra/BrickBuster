@@ -329,10 +329,11 @@ func end_game():
 func reset():
 	$AnimationPlayer.play("fadeout")
 	yield($AnimationPlayer, "animation_finished")
-	if global.save_game_data.past_scores.has($GameModeSelector.selected_game_mode):
-		global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
-	else:
-		global.save_game_data.past_scores[$GameModeSelector.selected_game_mode] = [score]
+	if score != 0:
+		if global.save_game_data.past_scores.has($GameModeSelector.selected_game_mode):
+			global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
+		else:
+			global.save_game_data.past_scores[$GameModeSelector.selected_game_mode] = [score]
 	resetting = true
 	emit_signal("reset_triggered")
 	for live_element in get_children():
