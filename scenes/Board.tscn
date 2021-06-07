@@ -123,19 +123,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MetaArea" parent="Board/CanvasLayer" instance=ExtResource( 2 )]
-light_mask = 4
-margin_top = -2.24493
-margin_bottom = 187.755
-
-[node name="LaunchLine" type="Line2D" parent="Board/CanvasLayer"]
-light_mask = 0
-z_index = 1
-width = 5.0
-default_color = Color( 1, 0.843137, 0.392157, 1 )
-begin_cap_mode = 2
-end_cap_mode = 2
-
 [node name="BottomPanel" type="Panel" parent="Board/CanvasLayer"]
 light_mask = 0
 anchor_left = 0.5
@@ -166,6 +153,19 @@ margin_left = 20.0
 margin_right = 20.0
 margin_bottom = 58.0
 custom_fonts/font = ExtResource( 3 )
+
+[node name="MetaArea" parent="Board/CanvasLayer" instance=ExtResource( 2 )]
+light_mask = 4
+margin_top = -2.24493
+margin_bottom = 187.755
+
+[node name="LaunchLine" type="Line2D" parent="Board/CanvasLayer"]
+light_mask = 0
+z_index = 1
+width = 5.0
+default_color = Color( 1, 0.843137, 0.392157, 1 )
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="TopWall" type="StaticBody2D" parent="Board" groups=[
 "PlayBoardElements",

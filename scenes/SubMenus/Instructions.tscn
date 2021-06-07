@@ -13,7 +13,6 @@
 [ext_resource path="res://images/specials.png" type="Texture" id=11]
 
 [node name="PopupDialog" type="PopupDialog"]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -208,6 +207,8 @@ text = "Close"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
+[connection signal="visibility_changed" from="." to="." method="_on_PopupDialog_visibility_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/VBoxContainer/NextButton" to="." method="_on_NextButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TabContainer/VBoxContainer2/PrevButton" to="." method="_on_PrevButton_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/CloseButton" to="." method="_on_CloseButton_pressed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

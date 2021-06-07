@@ -368,6 +368,13 @@ func reset():
 func on_pause_menu_toggled(popup_open):
 	get_tree().paused = popup_open
 
+# This should only be used once, on first run.
+# This is so on closing the help menu the game continues after showing the help 
+# menu on first run.
+func on_help_menu_visibility_changed():
+	get_tree().paused = meta_area.help_popup.visible
+	global.first_run = false
+
 func on_restart_button_clicked():
 	reset()
 
@@ -439,6 +446,11 @@ func _ready():
 	game_over_timer.one_shot = true
 	
 	emit_signal("game_prepped")
+	
+	if global.first_run:
+		meta_area.help_popup.visible = true
+		get_tree().paused = true
+		meta_area.help_popup.connect("visibility_changed", self, "on_help_menu_visibility_changed")
 
 func _process(_delta):
 
