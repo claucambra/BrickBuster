@@ -105,7 +105,7 @@ __meta__ = {
 
 [node name="ContinueButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
 margin_right = 300.0
-margin_bottom = 179.0
+margin_bottom = 156.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -114,9 +114,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Continue"
 
 [node name="NewGameButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 183.0
+margin_top = 160.0
 margin_right = 300.0
-margin_bottom = 362.0
+margin_bottom = 317.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -125,9 +125,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "New Game"
 
 [node name="ScoresButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 366.0
+margin_top = 321.0
 margin_right = 300.0
-margin_bottom = 546.0
+margin_bottom = 477.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -136,19 +136,29 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Scores"
 
 [node name="BallsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 550.0
+margin_top = 481.0
 margin_right = 300.0
-margin_bottom = 729.0
+margin_bottom = 638.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Balls"
 
-[node name="OptionsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 733.0
+[node name="HelpButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
+margin_top = 642.0
 margin_right = 300.0
-margin_bottom = 913.0
+margin_bottom = 798.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Help"
+
+[node name="OptionsButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
+margin_top = 802.0
+margin_right = 300.0
+margin_bottom = 959.0
 rect_min_size = Vector2( 300, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -157,9 +167,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Options"
 
 [node name="DonateButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 917.0
+margin_top = 963.0
 margin_right = 300.0
-margin_bottom = 1096.0
+margin_bottom = 1119.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 6 )
@@ -167,7 +177,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Donate"
 
 [node name="QuitButton" type="Button" parent="CanvasLayer/MainMenu/VBoxContainer"]
-margin_top = 1100.0
+margin_top = 1123.0
 margin_right = 300.0
 margin_bottom = 1280.0
 rect_min_size = Vector2( 300, 0 )
@@ -264,6 +274,7 @@ anims/fadeout = SubResource( 6 )
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/NewGameButton" to="." method="_on_NewGameButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/ScoresButton" to="." method="_on_ScoresButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/BallsButton" to="." method="_on_BallsButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/HelpButton" to="." method="_on_HelpButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/DonateButton" to="." method="_on_DonateButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

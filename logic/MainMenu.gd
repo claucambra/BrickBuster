@@ -12,6 +12,7 @@ var popup_balls_menu = null
 var popup_options_menu = null
 var popup_score_menu = null
 var popup_donate_menu = null
+var popup_help_menu = null
 var popups = []
 
 var go_to_board = false
@@ -26,6 +27,7 @@ onready var scores_button = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton
 onready var balls_button = $CanvasLayer/MainMenu/VBoxContainer/BallsButton
 onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
 onready var donate_button = $CanvasLayer/MainMenu/VBoxContainer/DonateButton
+onready var help_button = $CanvasLayer/MainMenu/VBoxContainer/HelpButton
 
 
 func close_popups():
@@ -94,7 +96,9 @@ func _ready():
 	scores_button.add_child(popup_score_menu)
 	popup_donate_menu = load("res://scenes/SubMenus/DonateMenu.tscn").instance()
 	donate_button.add_child(popup_donate_menu)
-	popups = [popup_game_mode_menu, popup_balls_menu, popup_options_menu, popup_score_menu, popup_donate_menu]
+	popup_help_menu = load("res://scenes/SubMenus/Instructions.tscn").instance()
+	help_button.add_child(popup_help_menu)
+	popups = [popup_game_mode_menu, popup_balls_menu, popup_options_menu, popup_score_menu, popup_donate_menu, popup_help_menu]
 	
 	popup_game_mode_menu.connect("game_mode_selected", self, "on_game_mode_selected")
 	popup_balls_menu.connect("color_changed", self, "on_color_changed")
@@ -117,6 +121,7 @@ func _ready():
 func _process(delta):
 	pass
 
+# There must be a way to do these in a more automatic manner.
 func _on_ContinueButton_pressed():
 	$AnimationPlayer.play("fadeout")
 	
@@ -147,6 +152,11 @@ func _on_DonateButton_pressed():
 	close_popups()
 	popup_donate_menu.visible = true
 	$AnimationPlayer.play(popup_donate_menu.name + "_fadein")
+
+func _on_HelpButton_pressed():
+	close_popups()
+	popup_help_menu.visible = true
+	$AnimationPlayer.play(popup_help_menu.name + "_fadein")
 
 func on_game_mode_selected(game_mode_name):
 	global.write_save_file(game_mode_name)
@@ -184,3 +194,4 @@ func on_options_changed():
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "fadeout":
 		get_tree().change_scene("res://scenes/Board.tscn")
+
