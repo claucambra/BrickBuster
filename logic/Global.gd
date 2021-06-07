@@ -9,6 +9,9 @@ var noto_font = load("res://styling/fonts/NotoSans.tres")
 var noto_font_bold = load("res://styling/fonts/NotoSans_Bold.tres")
 var noto_font_bold_title = load("res://styling/fonts/NotoSans_Bold_Title.tres")
 
+# We use this to present the user with a popup explaining how the game works
+# if it's their first time playing.
+var first_run = false
 # The selected ball is read from the config file.
 var selected_ball_scene = null
 # These next variables are dynamically set depending on available files.
@@ -161,6 +164,8 @@ func _ready():
 			past_scores = save_game_data["past_scores"]
 			if typeof(past_scores) == TYPE_ARRAY: # Convert old type score store
 				past_scores = convert_past_scores(past_scores)
+	else:
+		first_run = true
 	
 	# Set up the configuration file.
 	# We have a bunch of ifs here to catch cases where users were using old
@@ -177,6 +182,7 @@ func _ready():
 		config.set_value("theme", "launch_line_color", "white")
 		config.save("user://settings.cfg")
 		config.load("user://settings.cfg")
+		first_run = true
 	
 	if config.get_value("lighting", "enabled") == null:
 		config.set_value("lighting", "enabled", true)
