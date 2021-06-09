@@ -423,9 +423,13 @@ func _on_ControlArea_mouse_exited():
 func _ready():
 	if global.err == OK:
 		ball = global.selected_ball_scene.instance()
-		ball.marker_ball = true
 		lighting_enabled = global.config.get_value("lighting", "enabled")
 		ball_color = global.config.get_value("ball", "color")
+	else: # Emergency defaults
+		ball = load("res://scenes/Balls/Ball.tscn").instance()
+		lighting_enabled = false
+		ball_color = "#ffffff"
+	ball.marker_ball = true
 	
 	meta_area.pause_mode = Node.PAUSE_MODE_PROCESS
 	meta_area.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
