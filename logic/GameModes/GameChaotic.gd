@@ -113,7 +113,7 @@ func _ready():
 	game_control.update_score_labels()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if game_control.game_over:
 		score_increase_timer.stop()
 	else:

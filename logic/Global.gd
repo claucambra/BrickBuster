@@ -1,5 +1,10 @@
 extends Node
 
+# IMPORTANT NOTE: WHEN EXPORTING, MAKE SURE SCRIPT FILES ARE EXPORTED AS TEXT
+# AND NOT COMPILED, OTHERWISE THERE WILL BE ISSUES WITH THE BALL AND GAMEMODE
+# FETCHER FUNCTIONS.
+# Project -> Export -> (select preset) -> Script -> Script Export Mode -> Text
+
 var save_game = File.new()
 var save_game_data = null
 var rng = RandomNumberGenerator.new()
@@ -69,8 +74,8 @@ func reload_selected_ball():
 # This function converts the past score data from old versions of the game into
 # the data structure used in the current version, which supports more than one
 # game mode.
-func convert_past_scores(past_scores):
-	var new_type_scores = {"standard": past_scores}
+func convert_past_scores(in_past_scores):
+	var new_type_scores = {"standard": in_past_scores}
 	
 	var save_dict = {
 		"game_mode": save_game_data["game_mode"],
@@ -137,6 +142,7 @@ func fetch_game_modes():
 
 	while true:
 		var file_name = game_modes_dir.get_next()
+		print(file_name)
 		if file_name == "":
 			break
 		elif not file_name.begins_with("."):
@@ -179,7 +185,7 @@ func _ready():
 		config.set_value("ball", "ball_file_name", "Ball.tscn")
 		config.set_value("theme", "standard_bricks", "sunburst")
 		config.set_value("theme", "mega_bricks", "supernova")
-		config.set_value("theme", "launch_line_color", "white")
+		config.set_value("theme", "launch_line_color", "#ffffff")
 		config.save("user://settings.cfg")
 		config.load("user://settings.cfg")
 		first_run = true

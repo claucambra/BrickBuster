@@ -17,7 +17,7 @@ func on_Fadeout_finished(_anim_name):
 	hide()
 
 
-func _on_LearnMeButton_toggled(button_pressed):
+func _on_LearnMeButton_toggled(_button_pressed):
 	OS.shell_open("https://github.com/claucambra")
 
 

@@ -118,8 +118,8 @@ func _ready():
 	# Fade-in and fade-out animation for the whole main menu has been added through UI to AnimationPlayer node
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+# func _process(delta):
+#	pass
 
 # There must be a way to do these in a more automatic manner.
 func _on_ContinueButton_pressed():

@@ -28,7 +28,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	go_button.disabled = !game_mode_list.is_anything_selected()
 
 
@@ -44,5 +44,5 @@ func _on_CloseButton_pressed():
 func on_Fadeout_finished(_anim_name):
 	hide()
 
-func _on_GameModeList_item_selected(index):
+func _on_GameModeList_item_selected(_index):
 	$AnimationPlayer.play("fadeout")
