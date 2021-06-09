@@ -30,7 +30,7 @@ func _ready():
 				for score in past_scores:
 					score = int(score)
 				ball_list.set_item_disabled(iterator, ball_meta.min_score > past_scores.standard.max())
-				ball_list.set_item_tooltip(iterator, "Unlocked after scoring " + String(ball_meta.min_score) + " or more")
+				ball_list.set_item_tooltip(iterator, "Unlocked after scoring " + str(ball_meta.min_score) + " or more")
 		elif ball_meta.get("min_score"):
 			ball_list.set_item_selectable(iterator, false)
 		
@@ -45,7 +45,7 @@ func _ready():
 	
 	var animation = Animation.new()
 	var track_index = animation.add_track(Animation.TYPE_VALUE)
-	animation.track_set_path(track_index, String(self.get_path()) + ":modulate:a")
+	animation.track_set_path(track_index, str(self.get_path()) + ":modulate:a")
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
 	$AnimationPlayer.add_animation("fadeout", animation)

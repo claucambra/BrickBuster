@@ -35,7 +35,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	label.text = String(health)
+	label.text = str(health)
 	brick_shape.color = gradient.interpolate(float(health)/float(max_possible_health))
 	$Light2D.color = brick_shape.color
 	

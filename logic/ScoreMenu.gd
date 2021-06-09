@@ -35,7 +35,7 @@ func _ready():
 				var item_index = 0
 				var top_score = past_scores[key].max()
 				for score in past_scores[key]:
-					item_list.add_item(String(score), null, false)
+					item_list.add_item(str(score), null, false)
 					# We set an id number with item_index, we can also use item_index to access the right item
 					# Since list is currently in the order acquired from the save file.
 					item_list.set_item_metadata(item_index, item_index)
@@ -53,7 +53,7 @@ func _ready():
 	
 	var animation = Animation.new()
 	var track_index = animation.add_track(Animation.TYPE_VALUE)
-	animation.track_set_path(track_index, String(self.get_path()) + ":modulate:a")
+	animation.track_set_path(track_index, str(self.get_path()) + ":modulate:a")
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
 	$AnimationPlayer.add_animation("fadeout", animation)

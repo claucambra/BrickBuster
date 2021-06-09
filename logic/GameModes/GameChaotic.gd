@@ -146,7 +146,7 @@ func _process(_delta):
 		else:
 			game_control.drag_enabled = false
 			if launch_cooldown_timer.time_left >= 0.4: # Checking at 0 creates problems...
-				countdown_label.text = String(round(launch_cooldown_timer.time_left))
+				countdown_label.text = str(round(launch_cooldown_timer.time_left))
 				countdown_label.modulate.a = 1
 				countdown_label.visible = true
 			elif countdown_label.modulate.a > 0:

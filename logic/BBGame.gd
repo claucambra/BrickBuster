@@ -296,13 +296,13 @@ func smoothly_reposition_ball(delta, ball_to_reposition, destination):
 
 func update_score_labels():
 	var game_mode = $GameModeSelector.selected_game_mode
-	ammo_label.text = "x" + String(ammo)
-	current_score_label.text = String(score)
+	ammo_label.text = "x" + str(ammo)
+	current_score_label.text = str(score)
 	var past_scores = global.save_game_data.past_scores
 	if !past_scores.has(game_mode) || past_scores[game_mode].empty() || score > past_scores[game_mode].max():
-		high_score_label.text = String(score)
+		high_score_label.text = str(score)
 	else:
-		high_score_label.text = String(past_scores[game_mode].max())
+		high_score_label.text = str(past_scores[game_mode].max())
 
 func game_over_title_fadein_and_fadeout_init():
 	if game_over_label.modulate.a < 1:
@@ -475,7 +475,7 @@ func _process(_delta):
 	
 	else:
 		# <------------- UPDATE AMMO LABEL AS BALLS TOUCH BOTTOM ------------->
-		ammo_label.text = "x" + String(ammo - live_balls.size())
+		ammo_label.text = "x" + str(ammo - live_balls.size())
 		
 		# <-------------- CALCULATE LAUNCH LINE AND BALL ANGLES -------------->
 		launch_line_calc()
