@@ -28,6 +28,7 @@ onready var balls_button = $CanvasLayer/MainMenu/VBoxContainer/BallsButton
 onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
 onready var donate_button = $CanvasLayer/MainMenu/VBoxContainer/DonateButton
 onready var help_button = $CanvasLayer/MainMenu/VBoxContainer/HelpButton
+onready var quit_button = $CanvasLayer/MainMenu/VBoxContainer/QuitButton
 
 
 func close_popups():
@@ -116,6 +117,9 @@ func _ready():
 		$AnimationPlayer.add_animation(popup.name + "_fadein", animation)
 	
 	# Fade-in and fade-out animation for the whole main menu has been added through UI to AnimationPlayer node
+	
+	if OS.get_name() == "Android" || OS.get_name() == "iOS" || OS.get_name() == "HTML5":
+		quit_button.hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta):
