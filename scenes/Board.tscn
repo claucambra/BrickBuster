@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://logic/BBGame.gd" type="Script" id=1]
 [ext_resource path="res://scenes/MetaArea.tscn" type="PackedScene" id=2]
 [ext_resource path="res://styling/fonts/NotoSans.tres" type="DynamicFont" id=3]
 [ext_resource path="res://logic/ModeSelector.gd" type="Script" id=4]
 [ext_resource path="res://styling/fonts/NotoSans_Bold_Title.tres" type="DynamicFont" id=5]
+[ext_resource path="res://scenes/DrawNode.gd" type="Script" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 359.589, 8.62341 )
@@ -166,6 +167,9 @@ width = 5.0
 default_color = Color( 1, 0.843137, 0.392157, 1 )
 begin_cap_mode = 2
 end_cap_mode = 2
+
+[node name="DrawNode" type="Node2D" parent="Board/CanvasLayer"]
+script = ExtResource( 6 )
 
 [node name="TopWall" type="StaticBody2D" parent="Board" groups=[
 "PlayBoardElements",

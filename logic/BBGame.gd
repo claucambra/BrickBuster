@@ -502,10 +502,3 @@ func _process(_delta):
 				launch_line.modulate.a -= 0.1
 		elif launch_line.modulate.a > 0:
 			launch_line.modulate.a -= 0.1
-		
-		update() # Updates _draw func
-
-func _draw():
-	if drag_enabled && draw_touch_marker:
-		# Touch/click marker
-		draw_circle(first_click_position, 25, ColorN("white", 0.5))
