@@ -6,6 +6,8 @@ func _ready():
 	pass
 
 func _process(delta):
+	print(game_control.drag_enabled)
+	print(game_control.draw_touch_marker)
 	update() # Update _draw
 
 func _draw():

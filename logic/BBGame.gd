@@ -493,12 +493,16 @@ func _process(_delta):
 		if Input.is_action_just_pressed("click"):
 			first_click_position = get_global_mouse_position()
 		
-		if Input.is_action_pressed("click") && reasonable_angle && drag_enabled:
-			setup_line()
+		if Input.is_action_pressed("click"):
 			draw_touch_marker = true
-		elif !drag_enabled:
-			draw_touch_marker = false
-			if launch_line.modulate.a > 0:
+			
+			if reasonable_angle && drag_enabled:
+				setup_line()
+			elif !drag_enabled:
+				draw_touch_marker = false
+				if launch_line.modulate.a > 0:
+					launch_line.modulate.a -= 0.1
+			elif launch_line.modulate.a > 0:
 				launch_line.modulate.a -= 0.1
-		elif launch_line.modulate.a > 0:
-			launch_line.modulate.a -= 0.1
+		else:
+			draw_touch_marker = false

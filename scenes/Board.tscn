@@ -5,7 +5,7 @@
 [ext_resource path="res://styling/fonts/NotoSans.tres" type="DynamicFont" id=3]
 [ext_resource path="res://logic/ModeSelector.gd" type="Script" id=4]
 [ext_resource path="res://styling/fonts/NotoSans_Bold_Title.tres" type="DynamicFont" id=5]
-[ext_resource path="res://scenes/DrawNode.gd" type="Script" id=6]
+[ext_resource path="res://logic/DrawNode.gd" type="Script" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 359.589, 8.62341 )
