@@ -498,11 +498,10 @@ func _process(_delta):
 			
 			if reasonable_angle && drag_enabled:
 				setup_line()
-			elif !drag_enabled:
-				draw_touch_marker = false
+			else:
 				if launch_line.modulate.a > 0:
 					launch_line.modulate.a -= 0.1
-			elif launch_line.modulate.a > 0:
-				launch_line.modulate.a -= 0.1
 		else:
 			draw_touch_marker = false
+			if launch_line.modulate.a > 0:
+				launch_line.modulate.a -= 0.1
