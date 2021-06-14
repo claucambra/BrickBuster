@@ -68,23 +68,26 @@ margin_bottom = 773.0
 size_flags_vertical = 3
 
 [node name="LightSwitch" type="CheckButton" parent="TabContainer/General/VBoxContainer/SettingsSwitchesContainer"]
-margin_right = 672.0
+margin_left = 20.0
+margin_right = 652.0
 margin_bottom = 66.0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 1 )
 text = "Light effects"
 
 [node name="AudioSwitch" type="CheckButton" parent="TabContainer/General/VBoxContainer/SettingsSwitchesContainer"]
+margin_left = 20.0
 margin_top = 70.0
-margin_right = 672.0
+margin_right = 652.0
 margin_bottom = 136.0
 custom_fonts/font = ExtResource( 1 )
 pressed = true
 text = "Audio"
 
 [node name="VolumeSlider" type="HSlider" parent="TabContainer/General/VBoxContainer/SettingsSwitchesContainer"]
+margin_left = 20.0
 margin_top = 140.0
-margin_right = 672.0
+margin_right = 652.0
 margin_bottom = 156.0
 max_value = 10.0
 value = 10.0
@@ -93,6 +96,7 @@ tick_count = 5
 ticks_on_borders = true
 
 [node name="Theming" type="TabContainer" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -130,12 +134,14 @@ auto_height = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -8.0
-margin_bottom = -36.0
+margin_left = 4.0
+margin_top = 76.0
+margin_right = -4.0
+margin_bottom = -4.0
 
 [node name="ItemList" type="ItemList" parent="TabContainer/Theming/Bricks/MegaBrick"]
 margin_right = 656.0
-margin_bottom = 657.0
+margin_bottom = 613.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 1 )

@@ -7,7 +7,7 @@ signal game_mode_selected(game_mode_name)
 # var b = "text"
 
 onready var global = get_node("/root/Global")
-onready var game_mode_list = $GameModeList
+onready var game_mode_list = $VBoxContainer/GameModeList
 onready var go_button = $HBoxContainer/GoButton
 
 # Called when the node enters the scene tree for the first time.

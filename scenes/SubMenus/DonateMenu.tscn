@@ -38,28 +38,28 @@ __meta__ = {
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = -10.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
 margin_bottom = -50.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-margin_right = 660.0
-margin_bottom = 740.0
+margin_right = 640.0
+margin_bottom = 730.0
 custom_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 181.0
 
 [node name="MenuTitle" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 58.0
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 3 )
@@ -69,7 +69,7 @@ autowrap = true
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 margin_top = 62.0
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 181.0
 custom_fonts/font = ExtResource( 8 )
 text = "Thank you for being a generous brickbuster!"
@@ -78,18 +78,18 @@ autowrap = true
 
 [node name="VBoxContainerText" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 201.0
-margin_right = 660.0
-margin_bottom = 600.0
+margin_right = 640.0
+margin_bottom = 590.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainerText"]
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 181.0
 
 [node name="MeTitle" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer"]
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 58.0
 custom_fonts/font = ExtResource( 3 )
 text = "Me, Clau Cambra"
@@ -97,7 +97,7 @@ autowrap = true
 
 [node name="MeDesc" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer"]
 margin_top = 62.0
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 181.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -107,18 +107,18 @@ autowrap = true
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainerText"]
 margin_top = 191.0
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 372.0
 
 [node name="GodotTitle" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer2"]
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 58.0
 custom_fonts/font = ExtResource( 3 )
 text = "Godot"
 
 [node name="GodotDesc" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer2"]
 margin_top = 62.0
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 181.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -127,16 +127,16 @@ text = "The awesome engine that makes this game possible."
 autowrap = true
 
 [node name="ButtonsGridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 620.0
-margin_right = 660.0
-margin_bottom = 740.0
+margin_top = 610.0
+margin_right = 640.0
+margin_bottom = 730.0
 columns = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="LearnMeButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGridContainer"]
-margin_right = 310.0
+margin_right = 290.0
 margin_bottom = 58.0
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 9 )
@@ -145,8 +145,8 @@ custom_fonts/font = ExtResource( 8 )
 text = "My projects"
 
 [node name="LearnGodotButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGridContainer"]
-margin_left = 314.0
-margin_right = 660.0
+margin_left = 294.0
+margin_right = 640.0
 margin_bottom = 58.0
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 9 )
@@ -156,7 +156,7 @@ text = "About Godot"
 
 [node name="MeDonateButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGridContainer"]
 margin_top = 62.0
-margin_right = 310.0
+margin_right = 290.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 custom_styles/hover = ExtResource( 6 )
@@ -166,9 +166,9 @@ custom_fonts/font = ExtResource( 3 )
 text = "Donate to me"
 
 [node name="GodotDonateButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGridContainer"]
-margin_left = 314.0
+margin_left = 294.0
 margin_top = 62.0
-margin_right = 660.0
+margin_right = 640.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 custom_styles/hover = ExtResource( 6 )
