@@ -89,6 +89,21 @@ onready var columns = [
 	$Board/Column6
 ]
 
+class DestroyableRequest:
+	var column_vert_point: int
+	var column_num: int
+	var specific_position: Vector2
+	var from_save: bool
+
+class BrickRequest extends DestroyableRequest:
+	var rotation_degrees: int
+	var shape: String
+	var mega: bool
+	var health: int
+
+class SpecialRequest extends DestroyableRequest:
+	var special_mode: String
+	var laserbeam_direction: String
 
 # <-------------------------- GAME SAVING FUNCTIONS -------------------------->
 func save():
@@ -196,6 +211,7 @@ func launch_balls(direction = line_direction.normalized(), amount = ammo):
 
 # It is important that you pay attention to the string you feed in for the type.
 # A wrong string can trip up the whole game.
+# Also, this function is an abomination. 11 arguments is ridiculous; this should take an object/dictionary and create destroyables from that.
 func new_destroyable(vert_point, column, type, health = null, mega = null, special_mode = null, rotation = null, laserbeam_direction = null, specific_position = null, from_save = false, game_mode = "standard"):
 	var next_destroyable
 	if "Brick" in type:
