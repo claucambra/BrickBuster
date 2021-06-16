@@ -44,9 +44,17 @@ func new_destroyable_line(health, vert_point = 0):
 	rng.randomize()
 	var random_free_column = rng.randi_range(0, (free_columns.size() - 1))
 	var add_ball_special_column = free_columns[random_free_column]
+	var actual_column_index = game_control.columns.find(add_ball_special_column)
+	
 	rng.randomize()
 	if rng.randi_range(0,1) == 1:
-		game_control.new_destroyable(vert_point, add_ball_special_column, "AddBallSpecial")
+		var new_addball_request = game_control.SpecialRequest.new()
+		new_addball_request.column_vert_point = vert_point
+		new_addball_request.column_num = actual_column_index
+		new_addball_request.mode = "add-ball"
+		
+		game_control.new_destroyable(new_addball_request)
+		
 	free_columns.erase(add_ball_special_column)
 	
 	rng.randomize()

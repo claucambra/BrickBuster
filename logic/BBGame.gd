@@ -90,19 +90,24 @@ onready var columns = [
 ]
 
 class DestroyableRequest:
+	var request_name = "DestroyableRequest" # get_class() method returns native class name
 	var column_vert_point: int
 	var column_num: int
 	var specific_position: Vector2
 	var from_save: bool
 
 class BrickRequest extends DestroyableRequest:
+	func _init():
+		request_name = "BrickRequest"
 	var rotation_degrees: int
 	var shape: String
 	var mega: bool
 	var health: int
 
 class SpecialRequest extends DestroyableRequest:
-	var special_mode: String
+	func _init():
+		request_name = "SpecialRequest"
+	var mode: String
 	var laserbeam_direction: String
 
 # <-------------------------- GAME SAVING FUNCTIONS -------------------------->
@@ -156,17 +161,28 @@ func load_game():
 	ball.position = Vector2(global.save_game_data["launch_ball_position_x"], global.save_game_data["launch_ball_position_y"])
 	
 	for destroyable in global.save_game_data["destroyables"]:
-		new_destroyable(destroyable["column_vert_point"] - 1,
-			columns[destroyable["column_num"]],
-			destroyable["name"],
-			destroyable["health"],
-			destroyable["mega"],
-			destroyable["special_mode"],
-			destroyable["rotation"],
-			destroyable["laserbeam_direction"],
-			Vector2(destroyable["position_x"], destroyable["position_y"]),
-			true,
-			game_mode)
+		var new_destroyable_request
+		if "Brick" in destroyable.name:
+			new_destroyable_request = BrickRequest.new()
+			new_destroyable_request.shape = destroyable.name
+			new_destroyable_request.health = destroyable.health
+			new_destroyable_request.mega = destroyable.mega
+			new_destroyable_request.rotation_degrees = destroyable.rotation
+			
+		elif "Special" in destroyable.name:
+			new_destroyable_request = SpecialRequest.new()
+			new_destroyable_request.mode = destroyable.special_mode
+			if destroyable.laserbeam_direction:
+				new_destroyable_request.laserbeam_direction = destroyable.laserbeam_direction
+		else:
+			continue
+		
+		new_destroyable_request.column_vert_point = destroyable.column_vert_point - 1 # To get swanky move down on load
+		new_destroyable_request.column_num = destroyable.column_num
+		new_destroyable_request.specific_position = Vector2(destroyable["position_x"], destroyable["position_y"])
+		new_destroyable_request.from_save = true
+		
+		new_destroyable(new_destroyable_request, game_mode)
 
 
 
@@ -209,92 +225,119 @@ func launch_balls(direction = line_direction.normalized(), amount = ammo):
 		yield(launch_cadence_wait, "timeout")
 	all_balls_launched = true
 
-# It is important that you pay attention to the string you feed in for the type.
-# A wrong string can trip up the whole game.
-# Also, this function is an abomination. 11 arguments is ridiculous; this should take an object/dictionary and create destroyables from that.
-func new_destroyable(vert_point, column, type, health = null, mega = null, special_mode = null, rotation = null, laserbeam_direction = null, specific_position = null, from_save = false, game_mode = "standard"):
-	var next_destroyable
-	if "Brick" in type:
-		if "SlantedBrick" in type:
-			next_destroyable = slanted_brick_scene.instance()
-			if rotation == null:
-				global.rng.randomize()
-				next_destroyable.rotation_degrees = global.rng.randi_range(0,3) * 90
+func new_destroyable(destroyable_request, game_mode = "standard"):
+	if destroyable_request.get_class():
+		var request_type = destroyable_request.request_name
+		var next_destroyable
+		
+		if request_type == "BrickRequest":
+			if destroyable_request.shape == "SlantedBrick":
+				next_destroyable = slanted_brick_scene.instance()
+				if destroyable_request.rotation_degrees == null:
+					global.rng.randomize()
+					next_destroyable.rotation_degrees = global.rng.randi_range(0,3) * 90
+				else:
+					next_destroyable.rotation_degrees = rotation_degrees
 			else:
-				next_destroyable.rotation = rotation
-		else:
-			next_destroyable = brick_scene.instance()
+				next_destroyable = brick_scene.instance()
+			
+			next_destroyable.mega = destroyable_request.mega
+			if destroyable_request.mega && destroyable_request.from_save:
+				next_destroyable.health = destroyable_request.health / 2
+			else:
+				next_destroyable.health = destroyable_request.health
+			next_destroyable.max_possible_health = score + 1
+			next_destroyable.connect("brick_killed", self, "on_destroyable_killed")
+			
+		elif request_type == "SpecialRequest":
+			next_destroyable = specials_scene.instance()
+			next_destroyable.get_node("Light2D").enabled = lighting_enabled
+			next_destroyable.mode = destroyable_request.mode
+			next_destroyable.laserbeam_direction = destroyable_request.laserbeam_direction
+			next_destroyable.connect("special_area_entered", self, "on_special_area_entered")
+			next_destroyable.connect("special_killed", self, "on_destroyable_killed")
 		
-		next_destroyable.mega = mega
-		if mega && from_save:
-			next_destroyable.health = health / 2
-		else:
-			next_destroyable.health = health
-		next_destroyable.max_possible_health = score + 1
-		next_destroyable.connect("brick_killed", self, "on_destroyable_killed")
-		
-	elif "Special" in type:
-		next_destroyable = specials_scene.instance()
-		next_destroyable.get_node("Light2D").enabled = lighting_enabled
-		if type == "AddBallSpecial" && special_mode == null:
-			next_destroyable.mode = "add-ball"
-		elif type == "LaserSpecial" && special_mode == null:
-			next_destroyable.mode = "laser"
-			next_destroyable.laserbeam_direction = laserbeam_direction
-		elif "BounceSpecial" in type && special_mode == null:
+		next_destroyable.column_num = destroyable_request.column_num
+		next_destroyable.column_vert_point = destroyable_request.column_vert_point
+		add_child(next_destroyable)
+		# We set it at 0 and then add 1 to vert position to get swanky movement down
+		next_destroyable.set_position(columns[destroyable_request.column_num].get_point_position(destroyable_request.column_vert_point))
+		# Add exception for bounce specials introduced in middle of round
+		if destroyable_request.request_name == "SpecialRequest" && destroyable_request.mode == "bounce_nc":
 			next_destroyable.mode = "bounce"
+			next_destroyable.hit = true
 		else:
-			next_destroyable.mode = special_mode
-		next_destroyable.laserbeam_direction = laserbeam_direction
-		next_destroyable.connect("special_area_entered", self, "on_special_area_entered")
-		next_destroyable.connect("special_killed", self, "on_destroyable_killed")
-	
-	next_destroyable.column_num = columns.find(column)
-	next_destroyable.column_vert_point = vert_point
-	add_child(next_destroyable)
-	# We set it at 0 and then add 1 to vert position to get swanky movement down
-	next_destroyable.set_position(column.get_point_position(vert_point))
-	# Add exception for bounce specials introduced in middle of round
-	if type != "BounceSpecial_NC":
-		next_destroyable.column_vert_point += 1
+			next_destroyable.column_vert_point += 1
+		
+		if game_mode != "standard":
+			next_destroyable.position = destroyable_request.specific_position
+		live_destroyables.append(next_destroyable)
 	else:
-		next_destroyable.hit = true
-	
-	if game_mode != "standard":
-		next_destroyable.position = specific_position
-	live_destroyables.append(next_destroyable)
+		print("BAD DESTROYABLE REQUEST.")
+		return
 
 func add_bricks_on_line(free_columns, health, vert_point, mega):
 	for column in columns:
 		global.rng.randomize()
 		if global.rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
 			free_columns.erase(column)
+			
+			var new_brick_request = BrickRequest.new()
+			new_brick_request.column_vert_point = vert_point
+			new_brick_request.column_num = columns.find(column)
+			new_brick_request.health = health
+			new_brick_request.mega = mega
+			
 			if global.rng.randi_range(0,3) == 3:
-				new_destroyable(vert_point, column, "SlantedBrick", health, mega)
+				new_brick_request.shape = "SlantedBrick"
 			else:
-				new_destroyable(vert_point, column, "Brick", health, mega)
+				new_brick_request.shape = "Brick"
+			
+			new_destroyable(new_brick_request)
 	
 	if free_columns.size() == 7: # In case, by chance, no bricks have been added
 		var random_free_column_index = global.rng.randi_range(0, (free_columns.size() - 1))
 		var column = free_columns[random_free_column_index]
 		free_columns.erase(column)
-		new_destroyable(vert_point, column, "SlantedBrick", health, mega)
+		
+		var new_brick_request = BrickRequest.new()
+		new_brick_request.column_vert_point = vert_point
+		new_brick_request.column_num = columns.find(column)
+		new_brick_request.health = health
+		new_brick_request.mega = mega
+		new_brick_request.shape = "Brick"
+			
+		if global.rng.randi_range(0,3) == 3:
+			new_brick_request.shape = "SlantedBrick"
+		
+		new_destroyable(new_brick_request)
 
 func add_special_on_line(free_columns, vert_point):
 	var random_free_column_index = global.rng.randi_range(0, (free_columns.size() - 1))
 	var bounce_special_column = free_columns[random_free_column_index]
+	var actual_column_index = columns.find(bounce_special_column)
+	
 	free_columns.erase(bounce_special_column)
 	global.rng.randomize()
+	
+	var new_special_request = SpecialRequest.new()
+	new_special_request.column_vert_point = vert_point
+	new_special_request.column_num = actual_column_index
+	
 	var decider = global.rng.randi_range(0, 1)
 	if decider == 1:
+		new_special_request.mode = "laser"
+		
 		global.rng.randomize()
 		if global.rng.randi_range(0,1) == 1:
-			# new_destroyable checks if rotation is not null to create vertical laser
-			new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "vertical")
+			new_special_request.laserbeam_direction = "vertical"
 		else:
-			new_destroyable(vert_point, bounce_special_column, "LaserSpecial", null, null, null, null, "horizontal")
+			new_special_request.laserbeam_direction = "horizontal"
+		
 	else:
-		new_destroyable(vert_point, bounce_special_column, "BounceSpecial")
+		new_special_request.mode = "bounce"
+	
+	new_destroyable(new_special_request)
 
 func smoothly_reposition_ball(delta, ball_to_reposition, destination):
 	# <---- SMOOTHLY REPOSITION INDICATOR BALL AFTER FIRST BALL RETURN ---->

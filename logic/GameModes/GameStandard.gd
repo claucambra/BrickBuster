@@ -23,13 +23,21 @@ func new_destroyable_line(health, vert_point = 0):
 		mega = true
 	else:
 		mega = false
-		
+	
 	game_control.add_bricks_on_line(free_columns, health, vert_point, mega)
 	
 	rng.randomize()
+	# random_free_column_index only gives the index in the array free_columns, not the main columns
 	var random_free_column_index = rng.randi_range(0, (free_columns.size() - 1))
 	var add_ball_special_column = free_columns[random_free_column_index]
-	game_control.new_destroyable(vert_point, add_ball_special_column, "AddBallSpecial")
+	var actual_column_index = game_control.columns.find(add_ball_special_column)
+	
+	var new_addball_request = game_control.SpecialRequest.new()
+	new_addball_request.column_vert_point = vert_point
+	new_addball_request.column_num = actual_column_index
+	new_addball_request.mode = "add-ball"
+	
+	game_control.new_destroyable(new_addball_request)
 	free_columns.erase(add_ball_special_column)
 	
 	rng.randomize()
@@ -111,7 +119,11 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	var things_at_point = get_world_2d().direct_space_state.intersect_point(game_control.columns[3].get_point_position(line_point), 32, [], 1, true, true)
 	
 	if line_point < 8 && things_at_point.empty():
-		game_control.new_destroyable(line_point, game_control.columns[3], "BounceSpecial_NC")
+		var bounce_request = game_control.SpecialRequest.new()
+		bounce_request.column_vert_point = line_point
+		bounce_request.column_num = 3
+		bounce_request.mode = "bounce_nc"
+		game_control.new_destroyable(bounce_request)
 
 func on_reset_triggered():
 	ball_repositioned_this_round = false
