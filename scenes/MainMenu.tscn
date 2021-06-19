@@ -259,11 +259,11 @@ position = Vector2( 280, 640 )
 shape = SubResource( 4 )
 
 [node name="Background" type="Polygon2D" parent="."]
-position = Vector2( 118.98, -1.68188 )
-scale = Vector2( 0.834751, 1 )
+position = Vector2( 113.619, -0.0683411 )
+scale = Vector2( 0.84209, 0.999984 )
 z_index = -1
 color = Color( 0.0980392, 0.0980392, 0.0980392, 1 )
-polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 216, 1280, 216, 933.352 )
+polygon = PoolVector2Array( 216, 0, 720, 0, 720, 1280, 473.296, 1279.91, 216, 1280, 216, 933.352 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "fadein"
