@@ -179,7 +179,7 @@ func _ready():
 	# they might already have a config file set.
 	var need_to_save_config = false
 	if err == ERR_FILE_NOT_FOUND:
-		config.set_value("lighting", "enabled", true)
+		config.set_value("lighting", "enabled", false)
 		config.set_value("audio", "volume", 10)
 		config.set_value("ball", "color", "#ffffff")
 		config.set_value("ball", "ball_file_name", "Ball.tscn")
@@ -191,7 +191,7 @@ func _ready():
 		first_run = true
 	
 	if config.get_value("lighting", "enabled") == null:
-		config.set_value("lighting", "enabled", true)
+		config.set_value("lighting", "enabled", false)
 		need_to_save_config = true
 	
 	if config.get_value("audio", "volume") == null:
