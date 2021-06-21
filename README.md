@@ -2,9 +2,9 @@
 
 BrickBuster is a brick-breaker type game where the objective is to survive as many rounds as possible. Every round new bricks appear... when they reach the bottom of the screen, you lose. You are armed with balls and any special nodes that luck sends your way.
 
-![](screenshots/Screenshot1.png)
-
 **Version 1.0 is out now!!! Grab it from the releases section of this page!** 😁
+
+![](screenshots/Screenshot1.png)
 
 ## Features
 
