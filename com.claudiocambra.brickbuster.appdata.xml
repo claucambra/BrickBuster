@@ -4,7 +4,7 @@
   - SPDX-FileCopyrightText: 2021 Claudio Cambra <claudio.cambra@gmail.com>
  -->
 <component type="desktop">
-  <id>org.claucambra.brickbuster</id>
+  <id>com.claudiocambra.brickbuster</id>
   <provides>
     <binary>brickbuster_linux.x86_64</binary>
   </provides>

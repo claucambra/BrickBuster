@@ -4,8 +4,8 @@
 Name=BrickBuster
 GenericName=A brick-busting game
 Comment=A brick-breaker game, fun and addictive!
-Exec=org.claucambra.brickbuster
+Exec=com.claudiocambra.brickbuster
 Terminal=false
-Icon=org.claucambra.brickbuster
+Icon=com.claudiocambra.brickbuster
 Type=Application
 Categories=Games;
