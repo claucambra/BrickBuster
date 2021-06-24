@@ -120,6 +120,9 @@ func _ready():
 	
 	if OS.get_name() == "Android" || OS.get_name() == "iOS" || OS.get_name() == "HTML5":
 		quit_button.hide()
+		#if OS.get_name() == "Android" || OS.get_name() == "iOS":
+			#donate_button.hide()
+			# Uncomment for Play Store / App Store export
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta):
