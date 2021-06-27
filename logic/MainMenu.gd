@@ -117,12 +117,10 @@ func _ready():
 		$AnimationPlayer.add_animation(popup.name + "_fadein", animation)
 	
 	# Fade-in and fade-out animation for the whole main menu has been added through UI to AnimationPlayer node
-	
-	if OS.get_name() == "Android" || OS.get_name() == "iOS" || OS.get_name() == "HTML5":
+	if OS.get_name() == "Android" || OS.get_name() == "iOS":
+		donate_button.hide()
 		quit_button.hide()
-		#if OS.get_name() == "Android" || OS.get_name() == "iOS":
-			#donate_button.hide()
-			# Uncomment for Play Store / App Store export
+	# Uncomment for Play Store / App Store export
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta):
