@@ -4,7 +4,9 @@ BrickBuster is a brick-breaker type game where the objective is to survive as ma
 
 **Version 1.0 is out now!!! [Grab it from the releases page!](https://github.com/claucambra/BrickBuster/releases/tag/1.0)** 😁 Or get it from one of the stores below:
 
-<a href='https://play.google.com/store/apps/details?id=org.claucambra.brickbuster&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+<a href='https://play.google.com/store/apps/details?id=org.claucambra.brickbuster&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width='190px' alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+
+<a href='https://flathub.org/apps/details/com.claudiocambra.brickbuster'><img width='190px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-i-en.png'/></a>
 
 ![](screenshots/Screenshot1.png)
 
