@@ -41,6 +41,7 @@ func _process(_delta):
 	
 	if health <= 0:
 		$Collision2D.disabled = true
+		label.text = str(0)
 		if self.modulate.a > 0:
 			self.modulate.a -= 0.05
 		else:
