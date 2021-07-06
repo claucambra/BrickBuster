@@ -36,19 +36,26 @@ func _ready():
 	#pass
 
 func _on_Ball_body_entered(body):
-	if !("Wall" in body.get_name()):
+	if not ("Wall" in body.get_name()):
+		# Restart the timer if we hit something. In standard this is used to 
+		# bring up a bouncy special if there's a while in which nothing has been
+		# hit.
 		$Timer.start()
 	if "Brick" in body.get_name():
-			body.health -= 1
-			body.hit = true
-			$BrickHitAudio.play()
-	elif body.get_name() == "EliminatorBottomWall" && marker_ball == false:
+		body.health -= 1
+		body.hit = true
+		$BrickHitAudio.play()
+	elif body.get_name() == "EliminatorBottomWall" and marker_ball == false:
+		# The marker ball indicates where the balls will be launched from.
+		# Slight variations when we reposition can make it touch the bottom wall
+		# but we want to make sure it isn't killed off.
 		emit_signal("ball_died", self)
 		self.queue_free()
 	else:
 		$WallHitAudio.play()
 
 func _draw():
+	# No circle polygon node available so we draw one instead
 	if ($MetaNode.ball_name == "Standard ball"):
 		draw_circle($CollisionThing2D.position, 10, Color(ball_color))
 
