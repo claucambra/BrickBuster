@@ -41,6 +41,7 @@ var mouse_position = Vector2(0,0)
 var line_direction = Vector2(0,0)
 var first_click_position = Vector2(0,0)
 var reasonable_angle = false
+# draw_touch_marker is read by DrawNode, which handles drawing the marker
 var draw_touch_marker = false
 # launched is used to differentiate between states when there are no live balls
 # i.e. idling vs just after all balls have returned to bottom of screen

@@ -2,11 +2,8 @@ extends KinematicBody2D
 
 signal brick_killed(brick)
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 var health = null
+# "Mega" bricks have double health and an independent colour scheme.
 var mega = null
 var max_possible_health = null
 var hit = false
@@ -42,16 +39,16 @@ func _process(_delta):
 	if health <= 0:
 		$Collision2D.disabled = true
 		label.text = str(0)
-		if self.modulate.a > 0:
-			self.modulate.a -= 0.05
+		if modulate.a > 0:
+			modulate.a -= 0.05
 		else:
-			self.queue_free()
+			queue_free()
 			emit_signal("brick_killed", self)
 	else:
-		if self.modulate.a < 1:
-			self.modulate.a += 0.05
+		if modulate.a < 1:
+			modulate.a += 0.05
 	
 	if hit:
-		self.modulate.a = 0.5
-		self.hit = false
+		modulate.a = 0.5
+		hit = false
 
