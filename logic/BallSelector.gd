@@ -24,7 +24,7 @@ func _ready():
 		ball_list.set_item_metadata(iterator, ball_filename)
 		
 		# Make balls selectable if high score is high enough
-		if ball_meta.get("min_score") && global.save_game_data && global.save_game_data.has("past_scores"):
+		if ball_meta.get("min_score") and global.save_game_data and global.save_game_data.has("past_scores"):
 			var past_scores = global.save_game_data["past_scores"]
 			if past_scores.standard.max():
 				for score in past_scores:
@@ -58,9 +58,9 @@ func _ready():
 
 
 func _on_ApplyButton_pressed():
-	if global.err == OK || global.err == ERR_FILE_NOT_FOUND:
+	if global.err == OK or global.err == ERR_FILE_NOT_FOUND:
 		global.config.set_value("ball", "color", color_picker.color)
-		if !ball_list.is_anything_selected() && global.config.get_value("ball", "ball_file_name") == null:
+		if !ball_list.is_anything_selected() and global.config.get_value("ball", "ball_file_name") == null:
 			global.config.set_value("ball", "ball_file_name", "Ball.tscn")
 		elif ball_list.is_anything_selected():
 			global.config.set_value("ball", "ball_file_name", ball_list.get_item_metadata(ball_list.get_selected_items()[0]))

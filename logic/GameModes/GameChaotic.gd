@@ -32,7 +32,7 @@ func new_destroyable_line(health, vert_point = 0):
 	rng.randomize()
 	
 	# Make sure only one mega row each time score is a multiple of 5
-	if int(game_control.score) % 5 == 0 && !mega_added_this_score && game_control.score != 0:
+	if int(game_control.score) % 5 == 0 and !mega_added_this_score and game_control.score != 0:
 		mega = true
 		mega_added_this_score = true
 	else:
@@ -58,7 +58,7 @@ func new_destroyable_line(health, vert_point = 0):
 	free_columns.erase(add_ball_special_column)
 	
 	rng.randomize()
-	if !free_columns.empty() && rng.randi_range(0, 2) == 2:
+	if not free_columns.empty() and rng.randi_range(0, 2) == 2:
 		game_control.add_special_on_line(free_columns, vert_point)
 
 func on_launch_cooldown_timer_timeout():
@@ -110,7 +110,7 @@ func _ready():
 	add_child(top_row_area)
 	top_row_area.position = tracs_position
 	
-	if !global.save_game_data:
+	if not global.save_game_data:
 		game_control.rng.randomize()
 		game_control.new_destroyable_line(game_control.score + 1)
 	else:
@@ -141,15 +141,15 @@ func _process(_delta):
 		
 		var row_0_free = true
 		for thing in top_row_area.get_overlapping_bodies():
-			if "Brick" in thing.name || "Special" in thing.name:
+			if "Brick" in thing.name or "Special" in thing.name:
 				row_0_free = false
 		
 		if row_0_free:
 			new_destroyable_line(game_control.score + 1)
 		
-		if !launch_cooling_down && game_control.live_balls.size() != game_control.ammo:
+		if not launch_cooling_down and game_control.live_balls.size() != game_control.ammo:
 			game_control.drag_enabled = true
-			if Input.is_action_just_released("click") && game_control.reasonable_angle:
+			if Input.is_action_just_released("click") and game_control.reasonable_angle:
 				game_control.launch_balls(game_control.line_direction.normalized(), game_control.ammo - game_control.live_balls.size())
 		else:
 			game_control.drag_enabled = false

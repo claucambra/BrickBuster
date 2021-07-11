@@ -74,7 +74,7 @@ func _on_ApplyButton_pressed():
 	var new_standard_theme_item_idx = null
 	var new_mega_theme_item_idx = null
 	
-	if global.err == OK || global.err == ERR_FILE_NOT_FOUND:
+	if global.err == OK or global.err == ERR_FILE_NOT_FOUND:
 		global.config.set_value("lighting", "enabled", light_switch.pressed)
 		global.config.set_value("audio", "volume", volume_slider.value)
 		settings_changed = true

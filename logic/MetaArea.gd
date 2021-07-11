@@ -49,7 +49,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if Input.is_action_just_pressed("escape"):
-		popup.visible = !popup.visible
+		popup.visible = not popup.visible
 		emit_signal("pause_menu_toggled", popup.visible)
 
 func _on_MenuItem_pressed(id):
@@ -80,7 +80,7 @@ func _on_Button_mouse_exited():
 	mouse_on_button = false
 
 func _on_Button_pressed():
-	if !popup.visible:
+	if not popup.visible:
 		popup.visible = true
 		$AnimationPlayer.play("fadein")
 		emit_signal("pause_menu_toggled", popup.visible)

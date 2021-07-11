@@ -28,7 +28,7 @@ func _ready():
 	else:
 		gradient.set_color(1, global.colour_themes[global.selected_standard_theme].top_health)
 		gradient.set_color(0, global.colour_themes[global.selected_standard_theme].bottom_health)
-	self.modulate.a = 1
+	modulate.a = 1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

@@ -22,7 +22,7 @@ var rng = RandomNumberGenerator.new()
 
 func kill():
 	emit_signal("special_killed", self)
-	self.queue_free()
+	queue_free()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -47,7 +47,7 @@ func _on_Special_body_entered(body):
 			$AddBallAudio.play()
 			$CollisionShape2D.set_deferred("disabled", true)
 			$Light2D.enabled = false
-			self.modulate.a = 0
+			modulate.a = 0
 			# We don't kill the object here because it will cut off our audio
 		if mode == "bounce":
 			body.sleeping = true
@@ -58,4 +58,4 @@ func _on_Special_body_entered(body):
 
 
 func _on_AddBallAudio_finished():
-	self.kill()
+	kill()

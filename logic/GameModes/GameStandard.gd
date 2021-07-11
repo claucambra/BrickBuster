@@ -19,7 +19,7 @@ func new_destroyable_line(health, vert_point = 0):
 	var mega = false
 	rng.randomize()
 	
-	if int(game_control.score) % 10 == 0 && game_control.score != 0:
+	if int(game_control.score) % 10 == 0 and game_control.score != 0:
 		mega = true
 	else:
 		mega = false
@@ -41,14 +41,14 @@ func new_destroyable_line(health, vert_point = 0):
 	free_columns.erase(add_ball_special_column)
 	
 	rng.randomize()
-	if !free_columns.empty() && rng.randi_range(0, 4) == 4:
+	if not free_columns.empty() and rng.randi_range(0, 4) == 4:
 		game_control.add_special_on_line(free_columns, vert_point)
 
 func round_over_checks():
 	for live_destroyable in game_control.get_children():
 		if "Brick" in live_destroyable.name or "Special" in live_destroyable.name:
 			live_destroyable.column_vert_point += 1
-			if "Special" in live_destroyable.name && (live_destroyable.hit == true || live_destroyable.column_vert_point == 8):
+			if "Special" in live_destroyable.name and (live_destroyable.hit == true or live_destroyable.column_vert_point == 8):
 				live_destroyable.kill()
 			if "Brick" in live_destroyable.name:
 				# Game over once blocks reach bottom of screen
@@ -65,7 +65,7 @@ func destroyable_correct_position_check(destroyable):
 		return true
 
 func destroyable_position_check_and_move(destroyable, delta):
-	if !destroyable_correct_position_check(destroyable):
+	if not destroyable_correct_position_check(destroyable):
 		repositioning_bricks = true
 		var destination = game_control.columns[destroyable.column_num].get_point_position(destroyable.column_vert_point)
 		var reposition = destroyable.position - destination
@@ -100,7 +100,7 @@ func smoothly_reposition_destroyables(delta):
 
 func on_ball_died(dead_ball):
 	# Set round_first_dead_ball_position to move our launch position ball there
-	if round_first_dead_ball_position == null && !ball_repositioned_this_round:
+	if round_first_dead_ball_position == null and not ball_repositioned_this_round:
 		round_first_dead_ball_position = dead_ball.position
 
 func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
@@ -111,14 +111,14 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 		distance_to_midcolumn_points.append(point.distance_to(ball_position))
 	var line_point = distance_to_midcolumn_points.find(distance_to_midcolumn_points.min())
 	
-	if ball_linear_velocity.y < 0 && distance_to_midcolumn_points.min() < 0:
+	if ball_linear_velocity.y < 0 and distance_to_midcolumn_points.min() < 0:
 		line_point -= 1 # Line points go top to bottom
-	elif ball_linear_velocity.y > 0 && distance_to_midcolumn_points.min() > 0:
+	elif ball_linear_velocity.y > 0 and distance_to_midcolumn_points.min() > 0:
 		line_point += 1
 	
 	var things_at_point = get_world_2d().direct_space_state.intersect_point(game_control.columns[3].get_point_position(line_point), 32, [], 1, true, true)
 	
-	if line_point < 8 && things_at_point.empty():
+	if line_point < 8 and things_at_point.empty():
 		var bounce_request = game_control.SpecialRequest.new()
 		bounce_request.column_vert_point = line_point
 		bounce_request.column_num = 3
@@ -137,7 +137,7 @@ func _ready():
 	game_control.connect("reset_triggered", self, "on_reset_triggered")
 	game_control.connect("ball_died", self, "on_ball_died")
 	
-	if !global.save_game_data:
+	if not global.save_game_data:
 		game_control.rng.randomize()
 		game_control.new_destroyable_line(game_control.score + 1)
 	else:
@@ -150,16 +150,16 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if !game_control.game_over:
+	if not game_control.game_over:
 		# Before allowing any input we need to make sure everything on the board
 		# is prepped.
 		# <---------------------- ROUND PROGRESS CHECKS ---------------------->
-		if round_first_dead_ball_position != null && game_control.all_balls_launched:
+		if round_first_dead_ball_position != null and game_control.all_balls_launched:
 			game_control.smoothly_reposition_ball(delta, game_control.ball, round_first_dead_ball_position)
 			if game_control.ball.position.x == round_first_dead_ball_position.x:
 				round_first_dead_ball_position = null
 				ball_repositioned_this_round = true
-		if !game_control.live_balls.empty():
+		if not game_control.live_balls.empty():
 			game_control.round_in_progress = true
 		# <--------------------- END OF ROUND PROCESSING --------------------->
 		elif game_control.launched:
@@ -168,7 +168,7 @@ func _process(delta):
 			game_control.round_in_progress = false
 			ball_repositioned_this_round = false
 			round_over_checks()
-			if !game_control.game_over:
+			if not game_control.game_over:
 				game_control.score += 1
 				game_control.update_score_labels()
 				new_destroyable_line(game_control.score + 1)
@@ -177,12 +177,12 @@ func _process(delta):
 		
 		# Launch handling
 		# We check several things, including checking on a timer since pause menu close to avoid accidental launches on closing pause menu
-		if !game_control.repositioning_ball && !repositioning_bricks && !game_control.round_in_progress && game_control.meta_area.close_timer.is_stopped():
+		if not game_control.repositioning_ball and not repositioning_bricks and not game_control.round_in_progress and game_control.meta_area.close_timer.is_stopped():
 			game_control.drag_enabled = true
 		else:
 			game_control.drag_enabled = false
 		
 		if Input.is_action_just_released("click"):
-			if game_control.drag_enabled && game_control.reasonable_angle: 
+			if game_control.drag_enabled and game_control.reasonable_angle: 
 				game_control.launch_balls()
 				game_control.launched = true

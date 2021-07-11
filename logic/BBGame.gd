@@ -264,7 +264,7 @@ func new_destroyable(destroyable_request, game_mode = "standard"):
 		# We set it at 0 and then add 1 to vert position to get swanky movement down
 		next_destroyable.set_position(columns[destroyable_request.column_num].get_point_position(destroyable_request.column_vert_point))
 		# Add exception for bounce specials introduced in middle of round
-		if destroyable_request.request_name == "SpecialRequest" && destroyable_request.mode == "bounce_nc":
+		if destroyable_request.request_name == "SpecialRequest" and destroyable_request.mode == "bounce_nc":
 			next_destroyable.mode = "bounce"
 			next_destroyable.hit = true
 		else:
@@ -280,7 +280,7 @@ func new_destroyable(destroyable_request, game_mode = "standard"):
 func add_bricks_on_line(free_columns, health, vert_point, mega):
 	for column in columns:
 		global.rng.randomize()
-		if global.rng.randi_range(0,2) > 0 && free_columns.size() > 1: 
+		if global.rng.randi_range(0,2) > 0 and free_columns.size() > 1: 
 			free_columns.erase(column)
 			
 			var new_brick_request = BrickRequest.new()
@@ -359,7 +359,7 @@ func update_score_labels():
 	ammo_label.text = "x" + str(ammo)
 	current_score_label.text = str(score)
 	var past_scores = global.save_game_data.past_scores
-	if !past_scores.has(game_mode) || past_scores[game_mode].empty() || score > past_scores[game_mode].max():
+	if not past_scores.has(game_mode) or past_scores[game_mode].empty() or score > past_scores[game_mode].max():
 		high_score_label.text = str(score)
 	else:
 		high_score_label.text = str(past_scores[game_mode].max())
@@ -368,7 +368,7 @@ func game_over_title_fadein_and_fadeout_init():
 	if game_over_label.modulate.a < 1:
 		game_over_label.modulate.a += 0.05
 	
-	elif !game_over_on_screen:
+	elif not game_over_on_screen:
 		game_over_on_screen = true
 		game_over_timer.start()
 		yield(game_over_timer, "timeout")
@@ -399,7 +399,7 @@ func reset():
 	for live_element in get_children():
 		if "Brick" in live_element.name or "Special" in live_element.name:
 			live_element.queue_free()
-		elif "Ball" in live_element.name && live_element != ball:
+		elif "Ball" in live_element.name and live_element != ball:
 			live_element.queue_free()
 	live_balls.clear()
 	live_destroyables.clear()
@@ -556,7 +556,7 @@ func _process(_delta):
 		if Input.is_action_pressed("click"):
 			draw_touch_marker = true
 			
-			if reasonable_angle && drag_enabled:
+			if reasonable_angle and drag_enabled:
 				setup_line()
 			else:
 				if launch_line.modulate.a > 0:

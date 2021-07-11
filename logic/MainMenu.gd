@@ -65,12 +65,12 @@ func set_menu_colours():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var no_scores = true
-	if global.save_game_data && global.save_game_data.has("past_scores"):
+	if global.save_game_data and global.save_game_data.has("past_scores"):
 		for score_array in global.save_game_data["past_scores"]:
-			if !global.save_game_data["past_scores"][score_array].empty():
+			if not global.save_game_data["past_scores"][score_array].empty():
 				no_scores = false
 	
-	if !global.save_game_data || no_scores:
+	if not global.save_game_data or no_scores:
 		continue_button.visible = false
 		scores_button.disabled = true
 	
@@ -117,12 +117,11 @@ func _ready():
 		$AnimationPlayer.add_animation(popup.name + "_fadein", animation)
 	
 	# Fade-in and fade-out animation for the whole main menu has been added through UI to AnimationPlayer node
-	if OS.get_name() == "Android" || OS.get_name() == "iOS":
+	if OS.get_name() == "Android" or OS.get_name() == "iOS":
 		donate_button.hide()
 		quit_button.hide()
 	# Uncomment for non Play Store / App Store export
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta):
 #	pass
 
