@@ -197,7 +197,7 @@ func launch_line_calc():
 	mouse_position = get_global_mouse_position()
 	line_direction = first_click_position - mouse_position
 	# We can calculate a minimum coordinate set for the launch line to stop us scoring against ourselves
-	if line_direction.normalized().x > -0.998 && line_direction.normalized().x < 0.998 && line_direction.normalized().y < 0:
+	if line_direction.normalized().x > -0.998 and line_direction.normalized().x < 0.998 and line_direction.normalized().y < 0:
 		 reasonable_angle = true
 	else:
 		reasonable_angle = false
@@ -243,7 +243,7 @@ func new_destroyable(destroyable_request, game_mode = "standard"):
 				next_destroyable = brick_scene.instance()
 			
 			next_destroyable.mega = destroyable_request.mega
-			if destroyable_request.mega && destroyable_request.from_save:
+			if destroyable_request.mega and destroyable_request.from_save:
 				next_destroyable.health = destroyable_request.health / 2
 			else:
 				next_destroyable.health = destroyable_request.health
@@ -381,7 +381,7 @@ func game_over_title_fadeout_and_reset():
 		reset()
 
 func end_game():
-	if !game_over_on_screen:
+	if not game_over_on_screen:
 		game_over_title_fadein_and_fadeout_init()
 	if game_over_fadeout:
 		game_over_title_fadeout_and_reset()
@@ -547,7 +547,7 @@ func _process(_delta):
 		# <-------------- SETTING LAUNCH LINE AND LAUNCHING BALL -------------->
 		# "click" is defined in input map
 		# Allow clicks when mouse is in the game area
-		if !mouse_in_controlarea:
+		if not mouse_in_controlarea:
 			drag_enabled = false
 		
 		if Input.is_action_just_pressed("click"):
