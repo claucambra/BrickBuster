@@ -8,8 +8,8 @@ signal ball_changed
 # var b = "text"
 
 onready var global = get_node("/root/Global")
-onready var ball_list = $TabContainer/BallPicker/ScrollContainer/ItemList
-onready var color_picker = $TabContainer/ColourMenu/VBoxContainer/ColorPicker
+onready var ball_list = $VBoxContainer/TabContainer/BallPicker/ScrollContainer/ItemList
+onready var color_picker = $VBoxContainer/TabContainer/ColourMenu/VBoxContainer/ColorPicker
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
