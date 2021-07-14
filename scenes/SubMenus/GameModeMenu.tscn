@@ -10,7 +10,6 @@
 [ext_resource path="res://styling/button_style/ApplyButton_pressed.stylebox" type="StyleBox" id=8]
 
 [node name="GameModeMenu" type="Popup"]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

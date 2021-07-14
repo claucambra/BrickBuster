@@ -79,3 +79,7 @@ func _on_CloseButton_pressed():
 
 func on_Fadeout_finished(_anim_name):
 	hide()
+
+
+func _on_ItemList_item_selected(index):
+	$VBoxContainer/Label.text = ball_list.get_item_tooltip(index)
