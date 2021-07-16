@@ -83,3 +83,10 @@ func on_Fadeout_finished(_anim_name):
 
 func _on_ItemList_item_selected(index):
 	$VBoxContainer/Label.text = ball_list.get_item_tooltip(index)
+
+
+func _on_TabContainer_tab_changed(tab):
+	if tab == 0:
+		$VBoxContainer/Label.visible = true
+	else:
+		$VBoxContainer/Label.visible = false
