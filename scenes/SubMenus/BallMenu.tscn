@@ -100,18 +100,24 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColorPicker" type="ColorPicker" parent="VBoxContainer/TabContainer/ColourMenu/VBoxContainer"]
-margin_left = 24.0
-margin_top = 24.0
-margin_right = 696.0
-margin_bottom = 891.0
+margin_right = 672.0
+margin_bottom = 796.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 edit_alpha = false
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 880.0
 margin_right = 680.0
 margin_bottom = 938.0
+custom_constants/margin_right = 20
+custom_constants/margin_left = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer"]
+margin_left = 20.0
+margin_right = 660.0
+margin_bottom = 58.0
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 9 )
 autowrap = true
 __meta__ = {
