@@ -5,6 +5,10 @@ extends Node
 # FETCHER FUNCTIONS.
 # Project -> Export -> (select preset) -> Script -> Script Export Mode -> Text
 
+# This GDScript is used as a singleton. It provides functionality that is used
+# throughout the game, such as loading files and reading the config files.
+
+
 var save_game = File.new()
 var save_game_data = null
 var rng = RandomNumberGenerator.new()
