@@ -1,5 +1,8 @@
 extends RigidBody2D
 
+# This file defines the behaviour of the ball, and how it should react to
+# hitting nodes of different types.
+
 signal ball_no_contact_timeout(self_position, self_linear_velocity)
 signal ball_died(ball)
 

@@ -1,5 +1,8 @@
 extends Node2D
 
+# This GDScript file handles the functionality of the main menu, including
+# triggering the scene switch to the main game board, the behaviour of the
+# main menu's buttons, and more.
 
 # Declare member variables here. Examples:
 # var a = 2
