@@ -1,5 +1,8 @@
 extends KinematicBody2D
 
+# This script controls a brick's behaviour and how it's appearance changes
+# when it is hit by a ball or when it is killed.
+
 signal brick_killed(brick)
 
 var health = null
