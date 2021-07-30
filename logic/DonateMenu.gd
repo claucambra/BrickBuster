@@ -1,5 +1,8 @@
 extends Popup
 
+# This menu contains some information and donation buttons.
+# These buttons open the operating system's default browser to a donation page.
+# TODO: Make these invoke Google Play payment on Android.
 
 func _ready():
 	var animation = Animation.new()
