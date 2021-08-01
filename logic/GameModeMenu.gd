@@ -1,5 +1,8 @@
 extends Popup
 
+# This script handles actions for the game mode selection menu.
+# It also find game mode script files in the correct folder and displays them.
+
 signal game_mode_selected(game_mode_name)
 
 # Declare member variables here. Examples:

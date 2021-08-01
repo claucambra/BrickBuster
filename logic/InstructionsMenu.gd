@@ -1,5 +1,7 @@
 extends PopupDialog
 
+# This is the logic for the instructions displayed on first launch.
+
 onready var tab_container = $MarginContainer/VBoxContainer/TabContainer
 
 func _ready():
