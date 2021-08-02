@@ -1,5 +1,8 @@
 extends Line2D
 
+# This script handles the laserbeams ejected by a laser special.
+# The key things it does is handle the fade-in and out of the line,
+# as well as the reducing of the health of the bricks within its area.
 
 # Declare member variables here. Examples:
 # var a = 2
