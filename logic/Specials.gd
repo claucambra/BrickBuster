@@ -1,5 +1,9 @@
 extends Area2D
 
+# This script handles the logic for all specials.
+# It decides what is to be done based on the "mode" variable, including
+# visual appearance as well as actions on other nodes on the board.
+
 signal special_area_entered(special)
 signal special_killed(special)
 
