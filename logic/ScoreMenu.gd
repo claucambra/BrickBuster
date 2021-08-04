@@ -1,5 +1,7 @@
 extends Popup
 
+# This script handles the logic for the score menu.
+# It pulls all the scores from the save data and presents them in an item list.
 
 # Declare member variables here. Examples:
 # var a = 2
