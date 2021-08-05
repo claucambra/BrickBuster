@@ -1,5 +1,8 @@
 extends Node
 
+# This script contains some basic info about the ball.
+# It can also be used as a boilerplate for implementing metadata
+# for additional balls.
 
 # Declare member variables here. Examples:
 # var a = 2
