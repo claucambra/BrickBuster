@@ -1,5 +1,9 @@
 extends Panel
 
+# This script handles the logic for the areas of the board that are not directly
+# related to the gameplay itself, such as the scoreboards, pause menus, and so
+# on.
+
 signal pause_menu_toggled(popup_open)
 signal restart_button_clicked
 signal quit_to_menu_button_clicked
