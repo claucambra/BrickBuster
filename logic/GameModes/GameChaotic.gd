@@ -1,8 +1,11 @@
 extends Node2D
 
+# Chaotic gamemode logic. Loaded by ModeSelector.gd.
+# Time-based survival gamemode where the player has to survive as long as
+# possible with bricks constantly moving down the screen.
+
 onready var global = get_node("/root/Global")
 onready var game_control = get_tree().get_root().get_node("MainGame")
-
 
 # Declare member variables here. Examples:
 # var a = 2
