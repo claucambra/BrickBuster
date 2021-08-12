@@ -1,5 +1,10 @@
 extends Node2D
 
+# Stadnard gamemode logic. Loaded by ModeSelector.gd.
+# This is a turn-based mode where the player tries to reach the highest score
+# possible by breaking bricks. Each turn, the bricks move downward. If the
+# bricks reach the bottom of the screen, it's game over.
+
 var game_mode_details = {
 	"name": "standard",
 	"display_name": "Standard",
