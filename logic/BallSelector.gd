@@ -1,6 +1,8 @@
 extends Popup
 
-
+# This script handles the logic for the ball selection menu.
+# It presents the player with all available balls in the /scenes/Balls folder.
+# This is provided by an array in the global singleton.
 
 signal color_changed
 signal ball_changed
