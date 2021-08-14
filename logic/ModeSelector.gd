@@ -1,5 +1,8 @@
 extends Node
 
+# This script handles the initialisation of the correct game-mode.
+# It runs when the Board scene is loaded and then sets the script for the
+# chosen game-mode on the board node.
 
 # Declare member variables here. Examples:
 # var a = 2
