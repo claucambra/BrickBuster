@@ -2,6 +2,10 @@ extends Popup
 
 signal options_changed
 
+# This script handles the logic for the game's options menu.
+# It handles getting the correct setting states from the global script's
+# config and to set values correctly to the config.
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

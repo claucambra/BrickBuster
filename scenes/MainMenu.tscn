@@ -1,10 +1,9 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://logic/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://styling/fonts/NotoSans_Bold.tres" type="DynamicFont" id=2]
 [ext_resource path="res://styling/fonts/NotoSans_Bold_Title.tres" type="DynamicFont" id=3]
 [ext_resource path="res://logic/Brick.gd" type="Script" id=4]
-[ext_resource path="res://sprites/light.png" type="Texture" id=5]
 [ext_resource path="res://styling/fonts/NotoSans.tres" type="DynamicFont" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -227,7 +226,6 @@ __meta__ = {
 [node name="Light2D" type="Light2D" parent="TitleBrick"]
 position = Vector2( 512, 208 )
 enabled = false
-texture = ExtResource( 5 )
 texture_scale = 0.5
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="TitleBrick"]
